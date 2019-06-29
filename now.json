@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "my-nodejs-project",
+  "name": "solid-slack",
   "builds": [
     { "src": "www/**/*", "use": "@now/static" },
     { "src": "api/**/*.js", "use": "@now/node" }
