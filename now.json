@@ -1,11 +1,14 @@
 {
   "version": 2,
   "name": "solid-slack",
+  "env": {
+    "SLACK_CLIENT_ID": "@slack-client-id",
+    "SLACK_ACCESS_TOKEN": "@slack-access-token",
+    "SLACK_CLIENT_SECRET": "@slack-client-secret",
+    "SLACK_SIGNING_SECRET": "@slack-signing-secret",
+    "SLACK_VERIFICATION_TOKEN": "@slack-verification-token"
+  },
   "builds": [
-    { "src": "www/**/*", "use": "@now/static" },
-    { "src": "api/**/*.js", "use": "@now/node" }
-  ],
-  "routes": [
-    { "src": "/", "dest": "www/index.html" }
+    { "src": "app/**/index.js", "use": "@now/node-server" }
   ]
 }
