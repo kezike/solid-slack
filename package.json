@@ -7,9 +7,7 @@
   },
   "main": "./app.js",
   "scripts": {
-    "build": "webpack --config ./app/webpack.config.js --mode production",
-    "dev": "webpack --config ./app/webpack.config.js --mode development",
-    "start": "webpack-dev-server --config ./app/webpack.config.js --mode development & npm run dev"
+    "start": "node app/index.js"
   },
   "author": "Kayode Ezike <kezike17@mit.edu>",
   "license": "ISC",
