@@ -1,8 +1,8 @@
 const HttpStatus = require('http-status-codes');
 const bodyParser = require('body-parser');
 const { WebClient } = require('@slack/client');
-const { Login } = require("./controllers/login");
-const { verifySignature } = require("./signature");
+const { Login } = require("./app/controllers/login");
+const { verifySignature } = require("./app/signature");
 
 // Slack signing secret and access token environment variables
 const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
@@ -44,7 +44,7 @@ app.post('/', (req, res) => {
 
 app.post('/login', (req, res) => {
     // let payload = req.body.payload;
-    res.status(HttpStatus.OK).json(text: "You have accessed the Solid Slack login dialog service.");
+    res.status(HttpStatus.OK).json({text: "You have accessed the Solid Slack login dialog service."});
 });
 
 app.listen();
