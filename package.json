@@ -1,7 +1,10 @@
 {
   "name": "solid-slack",
-  "version": "1.0.0",
   "description": "Slack integration for managing personal data stored in Solid",
+  "version": "1.0.0",
+  "engines": {
+    "node": "12.16.x"
+  },
   "main": "./app.js",
   "scripts": {
     "build": "webpack --config ./app/webpack.config.js --mode production",
