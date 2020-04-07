@@ -12,7 +12,7 @@ const dialog = {
       "label": "Solid Account",
       "name": "solid_account",
       "subtype": "url",
-      "placeholder": "https://user.solid.community"
+      "placeholder": "https://user.solid.inrupt.com"
     },
     {
       "type": "text",
@@ -35,14 +35,14 @@ const dialog = {
 class Login {
     /**
      * @static
-     * @param {*} req
-     * @param {*} res
-     * @memberof Projects
+     * @param {*} slackClient
+     * @param {*} payload
+     * @memberof Login
      */
     static exec(slackClient, payload) {
         slackClient.dialog.open({
           trigger_id: payload.trigger_id,
-          dialog,
+          dialog
         }).catch((error) => {
            return axios.post(payload.response_url, {
              text: `An error occurred while opening the dialog: ${error.message}`,
