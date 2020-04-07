@@ -7,13 +7,14 @@ const { verifySignature } = require("./app/signature");
 // Slack signing secret and access token environment variables
 const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
 const slackAccessToken = process.env.SLACK_ACCESS_TOKEN;
-if (!slackSigningSecret || !slackAccessToken) {
+/*if (!slackSigningSecret || !slackAccessToken) {
     throw new Error('A Slack signing secret and access token are required to run this app.');
-}
+}*/
 const slackClient = new WebClient(slackAccessToken);
 
 // Main Solid App
 const app = require('express')();
+const PORT = 3000;
 // Parse body like json
 app.use(bodyParser.urlencoded({ extended: false }));
 // Signature verification middleware
@@ -47,4 +48,4 @@ app.post('/login', (req, res) => {
     res.status(HttpStatus.OK).json({text: "You have accessed the Solid Slack login dialog service."});
 });
 
-app.listen();
+app.listen(PORT, () => console.log(`Solid Slack listening at http://localhost:${PORT}`));
