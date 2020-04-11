@@ -1,3 +1,4 @@
+const qs = require('qs');
 const crypto = require('crypto');
 const timingSafeCompare = require('tsscmp');
 const HttpStatus = require('http-status-codes');
@@ -5,45 +6,62 @@ const HttpStatus = require('http-status-codes');
 const verifySignature = (req, res, next) => {
     console.log("Verifying signature...");
 
-    const headerStr = JSON.stringify(req.headers);
-    console.log(`b:\n${headerStr}`);
+    const headerStr = qs.stringify(req.headers, {format : 'RFC1738'});
+    const bodyStr = qs.stringify(req.body, {format : 'RFC1738'});
+    const ts = req.headers['x-slack-request-timestamp'];
+    const sigSlack = req.headers['x-slack-signature'];
+    const sigSecret = process.env.SLACK_SIGNING_SECRET;
+    const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
 
-    const bodyStr = JSON.stringify(req.body);
-    console.log(`b:\n${bodyStr}`);
-
-    const signature = req.headers['x-slack-signature'];
-    const timestamp = req.headers['x-slack-request-timestamp'];
-    if (!signature || !timestamp) {
-      console.log("Invalid Slack Request");
-      return res.status(HttpStatus.UNAUTHORIZED).json({error: "Invalid Slack Request"});
+    // Check if this is a valid Slack request
+    if (!sigSlack || !ts) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({error: 'Slack request invalid'});
     }
-
-    console.log(`s: ${signature}`);
-    console.log(`t: ${timestamp}`);
-
-    const hmac = crypto.createHmac('sha256', process.env.SLACK_SIGNING_SECRET);
-    const [version, hash] = signature.split('=');
-
-    console.log(`v: ${version}`);
-    console.log(`h: ${hash}`);
 
     // Check if the timestamp is too old
-    const fiveMinutesAgo = ~~(Date.now() / 1000) - (60 * 5);
-    if (timestamp < fiveMinutesAgo) {
-      console.log("Slack Request Timed Out");
-      return res.status(HttpStatus.REQUEST_TIMEOUT).json({error: "Slack Request Timed Out"});
+    const fiveMinsAgo = ~~(Date.now() / 1000) - (60 * 5);
+    if (ts < fiveMinsAgo) {
+      return res.status(HttpStatus.REQUEST_TIMEOUT).json({error: 'Slack request timeout'});
     }
+
+    // Check that server owns Slack signing secret
+    if (!sigSecret) {
+      return res.status(HttpStatus.BAD_REQUEST).send('Slack signing secret empty');
+    }
+
+    const sigBaseStr = `v0:${timestamp}:${bodyStr}`;
+    const sigMine = `v0=${crypto.createHmac('sha256', sigSecret)
+                              .update(sigBaseStr, 'utf8')
+                              .digest('hex')}`;
+
+    // Check that the request signature matches expected value
+    if (crypto.timingSafeEqual(
+      Buffer.from(sigMine, 'utf8'),
+      Buffer.from(sigSlack, 'utf8'))) {
+      console.log("Slack client successfully verified");
+      next();
+    } else {
+      return res.status(HttpStatus.BAD_REQUEST).send('Slack signature invalid');
+    }
+
+    /*const hmac = crypto.createHmac('sha256', process.env.SLACK_SIGNING_SECRET);
+    const [version, hash] = sig.split('=');
+
+    console.log(`v: ${version}`);
+    console.log(`ha: ${hash}`);
+
 
     hmac.update(`${version}:${timestamp}:${bodyStr}`);
 
     // Check that the request signature matches expected value
     if (timingSafeCompare(hmac.digest('hexRequest'), hash)) {
-      console.log("Successfully Verified Slack Client");
+      console.log("Slack client successfully verified");
       next();
     }
 
-    console.log("Invalid Slack Signature");
-    return res.status(HttpStatus.UNAUTHORIZED).json({error: "Invalid Slack Signature"});
+
+    console.log("Slack signature invalid");
+    return res.status(HttpStatus.UNAUTHORIZED).json({error: 'Slack signature invalid'});*/
 };
 
 module.exports = { verifySignature };
