@@ -12,8 +12,14 @@ const verifySignature = (req, res, next) => {
       return res.status(HttpStatus.UNAUTHORIZED).json({error: "Invalid Slack Request"});
     }
 
+    console.log(`s: ${signature}`);
+    console.log(`t: ${timestamp}`);
+
     const hmac = crypto.createHmac('sha256', process.env.SLACK_SIGNING_SECRET);
     const [version, hash] = signature.split('=');
+
+    console.log(`v: ${version}`);
+    console.log(`h: ${hash}`);
 
     // Check if the timestamp is too old
     const fiveMinutesAgo = ~~(Date.now() / 1000) - (60 * 5);
@@ -21,6 +27,8 @@ const verifySignature = (req, res, next) => {
       console.log("Slack Request Timed Out");
       return res.status(HttpStatus.REQUEST_TIMEOUT).json({error: "Slack Request Timed Out"});
     }
+
+    console.log(`b:\n${req.rawBody}`);
 
     hmac.update(`${version}:${timestamp}:${req.rawBody}`);
 
