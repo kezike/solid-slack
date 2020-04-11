@@ -5,6 +5,12 @@ const HttpStatus = require('http-status-codes');
 const verifySignature = (req, res, next) => {
     console.log("Verifying signature...");
 
+    const headerStr = JSON.stringify(req.headers);
+    console.log(`b:\n${headerStr}`);
+
+    const bodyStr = JSON.stringify(req.body);
+    console.log(`b:\n${bodyStr}`);
+
     const signature = req.headers['x-slack-signature'];
     const timestamp = req.headers['x-slack-request-timestamp'];
     if (!signature || !timestamp) {
@@ -27,9 +33,6 @@ const verifySignature = (req, res, next) => {
       console.log("Slack Request Timed Out");
       return res.status(HttpStatus.REQUEST_TIMEOUT).json({error: "Slack Request Timed Out"});
     }
-
-    const bodyStr = JSON.stringify(req.body);
-    console.log(`b:\n${bodyStr}`);
 
     hmac.update(`${version}:${timestamp}:${bodyStr}`);
 
