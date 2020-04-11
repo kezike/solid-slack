@@ -32,7 +32,9 @@ app.post('/', (req, res) => {
     // res.status(HttpStatus.OK).json({text: 'ok, got it'});
     switch (subcommand) {
       case "login":
+        console.log("Opening login dialog...");
         Login.exec(slackClient, payload);
+        console.log("Login complete!");
         // res.status(200).send("You are attempting to login to Solid. The login form will be presented momentarily...");
         return;
       case "read":
