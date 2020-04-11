@@ -1,5 +1,6 @@
 const HttpStatus = require('http-status-codes');
 const bodyParser = require('body-parser');
+const express = require('express');
 const { WebClient } = require('@slack/client');
 const { Login } = require("./app/controllers/login");
 const { verifySignature } = require("./app/signature");
@@ -13,9 +14,19 @@ const slackAccessToken = process.env.SLACK_ACCESS_TOKEN;
 const slackClient = new WebClient(slackAccessToken);
 
 // Main Solid App
-const app = require('express')();
+const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use((req, res, next) => {
+  req.rawBody = '';
+  req.setEncoding('utf8');
+  req.on('data', function(chunk) { 
+    req.rawBody += chunk;
+  });
+  req.on('end', function() {
+    next();
+  });
+});
 // Parse body like json
 app.use(bodyParser.urlencoded({ extended: false }));
 // Signature verification middleware
