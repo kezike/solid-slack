@@ -28,9 +28,10 @@ const verifySignature = (req, res, next) => {
       return res.status(HttpStatus.REQUEST_TIMEOUT).json({error: "Slack Request Timed Out"});
     }
 
-    console.log(`b:\n${req.body}`);
+    const bodyStr = JSON.stringify(req.body);
+    console.log(`b:\n${bodyStr}`);
 
-    hmac.update(`${version}:${timestamp}:${req.body}`);
+    hmac.update(`${version}:${timestamp}:${bodyStr}`);
 
     // Check that the request signature matches expected value
     if (timingSafeCompare(hmac.digest('hexRequest'), hash)) {
