@@ -29,7 +29,7 @@ const verifySignature = (req, res, next) => {
       return res.status(HttpStatus.BAD_REQUEST).send('Slack signing secret empty');
     }
 
-    const sigBaseStr = `v0:${timestamp}:${bodyStr}`;
+    const sigBaseStr = `v0:${ts}:${bodyStr}`;
     const sigMine = `v0=${crypto.createHmac('sha256', sigSecret)
                               .update(sigBaseStr, 'utf8')
                               .digest('hex')}`;
@@ -51,7 +51,7 @@ const verifySignature = (req, res, next) => {
     console.log(`ha: ${hash}`);
 
 
-    hmac.update(`${version}:${timestamp}:${bodyStr}`);
+    hmac.update(`${version}:${ts}:${bodyStr}`);
 
     // Check that the request signature matches expected value
     if (timingSafeCompare(hmac.digest('hexRequest'), hash)) {
