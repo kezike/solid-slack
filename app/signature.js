@@ -41,7 +41,7 @@ const verifySignature = (req, res, next) => {
       console.log("Slack client successfully verified");
       next();
     } else {
-      return res.status(HttpStatus.BAD_REQUEST).send('Slack signature invalid');
+      return res.status(HttpStatus.UNAUTHORIZED).send('Slack signature invalid');
     }
 
     /*const hmac = crypto.createHmac('sha256', process.env.SLACK_SIGNING_SECRET);
