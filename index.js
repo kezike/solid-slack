@@ -31,7 +31,7 @@ app.post('/', (req, res) => {
     switch (subcommand) {
       case "login":
         Login.exec(slackClient, payload);
-        res.status(200).send("You are attempting to login to Solid. The login form will be presented momentarily...");
+        // res.status(200).send("You are attempting to login to Solid. The login form will be presented momentarily...");
         return;
       case "read":
         return;
