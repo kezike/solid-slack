@@ -14,11 +14,13 @@ const slackClient = new WebClient(slackAccessToken);
 
 // Main Solid App
 const app = require('express')();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 // Parse body like json
 app.use(bodyParser.urlencoded({ extended: false }));
 // Signature verification middleware
 app.use(verifySignature);
+
 // SolidSlack Entrypoint
 app.post('/', (req, res) => {    
     let payload = req.body;
@@ -48,4 +50,4 @@ app.post('/login', (req, res) => {
     res.status(HttpStatus.OK).json({text: "You have accessed the Solid Slack login dialog service."});
 });
 
-app.listen(PORT, () => console.log(`Solid Slack listening at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));
