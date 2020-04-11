@@ -43,25 +43,6 @@ const verifySignature = (req, res, next) => {
     } else {
       return res.status(HttpStatus.UNAUTHORIZED).send('Slack signature invalid');
     }
-
-    /*const hmac = crypto.createHmac('sha256', process.env.SLACK_SIGNING_SECRET);
-    const [version, hash] = sig.split('=');
-
-    console.log(`v: ${version}`);
-    console.log(`ha: ${hash}`);
-
-
-    hmac.update(`${version}:${ts}:${bodyStr}`);
-
-    // Check that the request signature matches expected value
-    if (timingSafeCompare(hmac.digest('hexRequest'), hash)) {
-      console.log("Slack client successfully verified");
-      next();
-    }
-
-
-    console.log("Slack signature invalid");
-    return res.status(HttpStatus.UNAUTHORIZED).json({error: 'Slack signature invalid'});*/
 };
 
 module.exports = { verifySignature };
