@@ -17,16 +17,6 @@ const slackClient = new WebClient(slackAccessToken);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use((req, res, next) => {
-  req.rawBody = '';
-  req.setEncoding('utf8');
-  req.on('data', function(chunk) { 
-    req.rawBody += chunk;
-  });
-  req.on('end', function() {
-    next();
-  });
-});
 // Parse body like json
 app.use(bodyParser.urlencoded({ extended: false }));
 // Signature verification middleware
