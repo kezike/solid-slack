@@ -49,7 +49,8 @@ app.post('/login', (req, res) => {
     const payload = req.body.payload;
     console.log(`payload:\n${payload}`);
     console.log(`payloadStr:\n${JSON.stringify(payload)}`);
-    res.status(HttpStatus.OK).json({text: 'You have accessed the Solid Slack login dialog service.'});
+    // res.status(HttpStatus.OK).json({text: 'You have accessed the Solid Slack login dialog service.'});
+    res.send();
 });
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));
