@@ -28,7 +28,7 @@ app.post('/', (req, res) => {
     let payload = req.body;
     let commandText = payload.text;
     if (commandText.trim() === '') {
-      res.end('Welcome to Solid Slack! Please include one of the following subcommands in your invocation of '/solid': [login | read | write]');
+      res.end('Welcome to Solid Slack! Please include one of the following subcommands in your invocation of /solid: [login | read | write]');
     }
     const subcommand = commandText.split(' ')[0];
     // res.status(HttpStatus.OK).json({text: 'ok, got it'});

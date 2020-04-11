@@ -4,7 +4,7 @@ const timingSafeCompare = require('tsscmp');
 const HttpStatus = require('http-status-codes');
 
 const verifySignature = (req, res, next) => {
-    console.log("Verifying signature...");
+    console.log('Verifying signature...');
 
     const headerStr = qs.stringify(req.headers, {format : 'RFC1738'});
     const bodyStr = qs.stringify(req.body, {format : 'RFC1738'});
@@ -38,7 +38,7 @@ const verifySignature = (req, res, next) => {
     if (crypto.timingSafeEqual(
       Buffer.from(sigMine, 'utf8'),
       Buffer.from(sigSlack, 'utf8'))) {
-      console.log("Slack client successfully verified");
+      console.log('Slack client successfully verified');
       next();
     } else {
       return res.status(HttpStatus.UNAUTHORIZED).send('Slack signature invalid');
