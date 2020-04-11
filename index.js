@@ -6,11 +6,7 @@ const { Login } = require('./app/controllers/login');
 const { verifySignature } = require('./app/signature');
 
 // Slack signing secret and access token environment variables
-const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
 const slackAccessToken = process.env.SLACK_ACCESS_TOKEN;
-/*if (!slackSigningSecret || !slackAccessToken) {
-    throw new Error('A Slack signing secret and access token are required to run this app.');
-}*/
 const slackClient = new WebClient(slackAccessToken);
 
 // Main Solid App
@@ -50,8 +46,9 @@ app.post('/', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    const payload = req.body;
-    console.log(`payload:\n${JSON.stringify(payload)}`);
+    const payload = req.body.payload;
+    console.log(`payload:\n${payload}`);
+    console.log(`payloadStr:\n${JSON.stringify(payload)}`);
     res.status(HttpStatus.OK).json({text: 'You have accessed the Solid Slack login dialog service.'});
 });
 
