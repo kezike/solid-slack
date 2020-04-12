@@ -48,6 +48,8 @@ app.post('/login', async (req, res) => {
     const payload = req.body.payload;
     const submission = payload.submission;
     const {solid_account, solid_uname, solid_pass} = submission;
+    console.log(`payload: ${payload}`);
+    console.log(`submission: ${submission}`);
     console.log(`solid_account: ${solid_account}`);
     console.log(`solid_uname: ${solid_uname}`);
     console.log(`solid_pass: REDACTED(${solid_pass.length})`);
