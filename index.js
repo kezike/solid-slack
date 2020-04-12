@@ -47,16 +47,16 @@ app.post('/', (req, res) => {
 app.post('/login', async (req, res) => {
     const payload = JSON.parse(req.body.payload);
     const submission = payload.submission;
-    // const {solid_account, solid_uname, solid_pass} = submission;
+    const {solid_account, solid_uname, solid_pass} = submission;
     console.log(`payload: ${payload}`);
     console.log(`Object.keys(payload): ${Object.keys(payload)}`);
     console.log(`submission: ${submission}`);
-    /*console.log(`solid_account: ${solid_account}`);
-    console.log(`solid_uname: ${solid_uname}`);
+    console.log(`solid_account: ${solid_account}`);
+    console.log(`solid_uname: REDACTED(${solid_uname.length})`);
     console.log(`solid_pass: REDACTED(${solid_pass.length})`);
     const session = await solidAuth.login({idp: solid_account, username: solid_uname, password: solid_pass});
     const data = await solidAuth.fetch("https://kezike.solid.community/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
-    res.send(data.text());*/
+    res.send(data.text());
 });
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));
