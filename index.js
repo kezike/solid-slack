@@ -46,7 +46,7 @@ app.post('/', (req, res) => {
 
 app.post('/login', async (req, res) => {
     const payload = req.body.payload;
-    const submission = payload.submission;
+    const submission = payload['submission'];
     // const {solid_account, solid_uname, solid_pass} = submission;
     console.log(`payload: ${payload}`);
     console.log(`submission: ${submission}`);
