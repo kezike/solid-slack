@@ -46,10 +46,11 @@ app.post('/', (req, res) => {
 
 app.post('/login', async (req, res) => {
     const payload = req.body.payload;
-    const {solid_account, solid_uname, solid_pass} = payload;
+    const submission = payload.submission;
+    const {solid_account, solid_uname, solid_pass} = submission;
     console.log(`solid_account: ${solid_account}`);
     console.log(`solid_uname: ${solid_uname}`);
-    console.log(`solid_pass: REDACTED(${len(solid_pass)})`);
+    console.log(`solid_pass: REDACTED(${solid_pass.length})`);
     const session = await solidAuth.login({idp: solid_account, username: solid_uname, password: solid_pass});
     const data = await solidAuth.fetch("https://kezike.solid.community/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
     res.send(data.text());
