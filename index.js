@@ -57,7 +57,7 @@ app.post('/login', async (req, res) => {
     const session = await solidAuth.login({idp: solid_account, username: solid_uname, password: solid_pass});
     const data = await solidAuth.fetch("https://kezike.solid.community/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
     const dataText = await data.text();
-    res.send(dataText);
+    res.end(dataText);
 });
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));
