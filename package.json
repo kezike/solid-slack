@@ -8,14 +8,12 @@
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Kayode Ezike <kezike17@mit.edu>",
+  "author": "Kayode Ezike <kezike13@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "file-system": "^2.2.2",
     "node-uuid": "^1.4.8",
-    "requirejs": "^2.3.5",
-    "solid-app-set": "^1.0.0",
-    "solid-client": "^0.24.3"
+    "requirejs": "^2.3.5"
   },
   "dependencies": {
     "@slack/client": "^5.0.1",
@@ -33,8 +31,7 @@
     "node-forge": "^0.7.5",
     "qs": "^6.9.3",
     "rdflib": "^0.19.1",
-    "solid-auth-cli": "^1.0.7",
-    "solid-auth-client": "^2.2.14",
+    "solid-auth-cli": "^1.0.14",
     "tsscmp": "^1.0.6"
   }
 }
