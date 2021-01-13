@@ -75,7 +75,7 @@ app.post('/login', async (req, res) => {
           text: dataText
         });
       } catch (e) {
-        console.error(e);
+        console.error(JSON.stringify(e, null, 2));
       }
     }
 });
