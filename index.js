@@ -53,6 +53,7 @@ app.post('/login', async (req, res) => {
     const channel = payload.channel;
     const {solid_account, solid_uname, solid_pass} = submission;
     // console.log(`payload: ${JSON.stringify(payload, null, 2)}`);
+    console.log(`channel.id: ${channel.id}`);
     console.log(`Object.keys(payload): ${Object.keys(payload)}`);
     console.log(`submission: ${submission}`);
     console.log(`solid_account: ${solid_account}`);
