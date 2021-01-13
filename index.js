@@ -26,7 +26,6 @@ app.use(verifySignature);
 
 // SolidSlack Entrypoint
 app.post('/', (req, res) => {    
-    console.log('Processing /solid request...');
     let payload = req.body;
     let commandText = payload.text;
     if (commandText.trim() === '') {
@@ -63,10 +62,9 @@ app.post('/login', async (req, res) => {
     if (session) {
       const data = await solidClient.fetch("https://kezike.solidcommunity.net/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
       const dataText = await data.text();
-      console.log(`dataText: ${dataText}`);
       try {
         await axios.post(responseUrl, {
-          text: dataText
+          text: `\`\`\`${dataText}\`\`\``;
         });
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
