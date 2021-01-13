@@ -69,6 +69,8 @@ app.post('/login', async (req, res) => {
       const dataText = await data.text();
       console.log(`dataText: ${dataText}`);
       try {
+        const conversations = await slackClient.conversations.list({token: process.env.SLACK_ACCESS_TOKEN});
+        console.log(`conversations: ${conversations}`);
         await slackClient.chat.postMessage({
           token: process.env.SLACK_ACCESS_TOKEN,
           channel: channel.name,
