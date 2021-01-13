@@ -31,7 +31,7 @@
     "node-forge": "^0.7.5",
     "qs": "^6.9.3",
     "rdflib": "^0.19.1",
-    "solid-auth-cli": "^1.0.14",
+    "solid-node-client": "^1.2.4",
     "tsscmp": "^1.0.6"
   }
 }
