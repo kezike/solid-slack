@@ -51,6 +51,7 @@ app.post('/', (req, res) => {
 app.post('/login', async (req, res) => {
     const payload = JSON.parse(req.body.payload);
     const submission = payload.submission;
+    console.log(`solid dialog submission: ${JSON.stringify(payload.submission, null, 2)}`);
     const {solid_account, solid_uname, solid_pass} = submission;
     console.log(`payload: ${payload}`);
     console.log(`Object.keys(payload): ${Object.keys(payload)}`);
