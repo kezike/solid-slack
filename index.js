@@ -64,7 +64,7 @@ app.post('/login', async (req, res) => {
       const dataText = await data.text();
       try {
         await axios.post(responseUrl, {
-          text: `\`\`\`${dataText}\`\`\``;
+          text: `\`\`\`${dataText}\`\`\``
         });
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
