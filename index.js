@@ -69,6 +69,7 @@ app.post('/login', async (req, res) => {
       const dataText = await data.text();
       console.log(`dataText: ${dataText}`);
       res.end(dataText);
+      res.send();
     }
 });
 
