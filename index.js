@@ -54,12 +54,6 @@ app.post('/login', async (req, res) => {
     const channel = payload.channel;
     const responseUrl = payload.response_url;
     const {solid_account, solid_uname, solid_pass} = submission;
-    // console.log(`payload: ${JSON.stringify(payload, null, 2)}`);
-    console.log(`Object.keys(payload): ${Object.keys(payload)}`);
-    console.log(`submission: ${submission}`);
-    console.log(`solid_account: ${solid_account}`);
-    console.log(`solid_uname: REDACTED(${solid_uname.length})`);
-    console.log(`solid_pass: REDACTED(${solid_pass.length})`);
     const loginOptions = {
       idp: solid_account,
       username: solid_uname,
@@ -74,15 +68,11 @@ app.post('/login', async (req, res) => {
         await axios.post(responseUrl, {
           text: dataText
         });
-        /*await slackClient.chat.postMessage({
-          token: process.env.SLACK_ACCESS_TOKEN,
-          channel: "random",
-          text: dataText
-        });*/
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
       }
     }
+    return res.status(HttpStatus.OK).send();
 });
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));
