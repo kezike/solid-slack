@@ -1,6 +1,7 @@
 const HttpStatus = require('http-status-codes');
 const bodyParser = require('body-parser');
 const express = require('express');
+const axios = require('axios').default;
 // const solidAuth = require('solid-auth-cli');
 const { SolidNodeClient } = require('solid-node-client');
 const { WebClient } = require('@slack/client');
@@ -10,7 +11,7 @@ const { verifySignature } = require('./app/signature');
 // Solid variables
 const solidClient = new SolidNodeClient();
 
-// Slack signing secret and access token environment variables
+// Slack variables
 const slackAccessToken = process.env.SLACK_ACCESS_TOKEN;
 const slackClient = new WebClient(slackAccessToken);
 
@@ -51,6 +52,7 @@ app.post('/login', async (req, res) => {
     const payload = JSON.parse(req.body.payload);
     const submission = payload.submission;
     const channel = payload.channel;
+    const responseUrl = payload.response_url;
     const {solid_account, solid_uname, solid_pass} = submission;
     // console.log(`payload: ${JSON.stringify(payload, null, 2)}`);
     console.log(`Object.keys(payload): ${Object.keys(payload)}`);
@@ -69,13 +71,14 @@ app.post('/login', async (req, res) => {
       const dataText = await data.text();
       console.log(`dataText: ${dataText}`);
       try {
-        const conversations = await slackClient.conversations.list({token: process.env.SLACK_ACCESS_TOKEN});
-        console.log(`conversations: ${JSON.stringify(conversations, null, 2)}`);
-        await slackClient.chat.postMessage({
+        await axios.post(responseUrl, {
+          text: dataText
+        });
+        /*await slackClient.chat.postMessage({
           token: process.env.SLACK_ACCESS_TOKEN,
           channel: "random",
           text: dataText
-        });
+        });*/
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
       }
