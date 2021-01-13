@@ -34,9 +34,8 @@ app.post('/', (req, res) => {
     const subcommand = commandText.split(' ')[0];
     switch (subcommand) {
       case 'login':
-        console.log('Opening login dialog...');
         Login.exec(slackClient, payload);
-        console.log('Login complete!');
+        res.send();
         return;
       case 'read':
         return;
@@ -51,8 +50,9 @@ app.post('/', (req, res) => {
 app.post('/login', async (req, res) => {
     const payload = JSON.parse(req.body.payload);
     const submission = payload.submission;
+    const channel = payload.channel;
     const {solid_account, solid_uname, solid_pass} = submission;
-    console.log(`payload: ${JSON.stringify(payload, null, 2)}`);
+    // console.log(`payload: ${JSON.stringify(payload, null, 2)}`);
     console.log(`Object.keys(payload): ${Object.keys(payload)}`);
     console.log(`submission: ${submission}`);
     console.log(`solid_account: ${solid_account}`);
@@ -68,8 +68,11 @@ app.post('/login', async (req, res) => {
       const data = await solidClient.fetch("https://kezike.solidcommunity.net/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
       const dataText = await data.text();
       console.log(`dataText: ${dataText}`);
-      res.end(dataText);
-      res.send();
+      await slackClient.chat.postMessage({
+        token: process.env.SLACK_ACCESS_TOKEN,
+        channel: channel.id,
+        text: dataText
+      });
     }
 });
 
