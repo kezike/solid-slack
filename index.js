@@ -73,7 +73,7 @@ app.post('/login', async (req, res) => {
         console.log(`conversations: ${JSON.stringify(conversations, null, 2)}`);
         await slackClient.chat.postMessage({
           token: process.env.SLACK_ACCESS_TOKEN,
-          channel: channel.name,
+          channel: "random",
           text: dataText
         });
       } catch (e) {
