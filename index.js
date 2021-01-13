@@ -58,10 +58,18 @@ app.post('/login', async (req, res) => {
     console.log(`solid_account: ${solid_account}`);
     console.log(`solid_uname: REDACTED(${solid_uname.length})`);
     console.log(`solid_pass: REDACTED(${solid_pass.length})`);
-    const session = await solidClient.login({idp: solid_account, username: solid_uname, password: solid_pass});
-    const data = await solidClient.fetch("https://kezike.solidcommunity.net/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
-    const dataText = await data.text();
-    res.end(dataText);
+    const loginOptions = {
+      idp: solid_account,
+      username: solid_uname,
+      password: solid_pass
+    };
+    const session = await solidClient.login(loginOptions);
+    if (session) {
+      const data = await solidClient.fetch("https://kezike.solidcommunity.net/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
+      const dataText = await data.text();
+      console.log(`dataText: ${dataText}`);
+      res.end(dataText);
+    }
 });
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));
