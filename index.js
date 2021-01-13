@@ -68,11 +68,15 @@ app.post('/login', async (req, res) => {
       const data = await solidClient.fetch("https://kezike.solidcommunity.net/inbox/4abfac60-24ca-11e9-8100-c3978cab0676.txt");
       const dataText = await data.text();
       console.log(`dataText: ${dataText}`);
-      await slackClient.chat.postMessage({
-        token: process.env.SLACK_ACCESS_TOKEN,
-        channel: channel.name,
-        text: dataText
-      });
+      try {
+        await slackClient.chat.postMessage({
+          token: process.env.SLACK_ACCESS_TOKEN,
+          channel: channel.name,
+          text: dataText
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
 });
 
