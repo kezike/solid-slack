@@ -22,7 +22,7 @@ app.use(slackVerify);
 // app.use(solidLogin);
 
 // SolidSlack Entrypoint
-app.post('/', (req, res) => {    
+app.post('/', async (req, res) => {    
     let payload = req.body;
     let commandText = payload.text;
     if (commandText.trim() === '') {
@@ -36,7 +36,7 @@ app.post('/', (req, res) => {
       case 'file':
         // res.send();
         const subCommand2 = commands[1];
-        const fileCommandStatus = File.exec(slackClient, commands, req, res);
+        const fileCommandStatus = await File.exec(slackClient, commands, req, res);
         return res.status(fileCommandStatus).send();
       case 'login':
         Login.exec(slackClient, payload);
