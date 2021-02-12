@@ -1,4 +1,5 @@
-const { httpClient, httpStatus } = require('../common/http');
+const { /*httpClient,*/ httpStatus } = require('../common/http');
+const fs = require('fs');
 
 /**
  * @class File
@@ -12,8 +13,8 @@ class File {
      * @param {*} res
      * @memberof File
      */
-    static async exec(slackClient, commands, req, res) {
-      const subCommand1 = commands[1];
+    static async exec(slackClient/*, commands*/, req, res) {
+      /*const subCommand1 = commands[1];
       switch (subCommand1) {
         case 'read':
           const readCommandStatus = await File.readFile(slackClient, commands, req, res);
@@ -23,36 +24,28 @@ class File {
           return writeCommandStatus;
         default:
           return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);
+      }*/
+
+      const { token, trigger_id } = req.body;
+      const viewFile = '../assets/file.json';
+      const view = fs.readFileSync(viewFile, encoding='utf-8');
+      const url = slackClient.slackApiUrl;
+      const client = slackClient.axios;
+      try {
+        await client.post(url, { token, trigger_id, view });
+        return httpStatus.OK;
+      } catch (e) {
+        console.error(JSON.stringify(e, null, 4));
       }
     }
 
-    static async readFile(slackClient, commands, req, res) {
+    /*static async readFile(slackClient, commands, req, res) {
       console.log("Reading file...");
-      console.log("req.body:", JSON.stringify(req.body, null, 2));
-      const responseUrl = req.body.response_url;
-      try {
-        await httpClient.post(responseUrl, {
-          text: `\`\`\`Read file!\`\`\``
-        });
-        return httpStatus.OK;
-      } catch (e) {
-        console.error(JSON.stringify(e, null, 2));
-      }
     }
 
     static async writeFile(slackClient, commands, req, res) {
       console.log("Writing file...");
-      console.log("req.body:", JSON.stringify(req.body, null, 2));
-      const responseUrl = req.body.response_url;
-      try {
-        await httpClient.post(responseUrl, {
-          text: `\`\`\`Wrote file!\`\`\``
-        });
-        return httpStatus.OK;
-      } catch (e) {
-        console.error(JSON.stringify(e, null, 2));
-      }
-    }
+    }*/
 }
 
 module.exports = { File };

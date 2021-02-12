@@ -6,7 +6,7 @@ const express = require('express');
 const { SolidNodeClient } = require('solid-node-client');
 const { Login } = require('./app/controllers/login');
 const { File } = require('./app/controllers/file');
-const { httpClient, httpStatus } = require('./app/common/http');
+const { /*httpClient,*/ httpStatus } = require('./app/common/http');
 const { slackClient, slackVerify } = require('./app/auth/slack');
 const { solidClient, solidLogin } = require('./app/auth/solid');
 
@@ -28,7 +28,6 @@ app.post('/', async (req, res) => {
     if (commandText.trim() === '') {
       res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | read | write]');
     }
-    Login.exec(slackClient, payload);
     res.send();
     const commands = commandText.split(' ');
     const subCommand1 = commands[0];
@@ -36,7 +35,7 @@ app.post('/', async (req, res) => {
       case 'file':
         // res.send();
         const subCommand2 = commands[1];
-        const fileCommandStatus = await File.exec(slackClient, commands, req, res);
+        const fileCommandStatus = await File.exec(slackClient/*, commands*/, req, res);
         return res.status(fileCommandStatus).send();
       case 'login':
         Login.exec(slackClient, payload);
@@ -51,11 +50,16 @@ app.post('/', async (req, res) => {
     }
 });
 
+app.post('/interactive', async (req, res) => {
+  
+});
+
 /*app.post('/login', async (req, res) => {
     const payload = JSON.parse(req.body.payload);
     const submission = payload.submission;
     const channel = payload.channel;
     const responseUrl = payload.response_url;
+    const httpClient = slackClient.axios;
     const { solid_account, solid_uname, solid_pass } = submission;
     const loginOptions = {
       idp: solid_account,
