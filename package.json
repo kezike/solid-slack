@@ -21,6 +21,7 @@
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "file-saver": "^2.0.0",
+    "fs": "0.0.1-security",
     "glob": "^7.1.2",
     "http-status-codes": "^1.4.0",
     "jsonld": "^1.5.0",
