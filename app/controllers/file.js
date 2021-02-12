@@ -1,4 +1,4 @@
-const { httpClient } = require('../common/http');
+const { httpClient, httpStatus } = require('../common/http');
 
 /**
  * @class File
@@ -32,6 +32,7 @@ class File {
         await httpClient.post(responseUrl, {
           text: `\`\`\`Read file!\`\`\``
         });
+        return httpStatus.OK;
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
       }
@@ -45,6 +46,7 @@ class File {
         await httpClient.post(responseUrl, {
           text: `\`\`\`Wrote file!\`\`\``
         });
+        return httpStatus.OK;
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
       }

@@ -1,4 +1,4 @@
-const HttpStatus = require('http-status-codes');
+// const HttpStatus = require('http-status-codes');
 const bodyParser = require('body-parser');
 const express = require('express');
 // const axios = require('axios').default;
@@ -6,7 +6,7 @@ const express = require('express');
 const { SolidNodeClient } = require('solid-node-client');
 const { Login } = require('./app/controllers/login');
 const { File } = require('./app/controllers/file');
-const { httpClient } = require('./app/common/http');
+const { httpClient, httpStatus } = require('./app/common/http');
 const { slackClient, slackVerify } = require('./app/auth/slack');
 const { solidClient, solidLogin } = require('./app/auth/solid');
 
@@ -34,9 +34,10 @@ app.post('/', (req, res) => {
     const subCommand1 = commands[0];
     switch (subCommand1) {
       case 'file':
-        res.send();
+        // res.send();
         const subCommand2 = commands[1];
-        return File.exec(slackClient, commands, req, res);
+        const fileCommandStatus = File.exec(slackClient, commands, req, res);
+        return res.status(fileCommandStatus).send();
       case 'login':
         Login.exec(slackClient, payload);
         res.send();
@@ -73,7 +74,7 @@ app.post('/', (req, res) => {
         console.error(JSON.stringify(e, null, 2));
       }
     }
-    return res.status(HttpStatus.OK).send();
+    return res.status(httpStatus.OK).send();
 });*/
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));

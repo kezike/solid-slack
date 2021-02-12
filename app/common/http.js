@@ -1,3 +1,4 @@
 const httpClient = require('axios').default;
+const httpStatus = require('http-status-codes');
 
-module.exports = { httpClient };
+module.exports = { httpClient, httpStatus };
