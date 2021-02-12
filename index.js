@@ -28,7 +28,7 @@ app.post('/', async (req, res) => {
     if (commandText.trim() === '') {
       res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | read | write]');
     }
-    // res.send();
+    res.send();
     const commands = commandText.split(' ');
     const subCommand1 = commands[0];
     switch (subCommand1) {
@@ -75,7 +75,7 @@ app.post('/interactive', async (req, res) => {
           text: `\`\`\`${dataText}\`\`\``
         });
       } catch (e) {
-        console.error(JSON.stringify(e, null, 2));
+        console.error(JSON.stringify(e, null, 4));
       }
     }
     return res.status(httpStatus.OK).send();

@@ -32,7 +32,7 @@ class File {
         const { trigger_id } = req.body;
         const viewFile = '../assets/file.json';
         const view = fs.readFileSync(viewFile, encoding='utf-8');
-        const url = slackClient.slackApiUrl;
+        const url = `${slackClient.slackApiUrl}views.open`;
         const client = slackClient.axios;
         await client.post(url, { token, trigger_id, view });
         return httpStatus.OK;
