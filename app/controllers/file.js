@@ -18,7 +18,7 @@ class File {
         case 'read':
           return File.readFile(slackClient, commands, req, res);
         case 'write':
-          return File.writeFile(slackClient, commands);
+          return File.writeFile(slackClient, commands, req, res);
         default:
           return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);
       }
