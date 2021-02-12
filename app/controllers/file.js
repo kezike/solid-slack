@@ -1,4 +1,4 @@
-const { client as httpClient } = require('./app/common/http.js');
+const { client as httpClient } = require('./app/common/http');
 const controllers = {};
 
 /**
