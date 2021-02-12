@@ -27,25 +27,27 @@ class File {
     static readFile(slackClient, commands, req, res) {
       console.log("Reading file...");
       console.log("req.body:", JSON.stringify(req.body, null, 2));
-      /*try {
+      const responseUrl = payload.response_url;
+      try {
         await httpClient.post(responseUrl, {
           text: `\`\`\`Read file!\`\`\``
         });
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
-      }*/
+      }
     }
 
     static writeFile(slackClient, commands, req, res) {
       console.log("Writing file...");
       console.log("req.body:", JSON.stringify(req.body, null, 2));
-      /*try {
+      const responseUrl = payload.response_url;
+      try {
         await httpClient.post(responseUrl, {
           text: `\`\`\`Wrote file!\`\`\``
         });
       } catch (e) {
         console.error(JSON.stringify(e, null, 2));
-      }*/
+      }
     }
 }
 
