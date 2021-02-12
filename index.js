@@ -34,6 +34,7 @@ app.post('/', (req, res) => {
     const subCommand1 = commands[0];
     switch (subCommand1) {
       case 'file':
+        res.send();
         const subCommand2 = commands[1];
         return File.exec(slackClient, commands, req, res);
       case 'login':
