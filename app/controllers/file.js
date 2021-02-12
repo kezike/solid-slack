@@ -27,7 +27,7 @@ class File {
     static readFile(slackClient, commands, req, res) {
       console.log("Reading file...");
       console.log("req.body:", JSON.stringify(req.body, null, 2));
-      const responseUrl = payload.response_url;
+      const responseUrl = req.body.response_url;
       try {
         await httpClient.post(responseUrl, {
           text: `\`\`\`Read file!\`\`\``
@@ -40,7 +40,7 @@ class File {
     static writeFile(slackClient, commands, req, res) {
       console.log("Writing file...");
       console.log("req.body:", JSON.stringify(req.body, null, 2));
-      const responseUrl = payload.response_url;
+      const responseUrl = req.body.response_url;
       try {
         await httpClient.post(responseUrl, {
           text: `\`\`\`Wrote file!\`\`\``
