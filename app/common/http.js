@@ -1,3 +1,3 @@
-const client = require('axios').default;
+const httpClient = require('axios').default;
 
-module.exports = { client };
+module.exports = { httpClient };

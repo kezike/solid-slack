@@ -1,5 +1,4 @@
-const { client as httpClient } = require('./app/common/http');
-const controllers = {};
+const { httpClient } = require('./app/common/http');
 
 /**
  * @class File

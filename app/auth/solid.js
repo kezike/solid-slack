@@ -1,8 +1,8 @@
 const HttpStatus = require('http-status-codes');
 const { SolidNodeClient } = require('solid-node-client');
-const client = new SolidNodeClient();
+const solidClient = new SolidNodeClient();
 
-const login = async (req, res, next) => {
+const solidLogin = async (req, res, next) => {
     const payload = JSON.parse(req.body.payload);
     const submission = payload.submission;
     const { solid_account, solid_uname, solid_pass } = submission;
@@ -20,4 +20,4 @@ const login = async (req, res, next) => {
     }
 }
 
-module.exports = { client, login };
+module.exports = { solidClient, solidLogin };
