@@ -24,7 +24,7 @@ class File {
       }
     }
 
-    static readFile(slackClient, commands, req, res) => {
+    static readFile(slackClient, commands, req, res) {
       console.log("Reading file...");
       console.log(`${req}: ${JSON.stringify(req, null, 2)}`);
       /*try {
@@ -36,7 +36,7 @@ class File {
       }*/
     }
 
-    static writeFile(slackClient, commands, req, res) => {
+    static writeFile(slackClient, commands, req, res) {
       console.log("Writing file...");
       console.log(`${req}: ${JSON.stringify(req, null, 2)}`);
       /*try {
