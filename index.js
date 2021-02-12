@@ -53,7 +53,7 @@ app.post('/', async (req, res) => {
 });
 
 app.post('/interactive', async (req, res) => {
-  
+    res.send();
 });
 
 /*app.post('/login', async (req, res) => {
