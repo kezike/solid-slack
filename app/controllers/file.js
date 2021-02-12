@@ -28,12 +28,15 @@ class File {
       }*/
 
       try {
+        console.log("views.open url:", `${slackClient.slackApiUrl}views.open`);
         const token = slackToken;
         const { trigger_id } = req.body;
+        console.log("trigger_id:", trigger_id);
         const viewFile = '../assets/file.json';
+        console.log("before readFileSync");
         const view = fs.readFileSync(viewFile, encoding='utf-8');
+        console.log("after readFileSync");
         const url = `${slackClient.slackApiUrl}views.open`;
-        console.log("views.open url:", url);
         const client = slackClient.axios;
         await client.post(url, { token, trigger_id, view });
         return httpStatus.OK;
