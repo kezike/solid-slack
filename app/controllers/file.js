@@ -32,13 +32,8 @@ class File {
         const url = `${slackClient.slackApiUrl}views.open`;
         const client = slackClient.axios;
         const payload = { token, trigger_id, view };
-        console.log("view:", view);
-        console.log("url:", url);
-        console.log("trigger_id:", trigger_id);
-        console.log("sc token:", slackClient.token);
-        console.log("payload:", payload);
-        console.log("env token:", token);
-        console.log("client.post:", client.post);
+        console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
+        console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
         await client.post(url, payload);
         return httpStatus.OK;
       } catch (e) {
