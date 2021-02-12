@@ -6,7 +6,7 @@ const express = require('express');
 const { SolidNodeClient } = require('solid-node-client');
 const { Login } = require('./app/controllers/login');
 const { File } = require('./app/controllers/file');
-const { client as httpClient } = require('./app/common/http');
+const { httpClient } = require('./app/common/http');
 const { slackClient, slackVerify } = require('./app/auth/slack');
 const { solidClient, solidLogin } = require('./app/auth/solid');
 
