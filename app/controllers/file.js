@@ -1,5 +1,4 @@
 const { /*httpClient,*/ httpStatus } = require('../common/http');
-const { slackToken } = require('../auth/slack');
 const view = require('../assets/file.json');
 
 /**
@@ -28,17 +27,19 @@ class File {
       }*/
 
       try {
-        const token = slackToken;
+        const token = slackClient.token;
         const { trigger_id } = req.body;
         const url = `${slackClient.slackApiUrl}views.open`;
         const client = slackClient.axios;
+        const payload = { token, trigger_id, view };
         console.log("view:", view);
         console.log("url:", url);
         console.log("trigger_id:", trigger_id);
         console.log("sc token:", slackClient.token);
+        console.log("payload:", payload);
         console.log("env token:", token);
-        console.log("client:", client);
-        await client.post(url, { token, trigger_id, view });
+        console.log("client.post:", client.post);
+        await client.post(url, payload);
         return httpStatus.OK;
       } catch (e) {
         console.error(JSON.stringify(e, null, 4));

@@ -48,4 +48,4 @@ const slackVerify = (req, res, next) => {
     }
 };
 
-module.exports = { slackClient, slackVerify, slackToken };
+module.exports = { slackClient, slackVerify };
