@@ -1,4 +1,5 @@
 const { /*httpClient,*/ httpStatus } = require('../common/http');
+const { slackToken } = require('../auth/slack');
 const fs = require('fs');
 
 /**
@@ -27,7 +28,8 @@ class File {
       }*/
 
       try {
-        const { token, trigger_id } = req.body;
+        const token = slackToken;
+        const { trigger_id } = req.body;
         const viewFile = '../assets/file.json';
         const view = fs.readFileSync(viewFile, encoding='utf-8');
         const url = slackClient.slackApiUrl;
@@ -36,6 +38,7 @@ class File {
         return httpStatus.OK;
       } catch (e) {
         console.error(JSON.stringify(e, null, 4));
+        return httpStatus.BAD_REQUEST;
       }
     }
 
