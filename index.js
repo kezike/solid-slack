@@ -35,7 +35,7 @@ app.post('/', async (req, res) => {
       case 'file':
         // res.send();
         const subCommand2 = commands[1];
-        const fileCommandStatus = await File.exec(slackClient/*, commands*/, req, res);
+        const fileCommandStatus = await File.exec(slackClient/*, commands*/, req/*, res*/);
         return res.status(fileCommandStatus).send();
       case 'login':
         Login.exec(slackClient, payload);
