@@ -1,5 +1,5 @@
 const { /*httpClient,*/ httpStatus } = require('../common/http');
-const view = require('../assets/file.json');
+const view = JSON.stringify(require('../assets/file.json'), null, 4);
 
 /**
  * @class File
@@ -32,8 +32,8 @@ class File {
         const url = `${slackClient.slackApiUrl}views.open`;
         const client = slackClient.axios;
         const payload = { token, trigger_id, view };
-        console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
-        console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
+        // console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
+        // console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
         await client.post(url, payload);
         return httpStatus.OK;
       } catch (e) {
