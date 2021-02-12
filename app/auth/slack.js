@@ -2,8 +2,11 @@ const qs = require('qs');
 const crypto = require('crypto');
 const timingSafeCompare = require('tsscmp');
 const HttpStatus = require('http-status-codes');
+const { WebClient } = require('@slack/client');
+const slackAccessToken = process.env.SLACK_ACCESS_TOKEN;
+const client = new WebClient(slackAccessToken);
 
-const verifySignature = (req, res, next) => {
+const verify = (req, res, next) => {
     console.log('Verifying signature...');
 
     const headerStr = qs.stringify(req.headers, {format : 'RFC1738'});
@@ -45,4 +48,4 @@ const verifySignature = (req, res, next) => {
     }
 };
 
-module.exports = { verifySignature };
+module.exports = { client, verify };
