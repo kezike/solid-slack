@@ -1,4 +1,4 @@
-const { httpClient } = require('./app/common/http');
+const { httpClient } = require('../common/http');
 
 /**
  * @class File
