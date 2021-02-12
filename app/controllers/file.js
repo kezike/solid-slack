@@ -33,6 +33,7 @@ class File {
         const viewFile = '../assets/file.json';
         const view = fs.readFileSync(viewFile, encoding='utf-8');
         const url = `${slackClient.slackApiUrl}views.open`;
+        console.log("views.open url:", url);
         const client = slackClient.axios;
         await client.post(url, { token, trigger_id, view });
         return httpStatus.OK;
