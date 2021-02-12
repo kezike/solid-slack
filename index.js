@@ -31,10 +31,12 @@ app.post('/', async (req, res) => {
     res.send();
     const commands = commandText.split(' ');
     const subCommand1 = commands[0];
+    console.log("commands:", commands);
+    console.log("subCommand1:", subCommand1);
     switch (subCommand1) {
       case 'file':
         // res.send();
-        const subCommand2 = commands[1];
+        // const subCommand2 = commands[1];
         const fileCommandStatus = await File.exec(slackClient/*, commands*/, req/*, res*/);
         return res.status(fileCommandStatus).send();
       case 'login':
