@@ -28,8 +28,6 @@ app.post('/', async (req, res) => {
     res.send();
     const commands = commandText.split(' ');
     const subCommand1 = commands[0];
-    console.log("commands:", commands);
-    console.log("subCommand1:", subCommand1);
     switch (subCommand1) {
       case 'file':
         // res.send();
