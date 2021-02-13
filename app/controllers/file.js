@@ -1,4 +1,4 @@
-const { /*httpClient,*/ httpStatus } = require('../common/http');
+const { httpClient, httpStatus } = require('../common/http');
 const view = JSON.stringify(require('../assets/file.json'), null, 4);
 
 /**
@@ -34,7 +34,8 @@ class File {
         const payload = { token, trigger_id, view };
         // console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
         // console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
-        await client.post(/*url*/'/views.open', payload);
+        // await client.post(/*url*/'/views.open', payload);
+        await httpClient.post(url, payload);
         return httpStatus.OK;
       } catch (e) {
         console.error(JSON.stringify(e, null, 4));
