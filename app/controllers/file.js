@@ -39,8 +39,9 @@ class File {
         // console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
         // console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
         console.log("URL:", url);
-        await client.post(/*url*/'views.open', payload, headers);
         // await httpClient.post(url, payload);
+        const res = await client.post(/*url*/'views.open', payload, headers);
+        console.log("res.data:", JSON.stringify(res.data, null, 4));
         return httpStatus.OK;
       } catch (e) {
         console.error(JSON.stringify(e, null, 4));
