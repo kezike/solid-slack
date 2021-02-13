@@ -46,19 +46,19 @@ class File {
         }
     }
 
-    static async createFile(slackClient/*, commands,*/ req/*, res*/) {
+    static async createFile(slackClient/*, commands*/, req/*, res*/) {
         console.log("Creating file...");
     }
 
-    static async reviewFile(slackClient/*, commands,*/ req/*, res*/) {
+    static async reviewFile(slackClient/*, commands*/, req/*, res*/) {
         console.log("Reviewing file...");
     }
 
-    static async editFile(slackClient/*, commands,*/ req/*, res*/) {
+    static async editFile(slackClient/*, commands*/, req/*, res*/) {
         console.log("Editing file...");
     }
 
-    static async deleteFile(slackClient/*, commands,*/ req/*, res*/) {
+    static async deleteFile(slackClient/*, commands*/, req/*, res*/) {
         console.log("Deleting file...");
     }
 }
