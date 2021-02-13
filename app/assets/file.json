@@ -1,4 +1,10 @@
 {
+    "type": "modal",
+    "callback_id": "file-manager",
+    "title": {
+        "type": "plain_text",
+        "text": "Solid File Manager"
+    },
     "blocks": [
         {
             "type": "section",
