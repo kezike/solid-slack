@@ -1,8 +1,5 @@
-// const HttpStatus = require('http-status-codes');
 const bodyParser = require('body-parser');
 const express = require('express');
-// const axios = require('axios').default;
-// const solidAuth = require('solid-auth-cli');
 const { SolidNodeClient } = require('solid-node-client');
 const { Login } = require('./app/controllers/login');
 const { File } = require('./app/controllers/file');
@@ -26,7 +23,7 @@ app.post('/', async (req, res) => {
     let payload = req.body;
     let commandText = payload.text;
     if (commandText.trim() === '') {
-      res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | read | write]');
+      res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | file | dir]');
     }
     res.send();
     const commands = commandText.split(' ');
@@ -43,9 +40,7 @@ app.post('/', async (req, res) => {
         Login.exec(slackClient, payload);
         res.send();
         return;
-      case 'read':
-        return;
-      case 'write':
+      case 'help':
         return;
       default:
         return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);

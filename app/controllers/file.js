@@ -1,5 +1,5 @@
-const { /*httpClient, */httpStatus } = require('../common/http');
-const view = JSON.stringify(require('../assets/file.json'), null, 4);
+const { httpStatus } = require('../common/http');
+const viewFile = require('../assets/file.json');
 
 /**
  * @class File
@@ -14,48 +14,53 @@ class File {
      * @memberof File
      */
     static async exec(slackClient/*, commands*/, req/*, res*/) {
-      /*const subCommand1 = commands[1];
-      switch (subCommand1) {
-        case 'read':
-          const readCommandStatus = await File.readFile(slackClient, commands, req, res);
-          return readCommandStatus;
-        case 'write':
-          const writeCommandStatus = await File.writeFile(slackClient, commands, req, res);
-          return writeCommandStatus;
-        default:
-          return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);
-      }*/
+        /*const subCommand1 = commands[1];
+        switch (subCommand1) {
+          case 'create':
+            const createCommandStatus = await File.createFile(slackClient, req);
+            return createCommandStatus;
+          case 'review':
+            const reviewCommandStatus = await File.reviewFile(slackClient, req);
+            return reviewCommandStatus;
+          case 'edit':
+            const editCommandStatus = await File.editFile(slackClient, req);
+            return editCommandStatus;
+          case 'delete':
+            const deleteCommandStatus = await File.deleteFile(slackClient, req);
+            return deleteCommandStatus;
+          default:
+            return httpStatus.BAD_REQUEST;
+        }*/
 
-      try {
-        const token = slackClient.token;
-        const { trigger_id } = req.body;
-        const url = `${slackClient.slackApiUrl}views.open`;
-        const client = slackClient.axios;
-        const payload = { token, trigger_id, view };
-        const headers = {
-          'Content-Type': 'application/json'
-          // 'Authorization': `Bearer ${token}`
-        };
-        // console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
-        // console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
-        console.log("URL:", url);
-        // await httpClient.post(url, payload);
-        const res = await client.post(/*url*/'views.open', payload/*, headers*/);
-        console.log("res.data:", JSON.stringify(res.data, null, 4));
-        return httpStatus.OK;
-      } catch (e) {
-        console.error(JSON.stringify(e, null, 4));
-        return httpStatus.BAD_REQUEST;
-      }
+        try {
+          const { trigger_id } = req.body;
+          const token = slackClient.token;
+          const view = JSON.stringify(viewFile, null, 4);
+          const client = slackClient.axios;
+          const payload = { token, trigger_id, view };
+          const res = await client.post('views.open', payload);
+          return httpStatus.OK;
+        } catch (e) {
+          console.error(JSON.stringify(e, null, 4));
+          return httpStatus.BAD_REQUEST;
+        }
     }
 
-    /*static async readFile(slackClient, commands, req, res) {
-      console.log("Reading file...");
+    static async createFile(slackClient/*, commands,*/ req/*, res*/) {
+        console.log("Creating file...");
     }
 
-    static async writeFile(slackClient, commands, req, res) {
-      console.log("Writing file...");
-    }*/
+    static async reviewFile(slackClient/*, commands,*/ req/*, res*/) {
+        console.log("Reviewing file...");
+    }
+
+    static async editFile(slackClient/*, commands,*/ req/*, res*/) {
+        console.log("Editing file...");
+    }
+
+    static async deleteFile(slackClient/*, commands,*/ req/*, res*/) {
+        console.log("Deleting file...");
+    }
 }
 
 module.exports = { File };
