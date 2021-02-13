@@ -31,10 +31,10 @@ class File {
         const { trigger_id } = req.body;
         const url = `${slackClient.slackApiUrl}views.open`;
         const client = slackClient.axios;
-        const payload = { /*token, */trigger_id, view };
+        const payload = { token, trigger_id, view };
         const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
+          // 'Authorization': `Bearer ${token}`
         };
         // console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
         // console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
