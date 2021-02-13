@@ -38,7 +38,8 @@ class File {
         };
         // console.log("view.blocks[2].accessory:", JSON.stringify(view.blocks[2].accessory, null, 4));
         // console.log("view.blocks[3].elements:", JSON.stringify(view.blocks[3].elements, null, 4));
-        await client.post(/*url*/'/views.open', payload, headers);
+        console.log("URL:", url);
+        await client.post(url/*'views.open'*/, payload, headers);
         // await httpClient.post(url, payload);
         return httpStatus.OK;
       } catch (e) {
