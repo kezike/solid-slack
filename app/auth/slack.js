@@ -9,12 +9,12 @@ const slackClient = new WebClient(slackToken);
 const slackVerify = (req, res, next) => {
     console.log('Verifying signature...');
 
+    // Define important variables
     const headerStr = qs.stringify(req.headers, {format : 'RFC1738'});
     const bodyStr = qs.stringify(req.body, {format : 'RFC1738'});
     const ts = req.headers['x-slack-request-timestamp'];
     const sigSlack = req.headers['x-slack-signature'];
     const sigSecret = process.env.SLACK_SIGNING_SECRET;
-    const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
 
     // Check if this is a valid Slack request
     if (!sigSlack || !ts) {

@@ -20,6 +20,9 @@ app.use(slackVerify);
 
 // SolidSlack Entrypoint
 app.post('/', async (req, res) => {    
+    console.log("app slack token:", req.body);
+    console.log("env slack token:", process.env.SLACK_ACCESS_TOKEN);
+
     let payload = req.body;
     let commandText = payload.text;
     if (commandText.trim() === '') {
