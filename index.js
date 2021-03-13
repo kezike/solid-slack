@@ -46,14 +46,20 @@ app.post('/', async (req, res) => {
 });
 
 app.post('/interactive', async (req, res) => {
+  console.log("just hit interactive endpoint...");
   res.send();
   const payload = JSON.parse(req.body.payload);
   console.log("interactive req.body:", req.body);
   console.log("interactive payload:", payload);
   const submission = payload.submission;
-  const channel = payload.channel;
+  const callbackId = payload.callback_id
   const responseUrl = payload.response_url;
-  const httpClient = slackClient.axios;
+  /*switch (callbackId) {
+    case 'login-request':
+      ;
+    default:
+      ;
+  }*/
   const { solid_account, solid_uname, solid_pass } = submission;
   const loginOptions = {
     idp: solid_account,
@@ -65,7 +71,7 @@ app.post('/interactive', async (req, res) => {
   if (session) {
     slackIdToSolidClient[slackUserId] = solidClient;
     try {
-      await httpClient.post(responseUrl, {
+      await slackClient.axios.post(responseUrl, {
         text: "```Congratulations: you have successfully logged into Solid!```"
       });
     } catch (e) {
@@ -79,9 +85,7 @@ app.post('/interactive', async (req, res) => {
 /*app.post('/login', async (req, res) => {
   const payload = JSON.parse(req.body.payload);
   const submission = payload.submission;
-  const channel = payload.channel;
   const responseUrl = payload.response_url;
-  const httpClient = slackClient.axios;
   const { solid_account, solid_uname, solid_pass } = submission;
   const loginOptions = {
     idp: solid_account,
@@ -93,7 +97,7 @@ app.post('/interactive', async (req, res) => {
     solidClient = new SolidNodeClient();
     slackIdToSolidClient[slackUserId] = solidClient;
     try {
-      await httpClient.post(responseUrl, {
+      await slackClient.axios.post(responseUrl, {
         text: `\`\`\`${dataText}\`\`\``
       });
     } catch (e) {
