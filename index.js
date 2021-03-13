@@ -5,7 +5,7 @@ const { Login } = require('./app/controllers/login');
 const { File } = require('./app/controllers/file');
 const { /*httpClient,*/ httpStatus } = require('./app/common/http');
 const { slackClient, slackVerify } = require('./app/auth/slack');
-const { solidClient, solidLogin } = require('./app/auth/solid');
+const { /*solidClient,*/ solidLogin } = require('./app/auth/solid');
 
 // Main Solid App
 const app = express();
@@ -16,13 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Slack verification middleware
 app.use(slackVerify);
 // Solid login middleware
-// app.use(solidLogin);
+app.use(solidLogin);
 
 // SolidSlack Entrypoint
 app.post('/', async (req, res) => {    
-    console.log("app slack token:", JSON.stringify(req.body, null, 2));
-    console.log("env slack token:", process.env.SLACK_ACCESS_TOKEN);
-
     let payload = req.body;
     let commandText = payload.text;
     if (commandText.trim() === '') {

@@ -14,14 +14,11 @@ const loginOptions = {
 };
 
 const main = async () => {
-    console.log("loggedIn before:", solidNodeClient.session.loggedIn);
     const session = await solidNodeClient.login(loginOptions);
     if (session) {
-        console.log("loggedIn after:", solidNodeClient.session.loggedIn);
-        // console.log("Your Solid Session:\n", session);
         const response = await solidNodeClient.fetch('http://example.com'); // TODO: REPLACE WITH VALID FILE URL
         const text = await response.text();
-        // console.log("Your requested file:\n", text);
+        console.log("Your requested file:\n", text);
         solidNodeClient.logout();
     }
 }
