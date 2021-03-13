@@ -1,6 +1,6 @@
 {
     "type": "modal",
-    "callback_id": "file-manager",
+    "callback_id": "file-manager-home",
     "title": {
         "type": "plain_text",
         "text": "Solid File Manager"

@@ -4,7 +4,7 @@ const viewFile = require('../assets/login-manager');
 
 /*// Login Dialog
 const dialog = {
-  "callback_id": "solid-login",
+  "callback_id": "login-manager",
   "title": "Login to Solid",
   "submit_label": "Login",
   "notify_on_cancel": true,
@@ -48,8 +48,11 @@ class LoginManager {
       const { trigger_id } = reqBody;
       const token = slackClient.token;
       const view = JSON.stringify(viewFile, null, 4);
-      const resBody = { token, trigger_id, view };
-      const res = await slackClient.axios.post('views.open', resBody);
+      const viewPayload = { token, trigger_id, view };
+      console.log("opening modal...");
+      const meep = await slackClient.axios.post('views.open', viewPayload);
+      console.log("opened modal!");
+      console.log("view.open response:", meep);
       return httpStatus.OK;
     } catch (e) {
       console.error(JSON.stringify(e, null, 4));

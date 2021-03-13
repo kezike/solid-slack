@@ -36,8 +36,8 @@ class FileManager {
       const { trigger_id } = reqBody;
       const token = slackClient.token;
       const view = JSON.stringify(managerHomeViewFile, null, 4);
-      const resBody = { token, trigger_id, view };
-      const res = await slackClient.axios.post('views.open', resBody);
+      const viewPayload = { token, trigger_id, view };
+      await slackClient.axios.post('views.open', viewPayload);
       return httpStatus.OK;
     } catch (e) {
       console.error(JSON.stringify(e, null, 4));

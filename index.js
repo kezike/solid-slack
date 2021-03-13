@@ -56,7 +56,7 @@ app.post('/interactive', async (req, res) => {
   const callbackId = payload.callback_id
   const responseUrl = payload.response_url;
   /*switch (callbackId) {
-    case 'solid-login':
+    case 'login-manager':
       ;
     default:
       ;

@@ -1,6 +1,6 @@
 {
     "type": "modal",
-    "callback_id": "solid-login",
+    "callback_id": "login-manager",
     "submit_label": "Login",
     "notify_on_cancel": true,
     "title": {
