@@ -52,7 +52,7 @@ app.post('/interactive', async (req, res) => {
   const payload = JSON.parse(req.body.payload);
   console.log("interactive req.body:", req.body);
   console.log("interactive payload:", payload);
-  const blocks = payload.blocks;
+  const blocks = payload.view.blocks;
   console.log("BLOCK 1:", JSON.stringify(blocks[0], null, 4));
   console.log("BLOCK 2:", JSON.stringify(blocks[1], null, 4));
   console.log("BLOCK 3:", JSON.stringify(blocks[2], null, 4));
