@@ -1,5 +1,5 @@
 const HttpStatus = require('http-status-codes');
-const { Login } = require('../controllers/login');
+const { LoginManager } = require('../controllers/login-manager');
 const { SolidNodeClient } = require('solid-node-client');
 // const solidClient = new SolidNodeClient();
 const { slackIdToSolidClient } = require('./common');
@@ -11,7 +11,9 @@ const solidLogin = async (req, res, next) => {
   let solidClient = slackIdToSolidClient[slackUserId];
   if (!solidClient || !solidClient.session.loggedIn) {
     console.log('Unauthenticated: logging in new user');
-    return Login.exec(slackClient, req.slack);
+    const loginCommandStatus = await LoginManager.exec(slackClient/*, commands*/, req.slack/*, res*/);
+    return res.status(loginCommandStatus).send();
+    // return LoginManager.exec(slackClient, req.slack);
   }
   console.log('Authenticated: proceeding to desired action');
   return next();

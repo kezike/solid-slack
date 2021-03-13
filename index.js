@@ -1,8 +1,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const { SolidNodeClient } = require('solid-node-client');
-const { Login } = require('./app/controllers/login');
-const { File } = require('./app/controllers/file');
+const { LoginManager } = require('./app/controllers/login-manager');
+const { FileManager } = require('./app/controllers/file-manager');
 const { /*httpClient,*/ httpStatus } = require('./app/common/http');
 const { slackClient, slackVerify } = require('./app/auth/slack');
 const { /*solidClient,*/ solidLogin } = require('./app/auth/solid');
@@ -33,10 +33,10 @@ app.post('/', async (req, res) => {
     case 'file':
       // res.send();
       // const subCommand2 = commands[1];
-      const fileCommandStatus = await File.exec(slackClient/*, commands*/, req/*, res*/);
+      const fileCommandStatus = await FileManager.exec(slackClient/*, commands*/, req.body/*, res*/);
       return res.status(fileCommandStatus).send();
     case 'login':
-      Login.exec(slackClient, payload);
+      LoginManager.exec(slackClient, payload);
       res.send();
       return;
     case 'help':
@@ -56,7 +56,7 @@ app.post('/interactive', async (req, res) => {
   const callbackId = payload.callback_id
   const responseUrl = payload.response_url;
   /*switch (callbackId) {
-    case 'login-request':
+    case 'solid-login':
       ;
     default:
       ;

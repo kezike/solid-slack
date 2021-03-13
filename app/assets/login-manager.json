@@ -1,0 +1,50 @@
+{
+    "type": "modal",
+    "callback_id": "solid-login",
+    "submit_label": "Login",
+    "notify_on_cancel": true,
+    "title": {
+        "type": "plain_text",
+        "text": "Solid Login"
+    },
+    "blocks": [
+        {
+          "type": "input",
+          "label": {
+            "type": "plain_text",
+            "text": "Account"
+          },
+          "element": {
+            "type": "plain_text_input",
+            "subtype": "url",
+            "action_id": "solid_account",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "e.g., https://solidcommunity.net"
+            }
+          }
+        },
+        {
+          "type": "input",
+          "label": {
+            "type": "plain_text",
+            "text": "Username"
+          },
+          "element": {
+            "type": "plain_text_input",
+            "action_id": "solid_uname"
+          }
+        },
+        {
+          "type": "input",
+          "label": {
+            "type": "plain_text",
+            "text": "Password"
+          },
+          "element": {
+            "type": "plain_text_input",
+            "action_id": "solid_pass"
+          }
+        }
+    ]
+}

@@ -1,19 +1,19 @@
 const { httpStatus } = require('../common/http');
-const viewFile = require('../assets/file.json');
+const managerHomeViewFile = require('../assets/file-manager-home');
 
 /**
- * @class File
+ * @class FileManager
  */
-class File {
+class FileManager {
   /**
    * @static
    * @param {*} slackClient
    * @param {*} commands (e.g., [file, read, filename])
-   * @param {*} req
+   * @param {*} reqBody
    * @param {*} res
-   * @memberof File
+   * @memberof FileManager
    */
-  static async exec(slackClient/*, commands*/, req/*, res*/) {
+  static async exec(slackClient/*, commands*/, reqBody/*, res*/) {
     /*const subCommand1 = commands[1];
     switch (subCommand1) {
       case 'create':
@@ -33,12 +33,11 @@ class File {
     }*/
 
     try {
-      const { trigger_id } = req.body;
+      const { trigger_id } = reqBody;
       const token = slackClient.token;
-      const view = JSON.stringify(viewFile, null, 4);
-      const client = slackClient.axios;
-      const payload = { token, trigger_id, view };
-      const res = await client.post('views.open', payload);
+      const view = JSON.stringify(managerHomeViewFile, null, 4);
+      const resBody = { token, trigger_id, view };
+      const res = await slackClient.axios.post('views.open', resBody);
       return httpStatus.OK;
     } catch (e) {
       console.error(JSON.stringify(e, null, 4));
@@ -63,4 +62,4 @@ class File {
   }
 }
 
-module.exports = { File };
+module.exports = { FileManager };
