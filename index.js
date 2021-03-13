@@ -4,6 +4,7 @@ const { SolidNodeClient } = require('solid-node-client');
 const { LoginManager } = require('./app/controllers/login-manager');
 const { FileManager } = require('./app/controllers/file-manager');
 const { /*httpClient,*/ httpStatus } = require('./app/util/http');
+const { slackIdToSolidClient } = require('./app/auth/common');
 const { slackClient, slackVerify } = require('./app/auth/slack');
 const { /*solidClient,*/ solidLogin } = require('./app/auth/solid');
 const { getInputValueFromSubmission } = require('./app/util/names');
