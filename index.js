@@ -64,6 +64,13 @@ app.post('/interactive', async (req, res) => {
   const session = await solidClient.login(loginOptions);
   if (session) {
     slackIdToSolidClient[slackUserId] = solidClient;
+    try {
+      await httpClient.post(responseUrl, {
+        text: `\`\`\`${You have successfully logged into Solid!}\`\`\``
+      });
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 4));
+    }
     return res.status(httpStatus.OK).send();
   }
   return res.status(HttpStatus.UNAUTHORIZED).send('Solid login failed');
