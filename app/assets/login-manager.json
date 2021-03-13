@@ -1,7 +1,6 @@
 {
     "type": "modal",
     "callback_id": "login-manager",
-    "submit_label": "Login",
     "notify_on_cancel": true,
     "title": {
         "type": "plain_text",
