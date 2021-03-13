@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 // Slack verification middleware
 app.use(slackVerify);
 // Solid login middleware
-app.use(solidLogin);
+// app.use(solidLogin);
 
 // SolidSlack Entrypoint
 app.post('/', async (req, res) => {    
