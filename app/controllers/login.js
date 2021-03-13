@@ -33,22 +33,22 @@ const dialog = {
  * @class Login
  */
 class Login {
-    /**
-     * @static
-     * @param {*} slackClient
-     * @param {*} payload
-     * @memberof Login
-     */
-    static exec(slackClient, payload) {
-        slackClient.dialog.open({
-          trigger_id: payload.trigger_id,
-          dialog
-        }).catch((error) => {
-           return axios.post(payload.response_url, {
-             text: `An error occurred while opening the dialog: ${error.message}`,
-           });
-        }).catch(console.error);
-    }
+  /**
+   * @static
+   * @param {*} slackClient
+   * @param {*} payload
+   * @memberof Login
+   */
+  static exec(slackClient, payload) {
+    slackClient.dialog.open({
+      trigger_id: payload.trigger_id,
+      dialog
+    }).catch((error) => {
+       return axios.post(payload.response_url, {
+         text: `An error occurred while opening the dialog: ${error.message}`,
+       });
+    }).catch(console.error);
+  }
 }
 
 module.exports = { Login };
