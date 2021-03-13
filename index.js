@@ -46,7 +46,7 @@ app.post('/', async (req, res) => {
 });
 
 app.post('/interactive', async (req, res) => {
-  // res.send();
+  res.send();
   const payload = JSON.parse(req.body.payload);
   console.log("interactive req.body:", req.body);
   console.log("interactive payload:", payload);
@@ -60,9 +60,9 @@ app.post('/interactive', async (req, res) => {
     username: solid_uname,
     password: solid_pass,
   };
+  const solidClient = new SolidNodeClient();
   const session = await solidClient.login(loginOptions);
   if (session) {
-    solidClient = new SolidNodeClient();
     slackIdToSolidClient[slackUserId] = solidClient;
     return res.status(httpStatus.OK).send();
   }
