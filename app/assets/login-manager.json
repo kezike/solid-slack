@@ -16,7 +16,6 @@
           },
           "element": {
             "type": "plain_text_input",
-            "subtype": "url",
             "action_id": "solid_account",
             "placeholder": {
               "type": "plain_text",
