@@ -53,7 +53,9 @@ app.post('/interactive', async (req, res) => {
   console.log("interactive req.body:", req.body);
   console.log("interactive payload:", payload);
   const blocks = payload.blocks;
-  console.log("BLOCKS:", JSON.stringify(blocks, null, 4));
+  console.log("BLOCK 1:", JSON.stringify(blocks[0], null, 4));
+  console.log("BLOCK 2:", JSON.stringify(blocks[1], null, 4));
+  console.log("BLOCK 3:", JSON.stringify(blocks[2], null, 4));
   const submission = payload.submission;
   const callbackId = payload.callback_id
   const responseUrl = payload.response_url;
