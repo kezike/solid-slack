@@ -1,4 +1,4 @@
-const { httpStatus } = require('../common/http');
+const { httpStatus } = require('../util/http');
 const viewFile = require('../assets/login-manager');
 // const axios = require('axios');
 

@@ -1,7 +1,7 @@
 const qs = require('qs');
 const crypto = require('crypto');
 const timingSafeCompare = require('tsscmp');
-const HttpStatus = require('http-status-codes');
+const { /*httpClient,*/ httpStatus } = require('../util/http');
 const { WebClient } = require('@slack/client');
 const slackToken = process.env.SLACK_ACCESS_TOKEN;
 const slackClient = new WebClient(slackToken);
@@ -18,18 +18,18 @@ const slackVerify = (req, res, next) => {
 
   // Check if this is a valid Slack request
   if (!sigSlack || !ts) {
-    return res.status(HttpStatus.UNAUTHORIZED).json({error: 'Slack request invalid'});
+    return res.status(httpStatus.UNAUTHORIZED).json({error: 'Slack request invalid'});
   }
 
   // Check if the timestamp is too old
   const fiveMinsAgo = ~~(Date.now() / 1000) - (60 * 5);
   if (ts < fiveMinsAgo) {
-    return res.status(HttpStatus.REQUEST_TIMEOUT).json({error: 'Slack request timeout'});
+    return res.status(httpStatus.REQUEST_TIMEOUT).json({error: 'Slack request timeout'});
   }
 
   // Check that server owns Slack signing secret
   if (!sigSecret) {
-    return res.status(HttpStatus.BAD_REQUEST).send('Slack signing secret empty');
+    return res.status(httpStatus.BAD_REQUEST).send('Slack signing secret empty');
   }
 
   const sigBaseStr = `v0:${ts}:${bodyStr}`;
@@ -45,7 +45,7 @@ const slackVerify = (req, res, next) => {
     req.slack = req.body;
     return next();
   } else {
-    return res.status(HttpStatus.UNAUTHORIZED).send('Slack signature invalid');
+    return res.status(httpStatus.UNAUTHORIZED).send('Slack signature invalid');
   }
 };
 

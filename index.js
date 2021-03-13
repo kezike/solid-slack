@@ -3,9 +3,10 @@ const express = require('express');
 const { SolidNodeClient } = require('solid-node-client');
 const { LoginManager } = require('./app/controllers/login-manager');
 const { FileManager } = require('./app/controllers/file-manager');
-const { /*httpClient,*/ httpStatus } = require('./app/common/http');
+const { /*httpClient,*/ httpStatus } = require('./app/util/http');
 const { slackClient, slackVerify } = require('./app/auth/slack');
 const { /*solidClient,*/ solidLogin } = require('./app/auth/solid');
+const { getInputValueFromSubmission } = require('./app/util/names');
 
 // Main Solid App
 const app = express();
@@ -47,27 +48,21 @@ app.post('/', async (req, res) => {
 });
 
 app.post('/interactive', async (req, res) => {
-  console.log("just hit interactive endpoint...");
   res.send();
-  const payload = JSON.parse(req.body.payload);
+  const submission = JSON.parse(req.body.payload);
   console.log("interactive req.body:", req.body);
-  console.log("interactive payload:", payload);
-  const blocks = payload.view.blocks;
-  const values = payload.view.state.values;
-  console.log("BLOCK 1:", JSON.stringify(blocks[0], null, 4));
-  console.log("BLOCK 2:", JSON.stringify(blocks[1], null, 4));
-  console.log("BLOCK 3:", JSON.stringify(blocks[2], null, 4));
-  console.log("VALUES:", JSON.stringify(values, null, 4));
-  const submission = payload.submission;
-  const callbackId = payload.callback_id
-  const responseUrl = payload.response_url;
+  console.log("interactive payload:", submission);
+  const userId = submission.user.id;
+  const callbackId = submission.callback_id
   /*switch (callbackId) {
     case 'login-manager':
       ;
     default:
       ;
   }*/
-  const { solid_account, solid_uname, solid_pass } = submission;
+  const solid_account = getInputValueFromSubmission(submission, 'solid_account');
+  const solid_uname = getInputValueFromSubmission(submission, 'solid_uname');
+  const solid_pass = getInputValueFromSubmission(submission, 'solid_pass');
   const loginOptions = {
     idp: solid_account,
     username: solid_uname,
@@ -75,19 +70,23 @@ app.post('/interactive', async (req, res) => {
   };
   const solidClient = new SolidNodeClient();
   const session = await solidClient.login(loginOptions);
+  const token = slackClient.token;
   if (session) {
-    const slackUserId = req.body.user_id;
-    slackIdToSolidClient[slackUserId] = solidClient;
+    slackIdToSolidClient[userId] = solidClient;
+    const chatPayload = {
+      token,
+      channel: userId,
+      text: "```Congratulations: you have successfully logged into Solid!```",
+    };
     try {
-      await slackClient.axios.post(responseUrl, {
-        text: "```Congratulations: you have successfully logged into Solid!```"
-      });
+      await slackClient.axios.post('chat.postMessage', chatPayload);
+      return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 4));
+      return res.status(httpStatus.BAD_REQUEST).json(e);
     }
-    return res.status(httpStatus.OK).send();
   }
-  return res.status(HttpStatus.UNAUTHORIZED).send('Solid login failed');
+  return res.status(httpStatus.UNAUTHORIZED).send('Solid login failed');
 });
 
 /*app.post('/login', async (req, res) => {
@@ -114,7 +113,7 @@ app.post('/interactive', async (req, res) => {
     }
     return res.status(httpStatus.OK).send();
   }
-  return res.status(HttpStatus.UNAUTHORIZED).send('Solid login failed');
+  return res.status(httpStatus.UNAUTHORIZED).send('Solid login failed');
 });*/
 
 app.listen(PORT, () => console.log(`Solid Slack listening at http://0.0.0.0:${PORT}`));

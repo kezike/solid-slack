@@ -1,4 +1,4 @@
-const { httpStatus } = require('../common/http');
+const { httpStatus } = require('../util/http');
 const managerHomeViewFile = require('../assets/file-manager-home');
 
 /**
