@@ -18,6 +18,7 @@
     "blocks": [
         {
           "type": "input",
+          "block_id": "solid_account",
           "label": {
             "type": "plain_text",
             "text": "Account"
@@ -33,6 +34,7 @@
         },
         {
           "type": "input",
+          "block_id": "solid_uname",
           "label": {
             "type": "plain_text",
             "text": "Username"
@@ -44,6 +46,7 @@
         },
         {
           "type": "input",
+          "block_id": "solid_pass",
           "label": {
             "type": "plain_text",
             "text": "Password"
