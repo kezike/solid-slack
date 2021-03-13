@@ -66,7 +66,7 @@ app.post('/interactive', async (req, res) => {
     slackIdToSolidClient[slackUserId] = solidClient;
     try {
       await httpClient.post(responseUrl, {
-        text: `\`\`\`${You have successfully logged into Solid!}\`\`\``
+        text: "```Congratulations: you have successfully logged into Solid!```"
       });
     } catch (e) {
       console.error(JSON.stringify(e, null, 4));
