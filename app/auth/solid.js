@@ -3,7 +3,7 @@ const { Login } = require('../controllers/login');
 const { SolidNodeClient } = require('solid-node-client');
 // const solidClient = new SolidNodeClient();
 const { slackIdToSolidClient } = require('./common');
-const { slackClient } = require('./app/auth/slack');
+const { slackClient } = require('./slack');
 
 const solidLogin = async (req, res, next) => {
   console.log("REQ.BODY:", req.body);
