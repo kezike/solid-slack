@@ -41,7 +41,11 @@
           },
           "element": {
             "type": "plain_text_input",
-            "action_id": "solid_uname_input"
+            "action_id": "solid_uname_input",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "e.g., alice"
+            }
           }
         },
         {
@@ -53,7 +57,11 @@
           },
           "element": {
             "type": "plain_text_input",
-            "action_id": "solid_pass_input"
+            "action_id": "solid_pass_input",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "e.g., @L1c3P@ssW0rd1234"
+            }
           }
         }
     ]

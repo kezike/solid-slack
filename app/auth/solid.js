@@ -5,8 +5,7 @@ const { /*httpClient,*/ httpStatus } = require('../util/http');
 const { slackIdToSolidClient } = require('./common');
 const { slackClient } = require('./slack');
 
-const solidLogin = async (req, res, next) => {
-  console.log("REQ.SLACK:", JSON.stringify(req.slack, null, 2));
+const solidVerify = async (req, res, next) => {
   const slackUserId = req.slack.user_id;
   let solidClient = slackIdToSolidClient[slackUserId];
   if (!solidClient || !solidClient.session.loggedIn) {
@@ -23,4 +22,4 @@ const solidLogin = async (req, res, next) => {
   return next();
 }
 
-module.exports = { /*solidClient,*/ solidLogin };
+module.exports = { /*solidClient,*/ solidVerify };

@@ -6,7 +6,7 @@ const { FileManager } = require('./app/controllers/file-manager');
 const { /*httpClient,*/ httpStatus } = require('./app/util/http');
 const { slackIdToSolidClient } = require('./app/auth/common');
 const { slackClient, slackVerify } = require('./app/auth/slack');
-const { /*solidClient,*/ solidLogin } = require('./app/auth/solid');
+const { /*solidClient,*/ solidVerify } = require('./app/auth/solid');
 const { getInputValueFromSubmission } = require('./app/util/names');
 
 // Main Solid App
@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 // Slack verification middleware
 app.use(slackVerify);
 // Solid login middleware
-// app.use(solidLogin);
+app.use(solidVerify);
 
 // SolidSlack Entrypoint
 app.post('/', async (req, res) => {    
@@ -51,8 +51,6 @@ app.post('/', async (req, res) => {
 app.post('/interactive', async (req, res) => {
   res.send();
   const submission = JSON.parse(req.body.payload);
-  console.log("interactive req.body:", req.body);
-  console.log("interactive payload:", submission);
   const userId = submission.user.id;
   const callbackId = submission.callback_id
   /*switch (callbackId) {
@@ -77,7 +75,7 @@ app.post('/interactive', async (req, res) => {
     const chatPayload = {
       token,
       channel: userId,
-      text: "```Congratulations: you have successfully logged into Solid!```",
+      text: "Congratulations: you have successfully logged into Solid!",
     };
     try {
       await slackClient.axios.post('chat.postMessage', chatPayload);
