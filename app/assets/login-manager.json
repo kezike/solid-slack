@@ -60,7 +60,7 @@
             "action_id": "solid_pass_input",
             "placeholder": {
               "type": "plain_text",
-              "text": "e.g., @L1c3P@ssW0rd1234"
+              "text": "e.g., @L1c3P@ssw0Rd1234"
             }
           }
         }
