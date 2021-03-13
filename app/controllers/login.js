@@ -40,6 +40,8 @@ class Login {
    * @memberof Login
    */
   static exec(slackClient, payload) {
+    console.log("TRIGGER ID:", payload.trigger_id);
+    console.log("RESPONSE URL:", payload.response_url);
     slackClient.dialog.open({
       trigger_id: payload.trigger_id,
       dialog
