@@ -10,7 +10,7 @@ const solidLogin = async (req, res, next) => {
   const slackUserId = req.body.user_id;
   let solidClient = slackIdToSolidClient[slackUserId];
   if (!solidClient || !solidClient.session.loggedIn) {
-    console.log('Unauthenticated: logging new user in');
+    console.log('Unauthenticated: logging in new user');
     return Login.exec(slackClient, req.body);
   }
   console.log('Authenticated: proceeding to desired action');

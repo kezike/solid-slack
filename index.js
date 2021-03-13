@@ -12,7 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Parse body like json
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // Slack verification middleware
 app.use(slackVerify);
 // Solid login middleware
@@ -69,6 +70,7 @@ app.post('/interactive', async (req, res) => {
   const solidClient = new SolidNodeClient();
   const session = await solidClient.login(loginOptions);
   if (session) {
+    const slackUserId = req.body.user_id;
     slackIdToSolidClient[slackUserId] = solidClient;
     try {
       await slackClient.axios.post(responseUrl, {
@@ -95,6 +97,7 @@ app.post('/interactive', async (req, res) => {
   const session = await solidClient.login(loginOptions);
   if (session) {
     solidClient = new SolidNodeClient();
+    const slackUserId = req.body.user_id;
     slackIdToSolidClient[slackUserId] = solidClient;
     try {
       await slackClient.axios.post(responseUrl, {
