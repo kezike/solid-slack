@@ -42,7 +42,8 @@ const slackVerify = (req, res, next) => {
     Buffer.from(sigMine, 'utf8'),
     Buffer.from(sigSlack, 'utf8'))) {
     console.log('Slack client successfully verified');
-    next();
+    req.slack = req.body;
+    return next();
   } else {
     return res.status(HttpStatus.UNAUTHORIZED).send('Slack signature invalid');
   }
