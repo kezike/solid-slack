@@ -4,9 +4,10 @@ const { SolidNodeClient } = require('solid-node-client');
 const { LoginManager } = require('./app/controllers/login-manager');
 const { FileManager } = require('./app/controllers/file-manager');
 const { /*httpClient,*/ httpStatus } = require('./app/util/http');
-const { slackIdToSolidClient } = require('./app/auth/common');
-const { slackClient, slackVerify } = require('./app/auth/slack');
-const { /*solidClient,*/ solidVerify } = require('./app/auth/solid');
+const { slackIdToSolidClient } = require('./app/data/solid');
+const { commandVerify } = require('./app/middlewares/commands');
+const { slackClient, slackVerify } = require('./app/middlewares/slack');
+const { /*solidClient,*/ solidVerify } = require('./app/middlewares/solid');
 const { getInputValueFromSubmission } = require('./app/util/names');
 
 // Main app
@@ -67,33 +68,36 @@ app.post('/interactive', async (req, res) => {
   return res.status(httpStatus.UNAUTHORIZED).send('Solid login failed');
 });
 
+// Command verification middleware
+app.use(commandVerify);
 // Solid verification middleware
 app.use(solidVerify);
 
-// SolidSlack Entrypoint
+// SolidSlack entrypoint
 app.post('/', async (req, res) => {    
-  let payload = req.body;
-  let commandText = payload.text;
-  if (commandText.trim() === '') {
-    res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | file | dir]');
+  /*const reqBody = req.body;
+  const commandText = reqBody.text.trim();
+  if (commandText === '') {
+    res.end('Welcome to SolidSlack! Please include one of the following subcommands in your invocation of /solid: [login | file | dir | help]');
   }
   res.send();
-  const commands = commandText.split(' ');
-  const subCommand1 = commands[0];
-  switch (subCommand1) {
-    case 'file':
-      // res.send();
-      // const subCommand2 = commands[1];
-      const fileCommandStatus = await FileManager.exec(slackClient/*, commands*/, req.body/*, res*/);
-      return res.status(fileCommandStatus).send();
-    case 'login':
-      LoginManager.exec(slackClient, payload);
+  const commands = commandText.split(' ');*/
+  const commands = req.commands;
+  const subcommand = commands[0];
+  switch (subcommand) {
+    /*case 'login':
+      LoginManager.exec(slackClient, reqBody);
       res.send();
       return;
     case 'help':
-      return;
+      return;*/
+    case 'file':
+      // res.send();
+      // const subcommand2 = commands[1];
+      const fileCommandStatus = await FileManager.exec(slackClient/*, commands*/, reqBody/*, res*/);
+      return res.status(fileCommandStatus).send();
     default:
-      return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);
+      return res.end(`Unrecognized subcommand: \`${subcommand}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
   }
 });
 
