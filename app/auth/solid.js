@@ -19,7 +19,8 @@ const solidVerify = async (req, res, next) => {
         text: "Please run the following command to login to Solid: `/solid login`",
       };
       await slackClient.axios.post(responseUrl, chatPayload);
-      return res.status(httpStatus.UNAUTHORIZED).send("User is not authenticated to a Solid account");
+      console.log("Sent login message to slack channel");
+      return res.status(httpStatus.OK).send("User is not authenticated to a Solid account");
     } catch (e) {
       console.error(JSON.stringify(e, null, 4));
       return res.status(httpStatus.BAD_REQUEST).json(e);
