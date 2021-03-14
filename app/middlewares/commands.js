@@ -23,7 +23,7 @@ const commandVerify = async (req, res, next) => {
       return;
   }
   req.commands = commands;
-  return res.next();
+  return next();
 };
 
 module.exports = { commandVerify };
