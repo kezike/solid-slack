@@ -1,7 +1,10 @@
+const { LoginManager } = require('../controllers/login-manager');
+const { slackClient } = require('./slack');
+
 // Verify an incoming command
 // Note: this is a workaround for restricted subcommands,
 // since we do not use distinct endpoints for each subcommand
-const commandVerify = (req, res, next) => {
+const commandVerify = async (req, res, next) => {
   const reqBody = req.body;
   const commandText = reqBody.text.trim();
   if (commandText === '') {
