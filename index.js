@@ -75,8 +75,8 @@ app.use(solidVerify);
 
 // SolidSlack entrypoint
 app.post('/', async (req, res) => {    
-  /*const reqBody = req.body;
-  const commandText = reqBody.text.trim();
+  const reqBody = req.body;
+  /*const commandText = reqBody.text.trim();
   if (commandText === '') {
     res.end('Welcome to SolidSlack! Please include one of the following subcommands in your invocation of /solid: [login | file | dir | help]');
   }

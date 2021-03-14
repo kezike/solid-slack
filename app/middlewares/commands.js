@@ -8,7 +8,7 @@ const commandVerify = async (req, res, next) => {
   const reqBody = req.body;
   const commandText = reqBody.text.trim();
   if (commandText === '') {
-    return res.send('Welcome to SolidSlack! Please include one of the following subcommands in your invocation of /solid: [login | file | dir | help]');
+    return res.send('Welcome to SolidSlack! Please include one of the following subcommands in your invocation of `/solid`: [`login` | `file` | `dir` | `help`]');
   }
   // res.send();
   const commands = commandText.split(' ');
