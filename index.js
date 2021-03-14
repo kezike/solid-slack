@@ -9,45 +9,24 @@ const { slackClient, slackVerify } = require('./app/auth/slack');
 const { /*solidClient,*/ solidVerify } = require('./app/auth/solid');
 const { getInputValueFromSubmission } = require('./app/util/names');
 
-// Main Solid App
+// Main app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Parse body like json
+// Parse body as json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 // Slack verification middleware
 app.use(slackVerify);
-// Solid login middleware
-// app.use(solidVerify);
 
-// SolidSlack Entrypoint
-app.post('/', async (req, res) => {    
-  let payload = req.body;
-  let commandText = payload.text;
-  if (commandText.trim() === '') {
-    res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | file | dir]');
-  }
-  res.send();
-  const commands = commandText.split(' ');
-  const subCommand1 = commands[0];
-  switch (subCommand1) {
-    case 'file':
-      // res.send();
-      // const subCommand2 = commands[1];
-      const fileCommandStatus = await FileManager.exec(slackClient/*, commands*/, req.body/*, res*/);
-      return res.status(fileCommandStatus).send();
-    case 'login':
-      LoginManager.exec(slackClient, payload);
-      res.send();
-      return;
-    case 'help':
-      return;
-    default:
-      return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);
-  }
-});
-
+// Handle interactive components, like modals
+// TODO: Currently, this does not work well
+// with solidVerify middleware, so we have placed
+// it before it since we expect to hit this
+// endpoint exclusively through the entry point.
+// It may be worth fixing that middleware method
+// to work with this endpoint.
 app.post('/interactive', async (req, res) => {
   res.send();
   const submission = JSON.parse(req.body.payload);
@@ -86,6 +65,36 @@ app.post('/interactive', async (req, res) => {
     }
   }
   return res.status(httpStatus.UNAUTHORIZED).send('Solid login failed');
+});
+
+// Solid verification middleware
+app.use(solidVerify);
+
+// SolidSlack Entrypoint
+app.post('/', async (req, res) => {    
+  let payload = req.body;
+  let commandText = payload.text;
+  if (commandText.trim() === '') {
+    res.end('Welcome to SolidSlack! Please include one of the following subCommands in your invocation of /solid: [login | file | dir]');
+  }
+  res.send();
+  const commands = commandText.split(' ');
+  const subCommand1 = commands[0];
+  switch (subCommand1) {
+    case 'file':
+      // res.send();
+      // const subCommand2 = commands[1];
+      const fileCommandStatus = await FileManager.exec(slackClient/*, commands*/, req.body/*, res*/);
+      return res.status(fileCommandStatus).send();
+    case 'login':
+      LoginManager.exec(slackClient, payload);
+      res.send();
+      return;
+    case 'help':
+      return;
+    default:
+      return res.end(`Sorry, I do not recognize that subCommand: '${subCommand1}'`);
+  }
 });
 
 /*app.post('/login', async (req, res) => {
