@@ -7,6 +7,7 @@ const { slackClient } = require('./slack');
 
 const solidVerify = async (req, res, next) => {
   const slackUserId = req.slack.user_id;
+  console.log("SLACK USER ID:", slackUserId);
   let solidClient = slackIdToSolidClient[slackUserId];
   if (!solidClient || !solidClient.session.loggedIn) {
     console.log('Unauthenticated: logging in new user');
