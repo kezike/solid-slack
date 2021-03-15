@@ -11,7 +11,6 @@ const solidLogin = async (req, res) => {
   if (solidClient && solidClient.session && solidClient.session.loggedIn) {
     return res.status(httpStatus.OK).send('User is already logged into Solid!');
   }
-  const submission = JSON.parse(req.body.payload);
   const solid_account = getInputValueFromSubmission(submission, 'solid_account');
   const solid_uname = getInputValueFromSubmission(submission, 'solid_uname');
   const solid_pass = getInputValueFromSubmission(submission, 'solid_pass');
