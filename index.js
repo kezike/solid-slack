@@ -27,13 +27,14 @@ app.use(slackVerify);
 // It may be worth fixing that middleware method
 // to work with this endpoint.
 app.post('/interactive', async (req, res) => {
-  res.send();
+  return res.status(httpStatus.OK).send();
   const submission = JSON.parse(req.body.payload);
   const userId = submission.user.id;
   const callbackId = submission.callback_id
   switch (callbackId) {
     case 'login-manager':
-      return await solidLogin(req, res);
+      const loginResponse = await solidLogin(req, res);
+      return loginResponse;
     case 'file-viewer':
       return res.status(httpStatus.OK).send();
     default:
@@ -55,11 +56,13 @@ app.post('/', async (req, res) => {
     case 'profile':
       // const profileCommandStatus = await FileManager.exec(slackClient, reqBody, subcommand);
       // return res.status(profileCommandStatus).send();
-      return await FileManager.exec(req, res);
+      const profileResponse = await FileManager.exec(req, res);
+      return profileResponse;
     case 'file':
       // const fileCommandStatus = await FileManager.exec(slackClient, reqBody, subcommand);
       // return res.status(fileCommandStatus).send();
-      return await FileManager.exec(req, res);
+      const fileResponse = await FileManager.exec(req, res);
+      return fileResponse;
     default:
       return res.end(`Unrecognized subcommand: \`${subcommand}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
   }

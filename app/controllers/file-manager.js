@@ -23,7 +23,8 @@ class FileManager {
       case 'profile':
         // const profileCommandStatus = await FileManager.loadProfile(slackClient, reqBody);
         // return profileCommandStatus;
-        return await FileManager.loadProfile(req, res);
+        const profileResponse = await FileManager.loadProfile(req, res);
+        return profileResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
