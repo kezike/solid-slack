@@ -8,13 +8,13 @@ const { slackClient } = require('./slack');
 const commandVerify = async (req, res, next) => {
   const reqBody = req.body;
   const commandText = reqBody.text.trim();
-  const helpMessage = `\`\`\`
+  const helpMessage = `
     Welcome to SolidSlack! The following is the complete catalog of subcommands available to you. Simply invoke the desired command \`COMMAND\` as \`/solid COMMAND\`:
     - \`login\`: TODO
     - \`file\`: TODO
     - \`dir\`: TODO
     - \`help\`: TODO
-  \`\`\``;
+  `;
   if (commandText === '') {
     return res.status(httpStatus.OK).send(helpMessage);
   }
