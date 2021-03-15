@@ -9,8 +9,9 @@ const commandVerify = async (req, res, next) => {
   const reqBody = req.body;
   const commandText = reqBody.text.trim();
   const helpMessage = `
-    Welcome to SolidSlack! The following is the complete catalog of subcommands available to you. Simply invoke the desired command \`COMMAND\` as \`/solid COMMAND\`:
+    Welcome to SolidSlack! The following is the complete catalog of commands available to you. Simply invoke the desired command as \`/solid COMMAND\`:
     - \`login\`: TODO
+    - \`profile\`: TODO
     - \`file\`: TODO
     - \`dir\`: TODO
     - \`help\`: TODO

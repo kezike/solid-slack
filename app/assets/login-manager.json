@@ -1,68 +1,68 @@
 {
-    "type": "modal",
-    "callback_id": "login-manager",
-    "title": {
+  "type": "modal",
+  "callback_id": "login-manager",
+  "title": {
+    "type": "plain_text",
+    "text": "Solid Login"
+  },
+  "submit": {
+    "type": "plain_text",
+    "text": "Submit",
+    "emoji": true
+  },
+  "close": {
+    "type": "plain_text",
+    "text": "Cancel",
+    "emoji": true
+  },
+  "blocks": [
+    {
+      "type": "input",
+      "block_id": "solid_account_block",
+      "label": {
         "type": "plain_text",
-        "text": "Solid Login"
-    },
-    "submit": {
-      "type": "plain_text",
-      "text": "Submit",
-      "emoji": true
-    },
-    "close": {
-      "type": "plain_text",
-      "text": "Cancel",
-      "emoji": true
-    },
-    "blocks": [
-        {
-          "type": "input",
-          "block_id": "solid_account_block",
-          "label": {
-            "type": "plain_text",
-            "text": "Account"
-          },
-          "element": {
-            "type": "plain_text_input",
-            "action_id": "solid_account_input",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "e.g., https://solidcommunity.net"
-            }
-          }
-        },
-        {
-          "type": "input",
-          "block_id": "solid_uname_block",
-          "label": {
-            "type": "plain_text",
-            "text": "Username"
-          },
-          "element": {
-            "type": "plain_text_input",
-            "action_id": "solid_uname_input",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "e.g., alice"
-            }
-          }
-        },
-        {
-          "type": "input",
-          "block_id": "solid_pass_block",
-          "label": {
-            "type": "plain_text",
-            "text": "Password"
-          },
-          "element": {
-            "type": "plain_text_input",
-            "action_id": "solid_pass_input",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "e.g., @L1c3P@ssw0Rd1234"
-            }
-          }
+        "text": "Account"
+      },
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "solid_account_input",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "e.g., https://solidcommunity.net"
         }
-    ]
+      }
+    },
+    {
+      "type": "input",
+      "block_id": "solid_uname_block",
+      "label": {
+        "type": "plain_text",
+        "text": "Username"
+      },
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "solid_uname_input",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "e.g., alice"
+        }
+      }
+    },
+    {
+      "type": "input",
+      "block_id": "solid_pass_block",
+      "label": {
+        "type": "plain_text",
+        "text": "Password"
+      },
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "solid_pass_input",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "e.g., @L1c3P@ssw0Rd1234"
+        }
+      }
+    }
+  ]
 }

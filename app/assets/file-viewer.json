@@ -1,0 +1,18 @@
+{
+  "type": "modal",
+  "callback_id": "file-viewer",
+  "title": {
+    "type": "plain_text",
+    "text": "Solid Profile"
+  },
+  "blocks": [
+    {
+      "type": "section",
+      "block_id": "file_viewer_block",
+      "text": {
+        "type": "mrkdwn",
+        "text": "NOTE: each consumer of this view should configure this value"
+      }
+    }
+  ]
+}
