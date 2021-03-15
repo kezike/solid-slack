@@ -70,10 +70,10 @@ class FileManager {
       const view = JSON.stringify(fileViewer, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
-      return httpStatus.OK;
+      return res.staus(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
-      return httpStatus.BAD_REQUEST;
+      return res.staus(httpStatus.BAD_REQUEST).send();
     }
   }
 
