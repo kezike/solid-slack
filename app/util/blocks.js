@@ -3,7 +3,7 @@ const getInputValueFromSubmission = (submission, id) => {
   const values = submission.view.state.values;
   const blockId = `${id}_block`;
   const inputId = `${id}_input`;
-  return values[blockId][inputId].value;
+  return values[blockId][inputId].value.trim();
 };
 
 // Retrieve block by id

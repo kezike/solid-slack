@@ -18,19 +18,19 @@ class FileManager {
   static async exec(slackClient, reqBody, command) {
     switch (command) {
       case 'profile':
-        const profileCommandStatus = await File.loadProfile(slackClient, reqBody);
+        const profileCommandStatus = await FileManager.loadProfile(slackClient, reqBody);
         return profileCommandStatus;
       case 'create':
-        const createCommandStatus = await File.createFile(slackClient, reqBody);
+        const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
       case 'review':
-        const reviewCommandStatus = await File.reviewFile(slackClient, reqBody);
+        const reviewCommandStatus = await FileManager.reviewFile(slackClient, reqBody);
         return reviewCommandStatus;
       case 'edit':
-        const editCommandStatus = await File.editFile(slackClient, reqBody);
+        const editCommandStatus = await FileManager.editFile(slackClient, reqBody);
         return editCommandStatus;
       case 'delete':
-        const deleteCommandStatus = await File.deleteFile(slackClient, reqBody);
+        const deleteCommandStatus = await FileManager.deleteFile(slackClient, reqBody);
         return deleteCommandStatus;
       default:
         return httpStatus.BAD_REQUEST;
