@@ -5,6 +5,7 @@ const { getSolidClientFromSlackId, setSolidClientForSlackId } = require('../util
 const { httpStatus } = require('../util/http');
 
 const solidLogin = async (req, res) => {
+  const submission = JSON.parse(req.body.payload);
   const userId = submission.user.id;
   let solidClient = getSolidClientFromSlackId(userId);
   if (solidClient && solidClient.session && solidClient.session.loggedIn) {

@@ -29,7 +29,6 @@ app.use(slackVerify);
 app.post('/interactive', async (req, res) => {
   return res.status(httpStatus.OK).send();
   const submission = JSON.parse(req.body.payload);
-  const userId = submission.user.id;
   const callbackId = submission.callback_id
   switch (callbackId) {
     case 'login-manager':

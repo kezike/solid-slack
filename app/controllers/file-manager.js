@@ -60,9 +60,9 @@ class FileManager {
   // static async loadProfile(slackClient, reqBody) {
   static async loadProfile(req, res) {
     try {
-      const { trigger_id } = reqBody;
+      const { trigger_id } = req.body;
       const token = slackClient.token;
-      const userId = reqBody.user_id;
+      const userId = req.body.user_id;
       const block = getBlockById(fileViewer, 'file_viewer');
       const solidClient = getSolidClientFromSlackId(userId);
       const profilePromise = await solidClient.fetch(webId);
