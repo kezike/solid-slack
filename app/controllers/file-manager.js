@@ -50,13 +50,10 @@ class FileManager {
   }
 
   static async loadProfile(slackClient, reqBody) {
-    console.log("Loading profile...");
-    console.log("PROFILE REQ BODY:", reqBody);
-    return httpStatus.OK;
-    /*try {
+    try {
       const { trigger_id } = reqBody;
       const token = slackClient.token;
-      // const userId = ;
+      const userId = reqBody.user_id;
       const block = getBlockById(fileViewer, 'file_viewer');
       const solidClient = getSolidClientFromSlackId(userId);
       const profilePromise = await solidClient.fetch(webId);
@@ -69,7 +66,7 @@ class FileManager {
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
       return httpStatus.BAD_REQUEST;
-    }*/
+    }
   }
 
   static async createFile(slackClient, reqBody) {

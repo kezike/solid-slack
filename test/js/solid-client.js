@@ -16,12 +16,13 @@ const loginOptions = {
 const main = async () => {
     const session = await solidNodeClient.login(loginOptions);
     if (session) {
-        const response = await solidNodeClient.fetch('http://example.com'); // TODO: REPLACE WITH VALID FILE URL
-        const text = await response.text();
-        console.log("Your requested file:\n", text);
+        const webId = session.webId;
+        console.log(`Your WebId: ${webId}`);
+        const profilePromise = await solidNodeClient.fetch(webId);
+        const profile = await profilePromise.text();
+        console.log(`Your Solid Profile:\n${profile}`);
         solidNodeClient.logout();
     }
 }
 
-main()
-
+main();
