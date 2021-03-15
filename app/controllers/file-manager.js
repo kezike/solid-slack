@@ -1,5 +1,6 @@
 const { getBlockById, setBlockFieldValue } = require('../util/blocks');
 const { getSolidClientFromSlackId } = require('../util/solid');
+const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
 const fileViewer = require('../assets/file-viewer');
@@ -10,16 +11,19 @@ const fileViewer = require('../assets/file-viewer');
 class FileManager {
   /**
    * @static
-   * @param {*} slackClient
-   * @param {*} reqBody
-   * @param {*} command
+   * @param {*} req
+   * @param {*} res
    * @memberof FileManager
    */
-  static async exec(slackClient, reqBody, command) {
+  // static async exec(slackClient, reqBody, command) {
+  static async exec(req, res) {
+    const commands = req.commands;
+    const command = commands[0];
     switch (command) {
       case 'profile':
-        const profileCommandStatus = await FileManager.loadProfile(slackClient, reqBody);
-        return profileCommandStatus;
+        // const profileCommandStatus = await FileManager.loadProfile(slackClient, reqBody);
+        // return profileCommandStatus;
+        return await FileManager.loadProfile(req, res);
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
@@ -32,11 +36,14 @@ class FileManager {
       case 'delete':
         const deleteCommandStatus = await FileManager.deleteFile(slackClient, reqBody);
         return deleteCommandStatus;
+      case 'share':
+        const shareCommandStatus = await FileManager.shareFile(slackClient, reqBody);
+        return shareCommandStatus;
       default:
         return httpStatus.BAD_REQUEST;
     }
 
-    try {
+    /*try {
       const { trigger_id } = reqBody;
       const token = slackClient.token;
       const view = JSON.stringify(fileManager, null, 2);
@@ -46,10 +53,11 @@ class FileManager {
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
       return httpStatus.BAD_REQUEST;
-    }
+    }*/
   }
 
-  static async loadProfile(slackClient, reqBody) {
+  // static async loadProfile(slackClient, reqBody) {
+  static async loadProfile(req, res) {
     try {
       const { trigger_id } = reqBody;
       const token = slackClient.token;
@@ -83,6 +91,10 @@ class FileManager {
 
   static async deleteFile(slackClient, reqBody) {
     console.log("Deleting file...");
+  }
+
+  static async shareFile(slackClient, reqBody) {
+    console.log("Sharing file...");
   }
 }
 
