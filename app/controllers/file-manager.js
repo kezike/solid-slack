@@ -70,6 +70,7 @@ class FileManager {
       const block = getBlockById(fileViewer, 'file_viewer');
       console.log('Successfully retrieved block id!');
       const solidClient = getSolidClientFromSlackId(userId);
+      const webId = solidClient.session.webId;
       console.log('SOLID CLIENT (loadProfile):', solidClient);
       console.log('Fetching profile...');
       const profilePromise = await solidClient.fetch(webId);
