@@ -56,19 +56,19 @@ app.post('/', async (req, res) => {
   const command = commands[0];
   switch (command) {
     case 'profile':
-      // const profileCommandStatus = await FileManager.exec(slackClient, reqBody, command);
-      // return res.status(profileCommandStatus).send();
-      const profileResponse = await FileManager.exec(req, res, command);
+      /*const profileResponse = await FileManager.exec(req, res, command);
       const profileStatus = profileResponse.status;
       const profileMessage = profileResponse.message;
-      return res.status(profileStatus).send(profileMessage);
+      return res.status(profileStatus).send(profileMessage);*/
+      const profileResponse = await FileManager.exec(req, res, command);
+      return profileResponse;
     case 'file':
-      // const fileCommandStatus = await FileManager.exec(slackClient, reqBody, command);
-      // return res.status(fileCommandStatus).send();
-      const fileResponse = await FileManager.exec(req, res, command);
+      /*const fileResponse = await FileManager.exec(req, res, command);
       const fileStatus = fileResponse.status;
       const fileMessage = fileResponse.message;
-      return res.status(fileStatus).send(fileMessage);
+      return res.status(fileStatus).send(fileMessage);*/
+      const fileResponse = await FileManager.exec(req, res, command);
+      return fileResponse;
     default:
       return res.send(`Unrecognized command: \`${command}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
   }

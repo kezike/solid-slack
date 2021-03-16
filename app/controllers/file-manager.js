@@ -69,10 +69,12 @@ class FileManager {
       const view = JSON.stringify(fileViewer, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
-      return { status: httpStatus.OK, message: '' };
+      res.status(httpStatus.OK).send();
+      // return { status: httpStatus.OK, message: '' };
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
-      return { status: httpStatus.BAD_REQUEST, message: '' };
+      res.status(httpStatus.BAD_REQUEST).send();
+      // return { status: httpStatus.BAD_REQUEST, message: '' };
     }
   }
 
