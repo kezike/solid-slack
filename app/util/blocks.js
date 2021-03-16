@@ -1,6 +1,7 @@
 // Extract submitted value from modal input id
 const getInputValueFromSubmission = (submission, id) => {
-  const values = submission.view.state.values;
+  const view = submission.view;
+  const values = view.state.values;
   const blockId = `${id}_block`;
   const inputId = `${id}_input`;
   return values[blockId][inputId].value.trim();
@@ -9,7 +10,8 @@ const getInputValueFromSubmission = (submission, id) => {
 // Retrieve block by id
 const getBlockById = (viewConfig, id) => {
   const blockId = `${id}_block`;
-  return viewConfig.find((block) => block.block_id === blockId);
+  const blocks = viewConfig.blocks;
+  return blocks.find((block) => block.block_id === blockId);
 };
 
 // Get value of block field at nested path
