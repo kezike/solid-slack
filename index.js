@@ -26,7 +26,7 @@ app.use(slackVerify);
 // It may be worth fixing that middleware method
 // to work with this endpoint.
 app.post('/interactive', async (req, res) => {
-  return res.status(httpStatus.OK).send();
+  // return res.status(httpStatus.OK).send();
   const submission = JSON.parse(req.body.payload);
   const callbackId = submission.callback_id
   console.log(`CALLBACK ID: ${callbackId}`);
