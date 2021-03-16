@@ -1,6 +1,5 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const { LoginManager } = require('./app/controllers/login-manager');
 const { FileManager } = require('./app/controllers/file-manager');
 const { solidLogin } = require('./app/controllers/solid');
 const { /*httpClient,*/ httpStatus } = require('./app/util/http');
@@ -50,20 +49,20 @@ app.use(solidVerify);
 app.post('/', async (req, res) => {    
   // const reqBody = req.body;
   const commands = req.commands;
-  const subcommand = commands[0];
-  switch (subcommand) {
+  const command = commands[0];
+  switch (command) {
     case 'profile':
-      // const profileCommandStatus = await FileManager.exec(slackClient, reqBody, subcommand);
+      // const profileCommandStatus = await FileManager.exec(slackClient, reqBody, command);
       // return res.status(profileCommandStatus).send();
-      const profileResponse = await FileManager.exec(req, res);
+      const profileResponse = await FileManager.exec(req, res, command);
       return profileResponse;
     case 'file':
-      // const fileCommandStatus = await FileManager.exec(slackClient, reqBody, subcommand);
+      // const fileCommandStatus = await FileManager.exec(slackClient, reqBody, command);
       // return res.status(fileCommandStatus).send();
-      const fileResponse = await FileManager.exec(req, res);
+      const fileResponse = await FileManager.exec(req, res, command);
       return fileResponse;
     default:
-      return res.end(`Unrecognized subcommand: \`${subcommand}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
+      return res.end(`Unrecognized command: \`${command}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
   }
 });
 

@@ -1,4 +1,4 @@
-const { LoginManager } = require('../controllers/login-manager');
+const { AccountManager } = require('../controllers/account-manager');
 const { SolidNodeClient } = require('solid-node-client');
 const { /*httpClient,*/ httpStatus } = require('../util/http');
 // const solidClient = new SolidNodeClient();
@@ -14,12 +14,12 @@ const solidVerify = async (req, res, next) => {
   if (!solidClient || !solidClient.session.loggedIn) {
     console.log('Unauthenticated User');
     try {
-      // const loginCommandStatus = await LoginManager.exec(slackClient/*, commands*/, req.slack/*, res*/);
+      // const accountCommandStatus = await AccountManager.exec(slackClient/*, commands*/, req.slack/*, res*/);
       // const chatPayload = {
-      //   text: "Please run the following command to login to Solid: `/solid login`",
+      //   text: 'Please run the following command to login to Solid: `/solid login`',
       // };
       // await slackClient.axios.post(responseUrl, chatPayload);
-      return res.status(httpStatus.OK).send("You are not authenticated to a Solid account. Please run the following command to login to Solid: `/solid login`");
+      return res.status(httpStatus.OK).send('You are not authenticated to a Solid account. Please run the following command to login to Solid: `/solid login`');
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
       return res.status(httpStatus.BAD_REQUEST).json(e);

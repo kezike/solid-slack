@@ -13,12 +13,11 @@ class FileManager {
    * @static
    * @param {*} req
    * @param {*} res
+   * @param {*} command
    * @memberof FileManager
    */
   // static async exec(slackClient, reqBody, command) {
-  static async exec(req, res) {
-    const commands = req.commands;
-    const command = commands[0];
+  static async exec(req, res, command) {
     switch (command) {
       case 'profile':
         // const profileCommandStatus = await FileManager.loadProfile(slackClient, reqBody);

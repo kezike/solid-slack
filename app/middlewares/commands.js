@@ -1,17 +1,19 @@
 const { /*httpClient,*/ httpStatus } = require('../util/http');
-const { LoginManager } = require('../controllers/login-manager');
+const { AccountManager } = require('../controllers/account-manager');
 const { slackClient } = require('./slack');
 
 // Verify an incoming command
-// Note: this is a workaround for restricted subcommands,
-// since we do not use distinct endpoints for each subcommand
+// Note: this is a workaround for unrestricted commands,
+// since we do not use distinct endpoints for each command
+// and the entrypoint is protected by the solidVerify middleware
 const commandVerify = async (req, res, next) => {
   const reqBody = req.body;
   const commandText = reqBody.text.trim();
   const helpMessage = `
-    Welcome to SolidSlack! The following is the complete catalog of commands available to you. Simply invoke the desired command as \`/solid COMMAND\`:
-    - \`login\`: TODO
-    - \`profile\`: TODO
+    Hello, I am Solid Bot How can I help you today? (P.S.: I only speak Solid, so please address me as \`/solid COMMAND\`):
+    - \`login\`: login to your Solid pod
+    - \`logout\`: logout of your Solid pod
+    - \`profile\`: fetch your Solid profile
     - \`file\`: TODO
     - \`dir\`: TODO
     - \`help\`: TODO
@@ -19,15 +21,12 @@ const commandVerify = async (req, res, next) => {
   if (commandText === '') {
     return res.status(httpStatus.OK).send(helpMessage);
   }
-  // res.send();
   const commands = commandText.split(' ');
-  const subcommand = commands[0];
-  switch (subcommand) {
+  const command = commands[0];
+  switch (command) {
     case 'login':
-      const loginCommandStatus = await LoginManager.exec(slackClient, reqBody);
-      return res.status(loginCommandStatus).send();
-      // res.send();
-      // return;
+      const loginResponse = await AccountManager.exec(req, res, command);
+      return loginResponse;
     case 'help':
       return res.status(httpStatus.OK).send(helpMessage);
   }
