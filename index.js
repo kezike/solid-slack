@@ -30,7 +30,7 @@ app.post('/interactive', async (req, res) => {
   // res.send
   const submission = JSON.parse(req.body.payload);
   const callbackId = submission.callback_id
-  console.log(`SUBMISSION:, ${submission}`);
+  console.log(`SUBMISSION:, ${JSON.stringify(submission, null, 2)}`);
   console.log(`CALLBACK ID: ${callbackId}`);
   switch (callbackId) {
     case 'login-manager':
