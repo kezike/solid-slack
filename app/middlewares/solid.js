@@ -25,7 +25,7 @@ const solidVerify = async (req, res, next) => {
       return res.status(httpStatus.BAD_REQUEST).json(e);
     }
   }
-  console.log('Authenticated User');
+  console.log('Authenticated User Session:', solidClient.session);
   return next();
 }
 
