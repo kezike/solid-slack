@@ -58,17 +58,25 @@ class FileManager {
 
   static async loadProfile(req, res) {
     try {
+      console.log('Loading profile...');
       const { trigger_id } = req.body;
       const token = slackClient.token;
       const userId = req.body.user_id;
+      console('Retrieving block id...');
       const block = getBlockById(fileViewer, 'file_viewer');
+      console.log('Successfully retrieved block id!');
       const solidClient = getSolidClientFromSlackId(userId);
       const profilePromise = await solidClient.fetch(webId);
       const profile = await profilePromise.text();
+      console.log('Successfully retrieved profile!');
+      console.log('Setting view block to profile...');
       setBlockFieldValue(block, ['text', 'text'], profile);
+      console.log('Sucessfully set view block to profile!');
       const view = JSON.stringify(fileViewer, null, 2);
       const viewPayload = { token, trigger_id, view };
+      console.log('profilePayload:', viewPayload);
       await slackClient.axios.post('views.open', viewPayload);
+      console.log('Successfully loaded profile!');
       res.status(httpStatus.OK).send();
       // return { status: httpStatus.OK, message: '' };
     } catch (e) {
