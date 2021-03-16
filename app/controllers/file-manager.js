@@ -59,6 +59,7 @@ class FileManager {
   static async loadProfile(req, res) {
     try {
       console.log('Loading profile...');
+      console.log('REQ BODY (loadProfile):', req.body);
       const { trigger_id } = req.body;
       const token = slackClient.token;
       const userId = req.body.user_id;
