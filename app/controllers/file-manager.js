@@ -60,10 +60,13 @@ class FileManager {
     try {
       console.log('Loading profile...');
       console.log('REQ BODY (loadProfile):', req.body);
-      const { trigger_id } = req.body;
+      const trigger_id = req.body.trigger_id;
+      console.log('TRIGGER ID (loadProfile):', trigger_id);
       const token = slackClient.token;
+      console.log('SLACK TOKEN (loadProfile):', token);
       const userId = req.body.user_id;
-      console('Retrieving block id...');
+      console.log('USER ID (loadProfile):', userId);
+      console('Retrieving block by id...');
       const block = getBlockById(fileViewer, 'file_viewer');
       console.log('Successfully retrieved block id!');
       const solidClient = getSolidClientFromSlackId(userId);
