@@ -66,7 +66,7 @@ class FileManager {
       console.log('SLACK TOKEN (loadProfile):', token);
       const userId = req.body.user_id;
       console.log('USER ID (loadProfile):', userId);
-      console('Retrieving block by id...');
+      console.log('Retrieving block by id...');
       const block = getBlockById(fileViewer, 'file_viewer');
       console.log('Successfully retrieved block id!');
       const solidClient = getSolidClientFromSlackId(userId);
