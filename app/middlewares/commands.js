@@ -10,7 +10,7 @@ const commandVerify = async (req, res, next) => {
   const reqBody = req.body;
   const commandText = reqBody.text.trim();
   const helpMessage = `
-    Hello, I am Solid Bot How can I help you today? (P.S.: I only speak Solid, so please address me as \`/solid COMMAND\`):
+    Hello, I am Solid Bot :wave: How can I help you today? (P.S.: I only speak Solid, so please address me as \`/solid COMMAND\`):
     - \`login\`: login to your Solid pod
     - \`logout\`: logout of your Solid pod
     - \`profile\`: fetch your Solid profile
@@ -26,7 +26,9 @@ const commandVerify = async (req, res, next) => {
   switch (command) {
     case 'login':
       const loginResponse = await AccountManager.exec(req, res, command);
-      return loginResponse;
+      const loginStatus = loginResponse.status;
+      const loginMessage = loginResponse.message;
+      return res.status(loginStatus).send(loginMessage);
     case 'help':
       return res.status(httpStatus.OK).send(helpMessage);
   }
