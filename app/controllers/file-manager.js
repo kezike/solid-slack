@@ -70,11 +70,15 @@ class FileManager {
       const block = getBlockById(fileViewer, 'file_viewer');
       console.log('Successfully retrieved block id!');
       const solidClient = getSolidClientFromSlackId(userId);
+      console.log('SOLID CLIENT (loadProfile):', solidClient);
+      console.log('Fetching profile...');
       const profilePromise = await solidClient.fetch(webId);
-      const profile = await profilePromise.text();
-      console.log('Successfully retrieved profile!');
+      console.log('Successfully retrieved profile:', profilePromise);
+      console.log('Fetching profile content...');
+      const profileContent = await profilePromise.text();
+      console.log('Successfully retrieved profile content:', profileContent);
       console.log('Setting view block to profile...');
-      setBlockFieldValue(block, ['text', 'text'], profile);
+      setBlockFieldValue(block, ['text', 'text'], profileContent);
       console.log('Sucessfully set view block to profile!');
       const view = JSON.stringify(fileViewer, null, 2);
       const viewPayload = { token, trigger_id, view };

@@ -17,7 +17,7 @@ const main = async () => {
     const session = await solidNodeClient.login(loginOptions);
     if (session) {
         const webId = session.webId;
-        console.log(`Your WebId: ${webId}`);
+        console.log(`Your WebID: ${webId}`);
         const profilePromise = await solidNodeClient.fetch(webId);
         const profile = await profilePromise.text();
         console.log(`Your Solid Profile:\n${profile}`);
