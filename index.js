@@ -29,7 +29,7 @@ app.post('/interactive', async (req, res) => {
   // return res.status(httpStatus.OK).send();
   // res.send
   const submission = JSON.parse(req.body.payload);
-  const callbackId = submission.callback_id;
+  const callbackId = submission.view.callback_id;
   console.log(`SUBMISSION:, ${JSON.stringify(submission, null, 2)}`);
   console.log(`CALLBACK ID: ${callbackId}`);
   switch (callbackId) {
