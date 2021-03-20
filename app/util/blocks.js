@@ -1,5 +1,3 @@
-const { profilePicture } = require('./app/assets/pictures');
-
 // Extract submitted value from modal input id
 const getInputValueFromSubmission = (submission, id) => {
   const view = submission.view;
@@ -39,11 +37,11 @@ const setBlockFieldValue = (block, path, value) => {
   }
 };
 
-// Add profile picture to file viewer
+/*// Add profile picture to file viewer
 const addProfilePicture = (viewConfig, imgUrl) => {
 
   const blocks = viewConfig.blocks;
   blocks.unshift('');
-};
+};*/
 
 module.exports = { getInputValueFromSubmission, getBlockById, getBlockFieldValue, setBlockFieldValue };
