@@ -11,7 +11,7 @@ const solidVerify = async (req, res, next) => {
   // console.log("SLACK USER ID:", userId);
   // console.log("RESPONSE URL:", responseUrl);
   let solidClient = getSolidClientFromSlackId(userId);
-  if (!solidClient || !solidClient.session.loggedIn) {
+  if (!solidClient || !solidClient.loggedIn()) {
     console.log('Unauthenticated User');
     try {
       // const accountCommandStatus = await AccountManager.exec(slackClient/*, commands*/, req.slack/*, res*/);

@@ -3,12 +3,37 @@ const { slackClient } = require('../middlewares/slack');
 const { getSolidClientFromSlackId, setSolidClientForSlackId } = require('../util/solid');
 const { getInputValueFromSubmission } = require('../util/blocks');
 const { httpStatus } = require('../util/http');
+const $rdf = require('rdflib');
+
+class SolidSlackClient {
+  /**
+   * nodeClient
+   */
+  constructor(nodeClient) {
+    const session = nodeClient.session;
+    const webId = session.webId;
+    const store = $rdf.graph();
+    const fetch = session.fetch;
+    const fetcher = $rdf.fetcher(store, { fetch });
+    this.webId = webId;
+    this.store = store;
+    this.fetch = fetch;
+    this.fetcher = fetcher;
+    this.sesion = session;
+    this.login = nodeClient.login;
+    this.loggedIn = session.loggedIn;
+  }
+
+  loggedIn() {
+    return this.session.loggedIn;
+  }
+}
 
 const solidLogin = async (req, res) => {
   const submission = JSON.parse(req.body.payload);
   const userId = submission.user.id;
   let solidClient = getSolidClientFromSlackId(userId);
-  if (solidClient && solidClient.session && solidClient.session.loggedIn) {
+  if (solidClient && solidClient.loggedIn()) {
     return res.status(httpStatus.OK).send('User is already logged into Solid!');
   }
   const solid_account = getInputValueFromSubmission(submission, 'solid_account');
@@ -19,7 +44,8 @@ const solidLogin = async (req, res) => {
     username: solid_uname,
     password: solid_pass,
   };
-  solidClient = new SolidNodeClient();
+  const nodeClient = new SolidNodeClient();
+  solidClient = new SolidSlackClient(nodeClient);
   try {
     const session = await solidClient.login(loginOptions);
     if (session) {
