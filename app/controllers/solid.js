@@ -43,12 +43,12 @@ const solidLogin = async (req, res) => {
     username: solid_uname,
     password: solid_pass,
   };
-  const nodeClient = new SolidNodeClient();
-  solidClient = new SolidSlackClient(nodeClient);
   try {
     const session = await solidClient.auth.login(loginOptions);
     if (session) {
       console.log('We found a Solid session!');
+      const nodeClient = new SolidNodeClient();
+      solidClient = new SolidSlackClient(nodeClient);
       setSolidClientForSlackId(userId, solidClient);
       const token = slackClient.token;
       const chatPayload = {
