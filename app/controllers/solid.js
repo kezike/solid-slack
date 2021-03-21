@@ -24,7 +24,7 @@ class SolidSlackClient {
     this.loggedIn = session.loggedIn;
   }
 
-  loggedIn() {
+  public loggedIn() {
     return this.session.loggedIn;
   }
 }
