@@ -74,7 +74,7 @@ class FileManager {
       console.log('SOLID CLIENT (loadProfile):', solidClient);
       console.log('Fetching profile...');
       // const profilePromise = await solidClient.fetch(webId);
-      console.log('Fetcher:', solidClient.fetcher);
+      console.log('Fetcher.load:', solidClient.fetcher.load);
       const profilePromise = await solidClient.fetcher.load(webId);
       console.log('Successfully retrieved profile:', profilePromise);
       console.log('Fetching profile content...');
