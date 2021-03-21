@@ -37,11 +37,15 @@ const setBlockFieldValue = (block, path, value) => {
   }
 };
 
-/*// Add profile picture to file viewer
-const addProfilePicture = (viewConfig, imgUrl) => {
+// Add profile picture to file viewer
+const customizeProfile = (viewConfig, name, picture) => {
+  const profileBlock = getBlockById(viewConfig, 'profile_picture');
+  if (name) {
+    setBlockFieldValue(profileBlock, ['title', 'text'], name.value);
+  }
+  if (picture) {
+    setBlockFieldValue(profileBlock, ['image_url'], picture.value);
+  }
+};
 
-  const blocks = viewConfig.blocks;
-  blocks.unshift('');
-};*/
-
-module.exports = { getInputValueFromSubmission, getBlockById, getBlockFieldValue, setBlockFieldValue };
+module.exports = { getInputValueFromSubmission, getBlockById, getBlockFieldValue, setBlockFieldValue, customizeProfile };

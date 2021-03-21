@@ -1,9 +1,10 @@
-const { getBlockById, setBlockFieldValue } = require('../util/blocks');
+const { getBlockById, setBlockFieldValue, customizeProfile } = require('../util/blocks');
 const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
 const fileViewer = require('../assets/file-viewer');
+const { FOAF, VCARD } = require('../util/namespaces');
 
 /**
  * @class FileManager
@@ -74,15 +75,16 @@ class FileManager {
       console.log('SOLID CLIENT (loadProfile):', solidClient);
       console.log(`Fetching profile at ${webId}...`);
       // const profilePromise = await solidClient.fetch(webId);
-      console.log('Fetcher.load:', solidClient.fetcher.load);
       const profilePromise = await solidClient.fetcher.load(webId);
       console.log(`Successfully retrieved profile at ${webId}!`);
-      console.log('Profile promise:', profilePromise);
       console.log('Fetching profile content...');
       // const profileContent = await profilePromise.text();
       const profileContent = profilePromise['responseText'];
       console.log('Successfully retrieved profile content:', profileContent);
       console.log('Setting view block to profile...');
+      const profileName = fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
+      const profilePicture = fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
+      customizeProfile(viewConfig, profileName, profilePicture);
       setBlockFieldValue(block, ['text', 'text'], profileContent);
       console.log('Sucessfully set view block to profile!');
       const view = JSON.stringify(fileViewer, null, 2);

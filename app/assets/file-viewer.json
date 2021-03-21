@@ -10,7 +10,7 @@
       "type": "image",
       "block_id": "profile_picture_block",
       "image_url": "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png",
-      "alt_text": "bitmoji smile",
+      "alt_text": "profile picture",
       "title": {
         "type": "plain_text",
         "text": "Me"
