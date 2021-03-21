@@ -72,11 +72,12 @@ class FileManager {
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
       console.log('SOLID CLIENT (loadProfile):', solidClient);
-      console.log('Fetching profile...');
+      console.log(`Fetching profile at ${webId}...`);
       // const profilePromise = await solidClient.fetch(webId);
       console.log('Fetcher.load:', solidClient.fetcher.load);
       const profilePromise = await solidClient.fetcher.load(webId);
-      console.log('Successfully retrieved profile:', profilePromise);
+      console.log(`Successfully retrieved profile at ${webId}!`);
+      console.log('Profile promise:', profilePromise);
       console.log('Fetching profile content...');
       // const profileContent = await profilePromise.text();
       const profileContent = profilePromise['responseText'];
