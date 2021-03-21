@@ -28,11 +28,8 @@ app.use(slackVerify);
 app.post('/interactive', async (req, res) => {
   const submission = JSON.parse(req.body.payload);
   const callbackId = submission.view.callback_id;
-  console.log(`SUBMISSION: ${JSON.stringify(submission, null, 2)}`);
-  console.log(`CALLBACK ID: ${callbackId}`);
   switch (callbackId) {
     case 'login-manager':
-      console.log('LOGGING IN...');
       const loginResponse = await solidLogin(req, res);
       return loginResponse;
     case 'file-viewer':

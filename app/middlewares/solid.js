@@ -8,7 +8,6 @@ const solidVerify = async (req, res, next) => {
   const userId = req.slack.user_id;
   let solidClient = getSolidClientFromSlackId(userId);
   if (!(solidClient && solidClient.loggedIn())) {
-    console.log('Unauthenticated User');
     try {
       return res.status(httpStatus.OK).send('You are not authenticated to a Solid account. Please run the following command to login to Solid: `/solid login`');
     } catch (e) {
@@ -16,7 +15,6 @@ const solidVerify = async (req, res, next) => {
       return res.status(httpStatus.BAD_REQUEST).json(e);
     }
   }
-  console.log('Authenticated User Session:', solidClient.session);
   return next();
 }
 

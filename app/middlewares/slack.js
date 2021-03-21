@@ -7,8 +7,6 @@ const slackToken = process.env.SLACK_ACCESS_TOKEN;
 const slackClient = new WebClient(slackToken);
 
 const slackVerify = (req, res, next) => {
-  console.log('Verifying signature...');
-
   // Define important variables
   const headerStr = qs.stringify(req.headers, {format: 'RFC1738'});
   const bodyStr = qs.stringify(req.body, {format: 'RFC1738'});
@@ -41,7 +39,6 @@ const slackVerify = (req, res, next) => {
   if (crypto.timingSafeEqual(
     Buffer.from(sigMine, 'utf8'),
     Buffer.from(sigSlack, 'utf8'))) {
-    console.log('Slack client successfully verified');
     req.slack = req.body;
     return next();
   } else {

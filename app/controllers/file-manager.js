@@ -46,37 +46,21 @@ class FileManager {
 
   static async loadProfile(req, res) {
     try {
-      console.log('Loading profile...');
-      console.log('REQ BODY (loadProfile):', req.body);
       const trigger_id = req.body.trigger_id;
-      console.log('TRIGGER ID (loadProfile):', trigger_id);
       const token = slackClient.token;
-      console.log('SLACK TOKEN (loadProfile):', token);
       const userId = req.body.user_id;
-      console.log('USER ID (loadProfile):', userId);
-      console.log('Retrieving block by id...');
       const block = getBlockById(fileViewer, 'file_viewer');
-      console.log('Successfully retrieved block id!');
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
-      console.log('SOLID CLIENT (loadProfile):', solidClient);
-      console.log(`Fetching profile at ${webId}...`);
       const profilePromise = await solidClient.fetcher.load(webId);
-      console.log(`Successfully retrieved profile at ${webId}!`);
-      console.log('Fetching profile content...');
       const profileContent = profilePromise['responseText'];
-      console.log('Successfully retrieved profile content:', profileContent);
-      console.log('Setting view block to profile...');
       const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
       const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
       customizeProfile(fileViewer, profileName, profilePicture);
       setBlockFieldValue(block, ['text', 'text'], profileContent);
-      console.log('Sucessfully set view block to profile!');
       const view = JSON.stringify(fileViewer, null, 2);
       const viewPayload = { token, trigger_id, view };
-      console.log('profilePayload:', viewPayload);
       await slackClient.axios.post('views.open', viewPayload);
-      console.log('Successfully loaded profile!');
       res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));

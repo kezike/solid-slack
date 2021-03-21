@@ -22,9 +22,6 @@ class AccountManager {
   }
 
   static async login(req, res) {
-    console.log("REQ BODY:", req.body);
-    console.log("TRIGGER ID:", req.body.trigger_id);
-    console.log("RESPONSE URL:", req.body.response_url);
     try {
       const { trigger_id } = req.body;
       const token = slackClient.token;

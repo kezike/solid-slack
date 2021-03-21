@@ -33,6 +33,7 @@ class SolidSlackClient {
 const solidLogin = async (req, res) => {
   const submission = JSON.parse(req.body.payload);
   const userId = submission.user.id;
+  console.log(`SUBMISSION: ${JSON.stringify(submission, null, 2)}`);
   let solidClient = getSolidClientFromSlackId(userId);
   if (solidClient && solidClient.loggedIn()) {
     return res.status(httpStatus.OK).send('You are already logged into Solid!');
@@ -57,16 +58,14 @@ const solidLogin = async (req, res) => {
         channel: userId,
         text: 'Congratulations: you have successfully logged into Solid!',
       };
-      console.log('We are sending you a confirmation message...');
-      await slackClient.axios.post('chat.postMessage', chatPayload);
-      console.log('We have sent you a confirmation message!');*/
+      await slackClient.axios.post('chat.postMessage', chatPayload);*/
       return res.status(httpStatus.OK).send('Congratulations: you have successfully logged into Solid!');
     }
     return res.status(httpStatus.OK).send('We were not able to authenticate you to your Solid account. Please double check your credentials and try again.');
   } catch (e) {
-    console.log(`We encountered the following error while logging into Solid: ${e.message}`);
+    const errorMessage = `We encountered the following error while logging into Solid: ${e.message}`;
     console.error(JSON.stringify(e, null, 2));
-    return res.status(httpStatus.BAD_REQUEST).json(e);
+    return res.status(httpStatus.BAD_REQUEST).send(errorMessage);
   }
 };
 
