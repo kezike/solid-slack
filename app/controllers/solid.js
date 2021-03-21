@@ -7,10 +7,10 @@ const $rdf = require('rdflib');
 
 class SolidSlackClient {
   /**
-   * nodeClient
+   * auth
    */
-  constructor(nodeClient) {
-    const session = nodeClient.session;
+  constructor(auth) {
+    const session = auth.session;
     const webId = session.webId;
     const store = $rdf.graph();
     const fetch = session.fetch;
@@ -20,7 +20,7 @@ class SolidSlackClient {
     this.fetch = fetch;
     this.fetcher = fetcher;
     this.session = session;
-    this.auth = nodeClient;
+    this.auth = auth;
   }
 
   loggedIn() {
