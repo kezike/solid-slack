@@ -21,10 +21,9 @@ class SolidSlackClient {
     this.fetcher = fetcher;
     this.sesion = session;
     this.auth = nodeClient;
-    this.loggedIn = session.loggedIn;
   }
 
-  public loggedIn() {
+  loggedIn() {
     return this.session.loggedIn;
   }
 }
