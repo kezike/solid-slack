@@ -73,10 +73,12 @@ class FileManager {
       const webId = solidClient.webId;
       console.log('SOLID CLIENT (loadProfile):', solidClient);
       console.log('Fetching profile...');
-      const profilePromise = await solidClient.fetch(webId);
+      // const profilePromise = await solidClient.fetch(webId);
+      const profilePromise = await solidClient.fetcher.load(webId);
       console.log('Successfully retrieved profile:', profilePromise);
       console.log('Fetching profile content...');
-      const profileContent = await profilePromise.text();
+      // const profileContent = await profilePromise.text();
+      const profileContent = profilePromise['responseText'];
       console.log('Successfully retrieved profile content:', profileContent);
       console.log('Setting view block to profile...');
       setBlockFieldValue(block, ['text', 'text'], profileContent);
