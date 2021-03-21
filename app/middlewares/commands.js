@@ -1,4 +1,4 @@
-const { /*httpClient,*/ httpStatus } = require('../util/http');
+const { httpStatus } = require('../util/http');
 const { AccountManager } = require('../controllers/account-manager');
 const { slackClient } = require('./slack');
 
@@ -26,9 +26,7 @@ const commandVerify = async (req, res, next) => {
   switch (command) {
     case 'login':
       const loginResponse = await AccountManager.exec(req, res, command);
-      const loginStatus = loginResponse.status;
-      const loginMessage = loginResponse.message;
-      return res.status(loginStatus).send(loginMessage);
+      return loginResponse;
     case 'help':
       return res.status(httpStatus.OK).send(helpMessage);
   }

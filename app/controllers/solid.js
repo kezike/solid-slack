@@ -35,7 +35,7 @@ const solidLogin = async (req, res) => {
   const userId = submission.user.id;
   let solidClient = getSolidClientFromSlackId(userId);
   if (solidClient && solidClient.loggedIn()) {
-    return res.status(httpStatus.OK).send('User is already logged into Solid!');
+    return res.status(httpStatus.OK).send('You are already logged into Solid!');
   }
   const solid_account = getInputValueFromSubmission(submission, 'solid_account');
   const solid_uname = getInputValueFromSubmission(submission, 'solid_uname');
@@ -50,9 +50,8 @@ const solidLogin = async (req, res) => {
   try {
     const session = await solidClient.login(loginOptions);
     if (session) {
-      console.log('We found a Solid session!');
       setSolidClientForSlackId(userId, solidClient);
-      const token = slackClient.token;
+      /*const token = slackClient.token;
       const chatPayload = {
         token,
         channel: userId,
@@ -60,8 +59,8 @@ const solidLogin = async (req, res) => {
       };
       console.log('We are sending you a confirmation message...');
       await slackClient.axios.post('chat.postMessage', chatPayload);
-      console.log('We have sent you a confirmation message!');
-      return res.status(httpStatus.OK).send();
+      console.log('We have sent you a confirmation message!');*/
+      return res.status(httpStatus.OK).send('Congratulations: you have successfully logged into Solid!');
     }
     return res.status(httpStatus.OK).send('We were not able to authenticate you to your Solid account. Please double check your credentials and try again.');
   } catch (e) {

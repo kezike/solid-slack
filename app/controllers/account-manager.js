@@ -31,10 +31,10 @@ class AccountManager {
       const view = JSON.stringify(viewFile, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
-      return { status: httpStatus.OK, message: '' };
+      return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
-      return { status: httpStatus.BAD_REQUEST, message: '' };
+      return res.status(httpStatus.BAD_REQUEST).send();
     }
   }
 }

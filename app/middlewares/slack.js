@@ -1,7 +1,7 @@
 const qs = require('qs');
 const crypto = require('crypto');
 const timingSafeCompare = require('tsscmp');
-const { /*httpClient,*/ httpStatus } = require('../util/http');
+const { httpStatus } = require('../util/http');
 const { WebClient } = require('@slack/client');
 const slackToken = process.env.SLACK_ACCESS_TOKEN;
 const slackClient = new WebClient(slackToken);

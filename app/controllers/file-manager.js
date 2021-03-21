@@ -22,8 +22,6 @@ class FileManager {
   static async exec(req, res, command) {
     switch (command) {
       case 'profile':
-        // const profileCommandStatus = await FileManager.loadProfile(slackClient, reqBody);
-        // return profileCommandStatus;
         const profileResponse = await FileManager.loadProfile(req, res);
         return profileResponse;
       case 'create':
@@ -44,18 +42,6 @@ class FileManager {
       default:
         return httpStatus.BAD_REQUEST;
     }
-
-    /*try {
-      const { trigger_id } = reqBody;
-      const token = slackClient.token;
-      const view = JSON.stringify(fileManager, null, 2);
-      const viewPayload = { token, trigger_id, view };
-      await slackClient.axios.post('views.open', viewPayload);
-      return httpStatus.OK;
-    } catch (e) {
-      console.error(JSON.stringify(e, null, 2));
-      return httpStatus.BAD_REQUEST;
-    }*/
   }
 
   static async loadProfile(req, res) {
@@ -75,11 +61,9 @@ class FileManager {
       const webId = solidClient.webId;
       console.log('SOLID CLIENT (loadProfile):', solidClient);
       console.log(`Fetching profile at ${webId}...`);
-      // const profilePromise = await solidClient.fetch(webId);
       const profilePromise = await solidClient.fetcher.load(webId);
       console.log(`Successfully retrieved profile at ${webId}!`);
       console.log('Fetching profile content...');
-      // const profileContent = await profilePromise.text();
       const profileContent = profilePromise['responseText'];
       console.log('Successfully retrieved profile content:', profileContent);
       console.log('Setting view block to profile...');
@@ -94,11 +78,9 @@ class FileManager {
       await slackClient.axios.post('views.open', viewPayload);
       console.log('Successfully loaded profile!');
       res.status(httpStatus.OK).send();
-      // return { status: httpStatus.OK, message: '' };
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
       res.status(httpStatus.BAD_REQUEST).send();
-      // return { status: httpStatus.BAD_REQUEST, message: '' };
     }
   }
 

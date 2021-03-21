@@ -48,4 +48,10 @@ const customizeProfile = (viewConfig, name, picture) => {
   }
 };
 
-module.exports = { getInputValueFromSubmission, getBlockById, getBlockFieldValue, setBlockFieldValue, customizeProfile };
+module.exports = {
+  getInputValueFromSubmission,
+  getBlockById,
+  getBlockFieldValue,
+  setBlockFieldValue,
+  customizeProfile,
+};

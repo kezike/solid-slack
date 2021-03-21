@@ -2,10 +2,10 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const { FileManager } = require('./app/controllers/file-manager');
 const { solidLogin } = require('./app/controllers/solid');
-const { /*httpClient,*/ httpStatus } = require('./app/util/http');
+const { httpStatus } = require('./app/util/http');
 const { commandVerify } = require('./app/middlewares/commands');
 const { slackClient, slackVerify } = require('./app/middlewares/slack');
-const { /*solidClient,*/ solidVerify } = require('./app/middlewares/solid');
+const { solidVerify } = require('./app/middlewares/solid');
 
 // Main app
 const app = express();
@@ -26,8 +26,6 @@ app.use(slackVerify);
 // It may be worth fixing that middleware method
 // to work with this endpoint.
 app.post('/interactive', async (req, res) => {
-  // return res.status(httpStatus.OK).send();
-  // res.send
   const submission = JSON.parse(req.body.payload);
   const callbackId = submission.view.callback_id;
   console.log(`SUBMISSION: ${JSON.stringify(submission, null, 2)}`);
@@ -56,17 +54,9 @@ app.post('/', async (req, res) => {
   const command = commands[0];
   switch (command) {
     case 'profile':
-      /*const profileResponse = await FileManager.exec(req, res, command);
-      const profileStatus = profileResponse.status;
-      const profileMessage = profileResponse.message;
-      return res.status(profileStatus).send(profileMessage);*/
       const profileResponse = await FileManager.exec(req, res, command);
       return profileResponse;
     case 'file':
-      /*const fileResponse = await FileManager.exec(req, res, command);
-      const fileStatus = fileResponse.status;
-      const fileMessage = fileResponse.message;
-      return res.status(fileStatus).send(fileMessage);*/
       const fileResponse = await FileManager.exec(req, res, command);
       return fileResponse;
     default:
