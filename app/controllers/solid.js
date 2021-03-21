@@ -10,17 +10,18 @@ class SolidSlackClient {
    * auth
    */
   constructor(auth) {
-    const session = auth.session;
+    this.auth = auth;
+  }
+
+  async login(loginOptions) {
+    const session = await this.auth.login(loginOptions);
     const webId = session.webId;
     const store = $rdf.graph();
     const fetch = session.fetch;
     const fetcher = $rdf.fetcher(store, { fetch });
     this.webId = webId;
-    this.store = store;
-    this.fetch = fetch;
     this.fetcher = fetcher;
     this.session = session;
-    this.auth = auth;
   }
 
   loggedIn() {
@@ -43,12 +44,12 @@ const solidLogin = async (req, res) => {
     username: solid_uname,
     password: solid_pass,
   };
+  const nodeClient = new SolidNodeClient();
+  solidClient = new SolidSlackClient(nodeClient);
   try {
-    const session = await solidClient.auth.login(loginOptions);
+    const session = await solidClient.login(loginOptions);
     if (session) {
       console.log('We found a Solid session!');
-      const nodeClient = new SolidNodeClient();
-      solidClient = new SolidSlackClient(nodeClient);
       setSolidClientForSlackId(userId, solidClient);
       const token = slackClient.token;
       const chatPayload = {
