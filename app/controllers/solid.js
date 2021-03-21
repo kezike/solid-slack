@@ -22,6 +22,7 @@ class SolidSlackClient {
     this.webId = webId;
     this.fetcher = fetcher;
     this.session = session;
+    return session;
   }
 
   loggedIn() {
