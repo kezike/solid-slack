@@ -82,8 +82,8 @@ class FileManager {
       const profileContent = profilePromise['responseText'];
       console.log('Successfully retrieved profile content:', profileContent);
       console.log('Setting view block to profile...');
-      const profileName = fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
-      const profilePicture = fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
+      const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
+      const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
       customizeProfile(viewConfig, profileName, profilePicture);
       setBlockFieldValue(block, ['text', 'text'], profileContent);
       console.log('Sucessfully set view block to profile!');
