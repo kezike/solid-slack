@@ -20,7 +20,7 @@ class SolidSlackClient {
     this.fetch = fetch;
     this.fetcher = fetcher;
     this.sesion = session;
-    this.login = nodeClient.login;
+    this.auth = nodeClient;
     this.loggedIn = session.loggedIn;
   }
 
@@ -47,7 +47,7 @@ const solidLogin = async (req, res) => {
   const nodeClient = new SolidNodeClient();
   solidClient = new SolidSlackClient(nodeClient);
   try {
-    const session = await solidClient.login(loginOptions);
+    const session = await solidClient.auth.login(loginOptions);
     if (session) {
       console.log('We found a Solid session!');
       setSolidClientForSlackId(userId, solidClient);
