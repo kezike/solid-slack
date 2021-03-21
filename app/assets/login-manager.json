@@ -67,7 +67,6 @@
     {
       "block_id": "login_conversation_select_block",
       "type": "input",
-      "optional": true,
       "label": {
         "type": "plain_text",
         "text": "Select a channel to receive login confirmation"
