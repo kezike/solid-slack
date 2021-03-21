@@ -19,7 +19,7 @@ class SolidSlackClient {
     this.store = store;
     this.fetch = fetch;
     this.fetcher = fetcher;
-    this.sesion = session;
+    this.session = session;
     this.auth = nodeClient;
   }
 
