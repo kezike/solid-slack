@@ -5,6 +5,7 @@ const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
 const fileViewer = require('../assets/file-viewer');
 const { FOAF, VCARD } = require('../util/namespaces');
+const $rdf = require('rdflib');
 
 /**
  * @class FileManager
