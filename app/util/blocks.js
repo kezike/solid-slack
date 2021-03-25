@@ -50,7 +50,7 @@ const customizeProfile = (viewConfig, name, picture) => {
   }
 };
 
-// remove slashes from end of URL
+// remove slashes from end of URL (necessary only when running RegExp.exec)
 const removeSlashes = (url) => {
   let urlTrimmed = url;
   while (urlTrimmed.endsWith('/')) {
@@ -59,24 +59,50 @@ const removeSlashes = (url) => {
   return urlTrimmed;
 };
 
-// format URL link in markdown if possible
-const formatMarkdownLink = (linkOrText) => {
-  const linkSegmentPattern = /([\w\.\-]+$)/;
-  const result = urlVal.isWebUri(linkOrText) ? `<${linkOrText}|${linkSegmentPattern.exec(linkOrText)[1]}>` : linkOrText;
+// format markdown value
+const formatMarkdownValue = (value) => {
+  const uriSegmentPattern = /([\w\.\-]+$)/;
+  const valueTrimmed = removeSlashes(value);
+  const result = urlVal.isWebUri(value) ? `<${value}|${uriSegmentPattern.exec(valueTrimmed)[1]}>` : value;
   return result;
 };
 
-// process RDF value
-const cleanRdfValue = (value) => {
-  return removeSlashes(formatMarkdownLink(value));
+// process RDF node until we reach value
+const serializeRdfNode = (node) => {
+  let result;
+  if (node.value) {
+    return node.value;
+  }
+  if (node.elements) {
+    const elements = node.elements;
+    result = '[';
+    for (let i = 0; i < elements.length; i++) {
+      result += '\n  ';
+      const element = elements[i];
+      result += serializeRdfNode(element);
+      if (i === elements.length - 1) {
+        result += '\n]';
+      } else {
+        result += ',';
+      }
+    }
+    return result;
+  }
+};
+
+// prepare RDF node for display
+const displayRdfNode = (node) => {
+  let result = serializeRdfNode(node);
+  result = formatMarkdownValue(result);
+  return result;
 };
 
 // create block from RDF statement
 const makeRdfBlock = (statement, index) => {
   console.log(`making rdf block ${index}...`);
-  const sub = cleanRdfValue(statement.subject.value);
-  const pred = cleanRdfValue(statement.predicate.value);
-  const obj = cleanRdfValue(statement.object.value);
+  const sub = displayRdfNode(statement.subject);
+  const pred = displayRdfNode(statement.predicate);
+  const obj = displayRdfNode(statement.object);
   const mrkdwn = `${index}. ${sub} ${pred} ${obj}`
   console.log(`finished rdf block ${index}`);
   return {
