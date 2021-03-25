@@ -60,19 +60,19 @@
         "action_id": "solid_pass_input",
         "placeholder": {
           "type": "plain_text",
-          "text": "e.g., @L1c3P@ssw0Rd1234"
+          "text": "e.g., @L1c3P@$$w0rd1234"
         }
       }
     },
     {
-      "block_id": "login_conversation_select_block",
+      "block_id": "login_conversations_select_block",
       "type": "input",
       "label": {
         "type": "plain_text",
         "text": "Select a channel to receive login confirmation"
       },
       "element": {
-        "action_id": "login_conversation_select_input",
+        "action_id": "login_conversations_select_input",
         "type": "conversations_select",
         "response_url_enabled": true,
         "default_to_current_conversation": true

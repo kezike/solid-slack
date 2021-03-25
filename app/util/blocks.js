@@ -48,10 +48,47 @@ const customizeProfile = (viewConfig, name, picture) => {
   }
 };
 
+// create block from RDF statement
+const makeRdfBlock = (statement, index) => {
+  const sub = statement.subject.value;
+  const pred = statement.predicate.value;
+  const obj = statement.object.value;
+  const pattPretty = /([\w\.\-]+$)/;
+  const subPretty = pattPretty.exec(sub)[1];
+  const predPretty = pattPretty.exec(pred)[1];
+  const objPretty = pattPretty.exec(obj)[1];
+  const mrkdwn = `${index}. <${sub}|${subPretty}> <${pred}|${predPretty}> <${obj}|${objPretty}>`
+  return {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": mrkdwn
+    }
+  };
+}; 
+
+// convert RDF statements to blocks
+const convertRdfToBlocks = (statements) => {
+  const blocks = [];
+  for (let i = 0; i < statements.length; i++) {
+    const statement = statements[i];
+    const block = makeRdfBlock(statement, i);
+    blocks.push(block);
+  }
+  return blocks;
+};
+
+// add RDF statements to view
+const addRdfBlocks = (viewConfig, statements) => {
+  const rdfBlocks = convertRdfToBlocks(statements);
+  viewConfig.blocks = viewConfig.blocks.concat(rdfBlocks);
+};
+
 module.exports = {
   getInputValueFromSubmission,
   getBlockById,
   getBlockFieldValue,
   setBlockFieldValue,
   customizeProfile,
+  addRdfBlocks,
 };

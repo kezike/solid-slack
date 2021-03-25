@@ -1,4 +1,9 @@
-const { getBlockById, setBlockFieldValue, customizeProfile } = require('../util/blocks');
+const {
+  getBlockById,
+  setBlockFieldValue,
+  customizeProfile,
+  addRdfBlocks,
+} = require('../util/blocks');
 const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
@@ -57,7 +62,9 @@ class FileManager {
       const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
       const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
       customizeProfile(fileViewer, profileName, profilePicture);
-      setBlockFieldValue(block, ['text', 'text'], profileContent);
+      const statements = solidClient.fetcher.store.statements;
+      addRdfBlocks(fileViewer, statements);
+      // setBlockFieldValue(block, ['text', 'text'], profileContent);
       const view = JSON.stringify(fileViewer, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
