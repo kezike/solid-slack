@@ -50,6 +50,7 @@ const customizeProfile = (viewConfig, name, picture) => {
 
 // create block from RDF statement
 const makeRdfBlock = (statement, index) => {
+  console.log(`making rdf block ${index}...`);
   const sub = statement.subject.value;
   const pred = statement.predicate.value;
   const obj = statement.object.value;
@@ -58,6 +59,7 @@ const makeRdfBlock = (statement, index) => {
   const predPretty = pattPretty.exec(pred)[1];
   const objPretty = pattPretty.exec(obj)[1];
   const mrkdwn = `${index}. <${sub}|${subPretty}> <${pred}|${predPretty}> <${obj}|${objPretty}>`
+  console.log(`finished rdf block ${index}`);
   return {
     "type": "section",
     "text": {
@@ -69,6 +71,7 @@ const makeRdfBlock = (statement, index) => {
 
 // convert RDF statements to blocks
 const convertRdfToBlocks = (statements) => {
+  console.log(`converting rdf to blocks...`);
   const blocks = [];
   for (let i = 0; i < statements.length; i++) {
     const statement = statements[i];
@@ -78,10 +81,12 @@ const convertRdfToBlocks = (statements) => {
   return blocks;
 };
 
-// add RDF statements to view
+// add RDF statement blocks
 const addRdfBlocks = (viewConfig, statements) => {
+  console.log('adding rdf statement blocks...');
   const rdfBlocks = convertRdfToBlocks(statements);
   viewConfig.blocks = viewConfig.blocks.concat(rdfBlocks);
+  console.log('viewConfig.blocks:', viewConfig.blocks);
 };
 
 module.exports = {
