@@ -32,6 +32,7 @@
     "qs": "^6.9.3",
     "rdflib": "^0.19.1",
     "solid-node-client": "^1.2.4",
-    "tsscmp": "^1.0.6"
+    "tsscmp": "^1.0.6",
+    "valid-url": "^1.0.9"
   }
 }

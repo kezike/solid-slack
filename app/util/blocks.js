@@ -1,3 +1,5 @@
+const urlVal = require('valid-url');
+
 // Extract submitted value from modal input id
 const getInputValueFromSubmission = (submission, id) => {
   const view = submission.view;
@@ -48,17 +50,23 @@ const customizeProfile = (viewConfig, name, picture) => {
   }
 };
 
+// format URL link in markdown if possible
+const formatMarkdownLink = (linkOrText) => {
+  const linkSegmentPattern = /([\w\.\-]+$)/;
+  const result = urlVal.isWebUri(linkOrText) ? `<${linkOrText}|${linkSegmentPattern.exec(linkOrText)[1]}>` : linkOrText;
+  return result;
+};
+
 // create block from RDF statement
 const makeRdfBlock = (statement, index) => {
   console.log(`making rdf block ${index}...`);
   const sub = statement.subject.value;
   const pred = statement.predicate.value;
   const obj = statement.object.value;
-  const pattPretty = /([\w\.\-]+$)/;
-  const subPretty = pattPretty.exec(sub)[1];
-  const predPretty = pattPretty.exec(pred)[1];
-  const objPretty = pattPretty.exec(obj)[1];
-  const mrkdwn = `${index}. <${sub}|${subPretty}> <${pred}|${predPretty}> <${obj}|${objPretty}>`
+  const subFmtd = formatMarkdownLink(sub);
+  const predFmtd = formatMarkdownLink(pred);
+  const objFmtd = formatMarkdownLink(obj);
+  const mrkdwn = `${index}. ${subFmtd} ${predFmtd} ${objFmtd}`
   console.log(`finished rdf block ${index}`);
   return {
     "type": "section",
