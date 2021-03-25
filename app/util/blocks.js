@@ -50,6 +50,15 @@ const customizeProfile = (viewConfig, name, picture) => {
   }
 };
 
+// remove slashes from end of URL
+const removeSlashes = (url) => {
+  let urlTrimmed = url;
+  while (urlTrimmed.endsWith('/')) {
+    urlTrimmed = urlTrimmed.substring(0, urlTrimmed.length - 1);
+  }
+  return urlTrimmed;
+};
+
 // format URL link in markdown if possible
 const formatMarkdownLink = (linkOrText) => {
   const linkSegmentPattern = /([\w\.\-]+$)/;
@@ -57,16 +66,18 @@ const formatMarkdownLink = (linkOrText) => {
   return result;
 };
 
+// process RDF value
+const cleanRdfValue = (value) => {
+  return removeSlashes(formatMarkdownLink(value));
+};
+
 // create block from RDF statement
 const makeRdfBlock = (statement, index) => {
   console.log(`making rdf block ${index}...`);
-  const sub = statement.subject.value;
-  const pred = statement.predicate.value;
-  const obj = statement.object.value;
-  const subFmtd = formatMarkdownLink(sub);
-  const predFmtd = formatMarkdownLink(pred);
-  const objFmtd = formatMarkdownLink(obj);
-  const mrkdwn = `${index}. ${subFmtd} ${predFmtd} ${objFmtd}`
+  const sub = cleanRdfValue(statement.subject.value);
+  const pred = cleanRdfValue(statement.predicate.value);
+  const obj = cleanRdfValue(statement.object.value);
+  const mrkdwn = `${index}. ${sub} ${pred} ${obj}`
   console.log(`finished rdf block ${index}`);
   return {
     "type": "section",
