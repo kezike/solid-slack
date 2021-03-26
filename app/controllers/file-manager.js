@@ -62,7 +62,8 @@ class FileManager {
       const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
       const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
       customizeProfile(fileViewer, profileName, profilePicture);
-      const statements = solidClient.fetcher.store.statements;
+      // const statements = solidClient.fetcher.store.statements;
+      const statements = solidClient.fetcher.store.match($rdf.sym(webId), undefined, undefined);
       addRdfBlocks(fileViewer, statements);
       // setBlockFieldValue(block, ['text', 'text'], profileContent);
       const view = JSON.stringify(fileViewer, null, 2);

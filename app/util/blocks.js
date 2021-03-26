@@ -103,7 +103,7 @@ const makeRdfBlock = (statement, index) => {
   const sub = displayRdfNode(statement.subject);
   const pred = displayRdfNode(statement.predicate);
   const obj = displayRdfNode(statement.object);
-  const mrkdwn = `${index}. ${sub} ${pred} ${obj}`
+  const mrkdwn = `${index + 1}. ${sub} ${pred} ${obj}`
   console.log(`finished rdf block ${index}`);
   return {
     "type": "section",
