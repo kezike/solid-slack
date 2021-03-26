@@ -4,11 +4,12 @@ const {
   customizeProfile,
   addRdfBlocks,
 } = require('../util/blocks');
+const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
-const fileViewer = require('../assets/file-viewer');
+const fileViewer = _.clone(require('../assets/file-viewer'));
 const { FOAF, VCARD } = require('../util/namespaces');
 const $rdf = require('rdflib');
 
