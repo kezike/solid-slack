@@ -51,7 +51,7 @@ const solidLogin = async (req, res) => {
   try {
     const session = await solidClient.login(loginOptions);
     if (session) {
-      res.status(httpStatus.OK);
+      res.status(httpStatus.OK).send();
       setSolidClientForSlackId(userId, solidClient);
       const token = slackClient.token;
       const chatPayload = {
