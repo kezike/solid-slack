@@ -9,7 +9,7 @@ const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
-let fileViewer = require('../assets/file-viewer');
+const fileViewer = require('../assets/file-viewer');
 const { FOAF, VCARD } = require('../util/namespaces');
 const $rdf = require('rdflib');
 
@@ -52,23 +52,23 @@ class FileManager {
 
   static async loadProfile(req, res) {
     try {
-      fileViewer = _.cloneDeep(fileViewer);
+      const fileViewerConfig = _.cloneDeep(fileViewerConfig);
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
-      const block = getBlockById(fileViewer, 'file_viewer');
+      const block = getBlockById(fileViewerConfig, 'file_viewer');
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
       const profilePromise = await solidClient.fetcher.load(webId);
       const profileContent = profilePromise['responseText'];
       const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
       const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
-      customizeProfile(fileViewer, profileName, profilePicture);
+      customizeProfile(fileViewerConfig, profileName, profilePicture);
       // const statements = solidClient.fetcher.store.statements;
       const statements = solidClient.fetcher.store.match($rdf.sym(webId), undefined, undefined);
-      addRdfBlocks(fileViewer, statements);
+      addRdfBlocks(fileViewerConfig, statements);
       // setBlockFieldValue(block, ['text', 'text'], profileContent);
-      const view = JSON.stringify(fileViewer, null, 2);
+      const view = JSON.stringify(fileViewerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
       res.status(httpStatus.OK).send();
