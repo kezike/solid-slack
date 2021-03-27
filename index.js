@@ -55,7 +55,7 @@ app.post('/', async (req, res) => {
       const profileResponse = await FileManager.exec(req, res, command);
       return profileResponse;
     case 'account':
-      const accountResponse = await AccountManager.exec(req, res, command);
+      const accountResponse = await FileManager.exec(req, res, command);
       return accountResponse;
     case 'file':
       const fileResponse = await FileManager.exec(req, res, command);

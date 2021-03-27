@@ -33,7 +33,7 @@ class FileManager {
         const profileResponse = await FileManager.loadProfile(req, res);
         return profileResponse;
       case 'account':
-        const accountResponse = await AccountManager.loadAccount(req, res);
+        const accountResponse = await FileManager.loadAccount(req, res);
         return accountResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
