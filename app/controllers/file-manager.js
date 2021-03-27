@@ -9,7 +9,7 @@ const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
-const fileViewer = _.clone(require('../assets/file-viewer'));
+let fileViewer = require('../assets/file-viewer');
 const { FOAF, VCARD } = require('../util/namespaces');
 const $rdf = require('rdflib');
 
@@ -52,6 +52,7 @@ class FileManager {
 
   static async loadProfile(req, res) {
     try {
+      fileViewer = _.clone(fileViewer);
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
