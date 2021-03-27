@@ -51,6 +51,7 @@ const solidLogin = async (req, res) => {
   try {
     const session = await solidClient.login(loginOptions);
     if (session) {
+      res.status(httpStatus.OK);
       setSolidClientForSlackId(userId, solidClient);
       const token = slackClient.token;
       const chatPayload = {
@@ -61,8 +62,9 @@ const solidLogin = async (req, res) => {
       await slackClient.axios.post('chat.postMessage', chatPayload);
       // return res.status(httpStatus.OK).send('Congratulations: you have successfully logged into Solid!');
       // return res.status(httpStatus.OK).send();
-      return res.status(httpStatus.NO_CONTENT).send();
+      // return res.status(httpStatus.NO_CONTENT).send();
       // return res.send();
+      return;
       /*const responseUrl = submission.response_urls[0]['response_url'];
       console.log('responseUrl:', responseUrl);
       const chatPayload = {
