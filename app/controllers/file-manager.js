@@ -52,7 +52,7 @@ class FileManager {
 
   static async loadProfile(req, res) {
     try {
-      fileViewer = _.clone(fileViewer);
+      fileViewer = _.cloneDeep(fileViewer);
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
