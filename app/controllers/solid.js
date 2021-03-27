@@ -52,23 +52,22 @@ const solidLogin = async (req, res) => {
     const session = await solidClient.login(loginOptions);
     if (session) {
       setSolidClientForSlackId(userId, solidClient);
-      /*const token = slackClient.token;
+      const token = slackClient.token;
       const chatPayload = {
         token,
         channel: userId,
         text: 'Congratulations: you have successfully logged into Solid!',
       };
       await slackClient.axios.post('chat.postMessage', chatPayload);
-      return res.status(httpStatus.OK).send('Congratulations: you have successfully logged into Solid!');*/
-      const responseUrl = submission.response_urls[0]['response_url'];
+      // return res.status(httpStatus.OK).send('Congratulations: you have successfully logged into Solid!');
+      return res.send();
+      /*const responseUrl = submission.response_urls[0]['response_url'];
       console.log('responseUrl:', responseUrl);
       const chatPayload = {
         text: 'Congratulations: you have successfully logged into Solid!',
       };
       await slackClient.axios.post(responseUrl, chatPayload);
-      return res.send();
-      // return res.status(httpStatus.OK).send();
-      // return res.send('Congratulations: you have successfully logged into Solid!');
+      return res.send();*/
     }
     return res.status(httpStatus.OK).send('We were not able to authenticate you to your Solid account. Please double check your credentials and try again.');
   } catch (e) {
