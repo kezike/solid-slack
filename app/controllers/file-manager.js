@@ -2,15 +2,17 @@ const {
   getBlockById,
   setBlockFieldValue,
   customizeProfile,
-  addRdfBlocks,
+  addProfileBlocks,
+  addAccountBlocks,
 } = require('../util/blocks');
 const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
-const fileViewer = require('../assets/file-viewer');
-const { FOAF, VCARD } = require('../util/namespaces');
+const profileViewer = require('../assets/profile-viewer');
+const accountManager = require('../assets/account-manager');
+const { FOAF, VCARD, SOLID } = require('../util/namespaces');
 const $rdf = require('rdflib');
 
 /**
@@ -30,6 +32,9 @@ class FileManager {
       case 'profile':
         const profileResponse = await FileManager.loadProfile(req, res);
         return profileResponse;
+      case 'account':
+        const accountResponse = await AccountManager.loadAccount(req, res);
+        return accountResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
@@ -52,29 +57,52 @@ class FileManager {
 
   static async loadProfile(req, res) {
     try {
-      const fileViewerConfig = _.cloneDeep(fileViewer);
+      const profileViewerConfig = _.cloneDeep(profileViewer);
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
-      const block = getBlockById(fileViewerConfig, 'file_viewer');
+      // const block = getBlockById(profileViewerConfig, 'file_viewer');
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
       const profilePromise = await solidClient.fetcher.load(webId);
       const profileContent = profilePromise['responseText'];
       const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
       const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
-      customizeProfile(fileViewerConfig, profileName, profilePicture);
+      customizeProfile(profileViewerConfig, profileName, profilePicture);
       // const statements = solidClient.fetcher.store.statements;
       const statements = solidClient.fetcher.store.match($rdf.sym(webId), undefined, undefined);
-      addRdfBlocks(fileViewerConfig, statements);
+      addProfileBlocks(profileViewerConfig, statements);
       // setBlockFieldValue(block, ['text', 'text'], profileContent);
-      const view = JSON.stringify(fileViewerConfig, null, 2);
+      const view = JSON.stringify(profileViewerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
       res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
       res.status(httpStatus.BAD_REQUEST).send();
+    }
+  }
+
+  static async loadAccount(req, res) {
+    try {
+      const accountManagerConfig = _.cloneDeep(accountManager);
+      const { trigger_id } = req.body;
+      const token = slackClient.token;
+      const userId = req.body.user_id;
+      const solidClient = getSolidClientFromSlackId(userId);
+      const webId = solidClient.webId;
+      await solidClient.fetcher.load(webId);
+      const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
+      await solidClient.fetcher.load(account);
+      const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
+      addAccountBlocks(accountManagerConfig, statements);
+      const view = JSON.stringify(accountManagerConfig, null, 2);
+      const viewPayload = { token, trigger_id, view };
+      await slackClient.axios.post('views.open', viewPayload);
+      return res.status(httpStatus.OK).send();
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
     }
   }
 

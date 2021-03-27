@@ -1,6 +1,6 @@
 {
   "type": "modal",
-  "callback_id": "file-viewer",
+  "callback_id": "profile-viewer",
   "title": {
     "type": "plain_text",
     "text": "Solid Profile"

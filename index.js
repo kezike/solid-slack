@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const { AccountManager } = require('./app/controllers/account-manager');
 const { FileManager } = require('./app/controllers/file-manager');
 const { solidLogin } = require('./app/controllers/solid');
 const { httpStatus } = require('./app/util/http');
@@ -32,7 +33,7 @@ app.post('/interactive', async (req, res) => {
     case 'login-manager':
       const loginResponse = await solidLogin(req, res);
       return loginResponse;
-    case 'file-viewer':
+    case 'profile-viewer':
       return res.status(httpStatus.OK).send();
     default:
       return res.status(httpStatus.OK).send(`Unrecognized interactive component \`callback_id\`: \`${callbackId}\``);
@@ -53,6 +54,9 @@ app.post('/', async (req, res) => {
     case 'profile':
       const profileResponse = await FileManager.exec(req, res, command);
       return profileResponse;
+    case 'account':
+      const accountResponse = await AccountManager.exec(req, res, command);
+      return accountResponse;
     case 'file':
       const fileResponse = await FileManager.exec(req, res, command);
       return fileResponse;

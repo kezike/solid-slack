@@ -21,7 +21,6 @@ const commandVerify = async (req, res, next) => {
   if (commandText === '') {
     return res.status(httpStatus.OK).send(helpMessage);
   }
-  res.send();
   const commands = commandText.split(' ');
   const command = commands[0];
   switch (command) {

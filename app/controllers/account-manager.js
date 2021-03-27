@@ -1,6 +1,7 @@
+const _ = require('lodash');
 const { httpStatus } = require('../util/http');
 const { slackClient } = require('../middlewares/slack');
-const viewFile = require('../assets/login-manager');
+const loginManager = require('../assets/login-manager');
 
 /**
  * @class AccountManager
@@ -25,7 +26,7 @@ class AccountManager {
     try {
       const { trigger_id } = req.body;
       const token = slackClient.token;
-      const view = JSON.stringify(viewFile, null, 2);
+      const view = JSON.stringify(loginManager, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
       return res.status(httpStatus.OK).send();

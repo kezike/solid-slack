@@ -60,15 +60,15 @@ const removeSlashes = (url) => {
 };
 
 // format markdown value
-const formatMarkdownValue = (value) => {
+const formatProfileMarkdownValue = (value) => {
   const uriSegmentPattern = /([\w\.\-]+$)/;
   const valueTrimmed = removeSlashes(value);
   const result = urlVal.isWebUri(value) ? `<${value}|${uriSegmentPattern.exec(valueTrimmed)[1]}>` : value;
   return result;
 };
 
-// process RDF node until we reach value
-const serializeRdfNode = (node) => {
+// process profile RDF node until we reach value
+const serializeProfileRdfNode = (node) => {
   let result;
   if (node.value) {
     return node.value;
@@ -79,7 +79,7 @@ const serializeRdfNode = (node) => {
     for (let i = 0; i < elements.length; i++) {
       result += '\n  ';
       const element = elements[i];
-      result += serializeRdfNode(element);
+      result += serializeProfileRdfNode(element);
       if (i === elements.length - 1) {
         result += '\n]';
       } else {
@@ -90,21 +90,19 @@ const serializeRdfNode = (node) => {
   }
 };
 
-// prepare RDF node for display
-const displayRdfNode = (node) => {
-  let result = serializeRdfNode(node);
-  result = formatMarkdownValue(result);
+// prepare profile RDF node for display
+const displayProfileRdfNode = (node) => {
+  let result = serializeProfileRdfNode(node);
+  result = formatProfileMarkdownValue(result);
   return result;
 };
 
-// create block from RDF statement
-const makeRdfBlock = (statement, index) => {
-  console.log(`making rdf block ${index}...`);
-  const sub = displayRdfNode(statement.subject);
-  const pred = displayRdfNode(statement.predicate);
-  const obj = displayRdfNode(statement.object);
+// create block from profile RDF statement
+const makeProfileBlock = (statement, index) => {
+  const sub = displayProfileRdfNode(statement.subject);
+  const pred = displayProfileRdfNode(statement.predicate);
+  const obj = displayProfileRdfNode(statement.object);
   const mrkdwn = `${index + 1}. ${sub} ${pred} ${obj}`
-  console.log(`finished rdf block ${index}`);
   return {
     "type": "section",
     "text": {
@@ -114,24 +112,62 @@ const makeRdfBlock = (statement, index) => {
   };
 }; 
 
-// convert RDF statements to blocks
-const convertRdfToBlocks = (statements) => {
-  console.log(`converting rdf to blocks...`);
+// convert profile RDF statements to blocks
+const convertProfileRdfToBlocks = (statements) => {
   const blocks = [];
   for (let i = 0; i < statements.length; i++) {
     const statement = statements[i];
-    const block = makeRdfBlock(statement, i);
+    const block = makeProfileBlock(statement, i);
     blocks.push(block);
   }
   return blocks;
 };
 
-// add RDF statement blocks
-const addRdfBlocks = (viewConfig, statements) => {
-  console.log('adding rdf statement blocks...');
-  const rdfBlocks = convertRdfToBlocks(statements);
-  viewConfig.blocks = viewConfig.blocks.concat(rdfBlocks);
-  console.log('viewConfig.blocks:', viewConfig.blocks);
+// add profile RDF statement blocks
+const addProfileBlocks = (viewConfig, statements) => {
+  const profileBlocks = convertProfileRdfToBlocks(statements);
+  viewConfig.blocks = viewConfig.blocks.concat(profileBlocks);
+};
+
+// create block from account RDF statement
+const makeAccountBlock = (statement, index) => {
+  const sub = statement.subject.value;
+  const pred = statement.predicate.value;
+  const obj = statement.object.value;
+  const coreId = `${sub}-${pred}-${obj}_${index}`;
+  const value = `account_item_value_${coreId}`;
+  const actionId = `account_item_action_id_${coreId}`;
+  return {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": obj
+        },
+        "value": value,
+        "action_id": actionId
+      }
+    ]
+  };
+};
+
+// convert account RDF statements to blocks
+const convertAccountRdfToBlocks = (statements) => {
+  const blocks = [];
+  for (let i = 0; i < statements.length; i++) {
+    const statement = statements[i];
+    const block = makeAccountBlock(statement, i);
+    blocks.push(block);
+  }
+  return blocks;
+};
+
+// add account RDF statement blocks
+const addAccountBlocks = (viewConfig) => {
+  const accountBlocks = convertAccountRdfToBlocks(statements);
+  viewConfig.blocks = viewConfig.blocks.concat(accountBlocks);
 };
 
 module.exports = {
@@ -140,5 +176,6 @@ module.exports = {
   getBlockFieldValue,
   setBlockFieldValue,
   customizeProfile,
-  addRdfBlocks,
+  addProfileBlocks,
+  addAccountBlocks,
 };
