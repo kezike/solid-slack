@@ -164,6 +164,7 @@ const makeAccountBlock = (statement, index) => {
   };*/
   return {
     "type": "section",
+    "block_id": coreId,
     "text": {
       "type": "mrkdwn",
       "text": `<${obj}|${relativePath}>`
