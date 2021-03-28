@@ -49,7 +49,6 @@ app.use(solidVerify);
 
 // SolidSlack entrypoint
 app.post('/', async (req, res) => {    
-  // const reqBody = req.body;
   const commands = req.commands;
   const command = commands[0];
   switch (command) {
