@@ -146,8 +146,8 @@ const makeAccountBlock = (statement, index) => {
   const coreId = `${sub}_${pred}_${obj}_${index}`;
   const value = `account_item_value_${coreId}`;
   const actionId = `account_item_action_id_${coreId}`;
-  const relativePath = obj.split(sub)[1];
-  console.log('RELATIVE PATH:', relativePath);
+  const objRelPath = obj.split(sub)[1];
+  console.log('RELATIVE PATH:', objRelPath);
   /*return {
     "type": "actions",
     "elements": [
@@ -155,7 +155,7 @@ const makeAccountBlock = (statement, index) => {
         "type": "button",
         "text": {
           "type": "plain_text",
-          "text": relativePath
+          "text": objRelPath
         },
         "value": value,
         "action_id": actionId
@@ -164,10 +164,9 @@ const makeAccountBlock = (statement, index) => {
   };*/
   return {
     "type": "section",
-    "block_id": coreId,
     "text": {
       "type": "mrkdwn",
-      "text": `<${obj}|${relativePath}>`
+      "text": `<${obj}|${objRelPath}>`
     }
   };
 };
@@ -192,6 +191,7 @@ const addAccountBlocks = (viewConfig, statements) => {
     viewConfig.blocks.push(accountBlock);
     viewConfig.blocks.push(dividerBlock);
   }
+  console.log('FINAL BLOCKS:', viewConfig.blocks);
 };
 
 module.exports = {
