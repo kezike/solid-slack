@@ -28,6 +28,7 @@ const getBlockFieldValue = (block, path) => {
 
 // Set value of block field at nested path
 const setBlockFieldValue = (block, path, value) => {
+  console.log('block before:', block);
   let scope = block;
   for (let i = 0; i < path.length; i++) {
     const field = path[i];
@@ -37,6 +38,7 @@ const setBlockFieldValue = (block, path, value) => {
       scope = scope[field];
     }
   }
+  console.log('block after:', block);
 };
 
 // Add profile picture to file viewer
@@ -138,6 +140,7 @@ const makeAccountBlock = (statement, index) => {
   const value = `account_item_value_${coreId}`;
   const actionId = `account_item_action_id_${coreId}`;
   const relativePath = obj.split(sub)[1];
+  console.log('RELATIVE PATH:', relativePath);
   return {
     "type": "actions",
     "elements": [
