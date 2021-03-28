@@ -131,6 +131,13 @@ const addProfileBlocks = (viewConfig, statements) => {
   viewConfig.blocks = viewConfig.blocks.concat(profileBlocks);
 };
 
+// create divider block
+const makeDividerBlock = () => {
+  return {
+    "type": "divider"
+  };
+};
+
 // create block from account RDF statement
 const makeAccountBlock = (statement, index) => {
   const sub = statement.subject.value;
@@ -141,7 +148,7 @@ const makeAccountBlock = (statement, index) => {
   const actionId = `account_item_action_id_${coreId}`;
   const relativePath = obj.split(sub)[1];
   console.log('RELATIVE PATH:', relativePath);
-  return {
+  /*return {
     "type": "actions",
     "elements": [
       {
@@ -154,6 +161,13 @@ const makeAccountBlock = (statement, index) => {
         "action_id": actionId
       }
     ]
+  };*/
+  return {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": `<${obj}|${relativePath}>`
+    }
   };
 };
 
@@ -173,6 +187,7 @@ const addAccountBlocks = (viewConfig, statements) => {
   console.log('adding account blocks...');
   const accountBlocks = convertAccountRdfToBlocks(statements);
   viewConfig.blocks = viewConfig.blocks.concat(accountBlocks);
+  viewConfig.blocks.push(makeDividerBlock());
   console.log('viewConfig.blocks:', viewConfig.blocks);
 };
 
