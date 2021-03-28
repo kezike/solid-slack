@@ -184,11 +184,13 @@ const convertAccountRdfToBlocks = (statements) => {
 
 // add account RDF statement blocks
 const addAccountBlocks = (viewConfig, statements) => {
-  console.log('adding account blocks...');
   const accountBlocks = convertAccountRdfToBlocks(statements);
-  viewConfig.blocks = viewConfig.blocks.concat(accountBlocks);
-  viewConfig.blocks.push(makeDividerBlock());
-  console.log('viewConfig.blocks:', viewConfig.blocks);
+  for (let i = 0; i < accountBlocks.length; i++) {
+    const accountBlock = accountBlocks[i];
+    const dividerBlock = makeDividerBlock();
+    viewConfig.blocks.push(accountBlock);
+    viewConfig.blocks.push(dividerBlock);
+  }
 };
 
 module.exports = {

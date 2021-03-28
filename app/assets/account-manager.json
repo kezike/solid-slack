@@ -7,7 +7,7 @@
   },
   "blocks": [
     {
-      "type": "header",
+      "type": "mrkdwn",
       "block_id": "account_header_block",
       "text": {
         "type": "plain_text",
