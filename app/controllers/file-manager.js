@@ -12,7 +12,7 @@ const { httpStatus } = require('../util/http');
 const fileManager = require('../assets/file-manager-home');
 const profileViewer = require('../assets/profile-viewer');
 const accountManager = require('../assets/account-manager');
-const { FOAF, VCARD, SOLID } = require('../util/namespaces');
+const { LDP, FOAF, VCARD, SOLID } = require('../util/namespaces');
 const $rdf = require('rdflib');
 
 /**
