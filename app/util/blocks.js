@@ -134,7 +134,7 @@ const makeAccountBlock = (statement, index) => {
   const sub = statement.subject.value;
   const pred = statement.predicate.value;
   const obj = statement.object.value;
-  const coreId = `${sub}-${pred}-${obj}_${index}`;
+  const coreId = `${sub}_${pred}_${obj}_${index}`;
   const value = `account_item_value_${coreId}`;
   const actionId = `account_item_action_id_${coreId}`;
   return {
@@ -166,8 +166,10 @@ const convertAccountRdfToBlocks = (statements) => {
 
 // add account RDF statement blocks
 const addAccountBlocks = (viewConfig, statements) => {
+  console.log('adding account blocks...');
   const accountBlocks = convertAccountRdfToBlocks(statements);
   viewConfig.blocks = viewConfig.blocks.concat(accountBlocks);
+  console.log('viewConfig.blocks:', viewConfig.blocks);
 };
 
 module.exports = {
