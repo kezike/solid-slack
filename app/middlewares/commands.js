@@ -13,7 +13,8 @@ const commandVerify = async (req, res, next) => {
     Hello, I am Solid Bot :wave::skin-tone-4: How can I help you today? (P.S.: I only speak Solid, so please address me as \`/solid COMMAND\`):
     - \`login\`: login to your Solid pod
     - \`logout\`: logout of your Solid pod
-    - \`profile\`: fetch your Solid profile
+    - \`profile\`: load your Solid profile
+    - \`account\`: fetch your Solid account
     - \`file\`: TODO
     - \`dir\`: TODO
     - \`help\`: TODO
