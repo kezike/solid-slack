@@ -189,7 +189,7 @@ const addAccountBlocks = (viewConfig, statements) => {
     const accountBlock = accountBlocks[i];
     const dividerBlock = makeDividerBlock();
     viewConfig.blocks.push(accountBlock);
-    viewConfig.blocks.push(dividerBlock);
+    // viewConfig.blocks.push(dividerBlock);
   }
   console.log('FINAL BLOCKS:', viewConfig.blocks);
 };
