@@ -98,7 +98,10 @@ class FileManager {
       await solidClient.fetcher.load(account);
       console.log('LOADED ACCOUNT!');
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
+      console.log('MATCHED ACCOUNT CONTAINS STATEMENTS:',);
+      console.log(statements);
       addAccountBlocks(accountManagerConfig, statements);
+      console.log('ADDED ACCOUNT BLOCKS!');
       const view = JSON.stringify(accountManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
