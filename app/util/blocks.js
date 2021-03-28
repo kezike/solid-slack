@@ -165,7 +165,7 @@ const convertAccountRdfToBlocks = (statements) => {
 };
 
 // add account RDF statement blocks
-const addAccountBlocks = (viewConfig) => {
+const addAccountBlocks = (viewConfig, statements) => {
   const accountBlocks = convertAccountRdfToBlocks(statements);
   viewConfig.blocks = viewConfig.blocks.concat(accountBlocks);
 };

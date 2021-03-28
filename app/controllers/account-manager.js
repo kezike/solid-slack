@@ -24,7 +24,7 @@ class AccountManager {
 
   static async login(req, res) {
     try {
-      const { trigger_id } = req.body;
+      const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const view = JSON.stringify(loginManager, null, 2);
       const viewPayload = { token, trigger_id, view };
