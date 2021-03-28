@@ -137,6 +137,7 @@ const makeAccountBlock = (statement, index) => {
   const coreId = `${sub}_${pred}_${obj}_${index}`;
   const value = `account_item_value_${coreId}`;
   const actionId = `account_item_action_id_${coreId}`;
+  const relativePath = obj.split(sub)[1];
   return {
     "type": "actions",
     "elements": [
@@ -144,7 +145,7 @@ const makeAccountBlock = (statement, index) => {
         "type": "button",
         "text": {
           "type": "plain_text",
-          "text": obj
+          "text": relativePath
         },
         "value": value,
         "action_id": actionId

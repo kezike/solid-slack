@@ -90,11 +90,13 @@ class FileManager {
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
+      const block = getBlockById(accountManagerConfig, 'account_header_block');
       const solidClient = getSolidClientFromSlackId(userId);
       console.log('LOADING WEBID...');
       const webId = solidClient.webId;
       await solidClient.fetcher.load(webId);
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
+      setBlockFieldValue(block, ['text', 'text'], `*${account}*`);
       await solidClient.fetcher.load(account);
       console.log('LOADED ACCOUNT!');
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
