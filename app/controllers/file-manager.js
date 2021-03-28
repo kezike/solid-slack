@@ -90,7 +90,7 @@ class FileManager {
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
-      const block = getBlockById(accountManagerConfig, 'account_header_block');
+      const block = getBlockById(accountManagerConfig, 'account_header');
       const solidClient = getSolidClientFromSlackId(userId);
       console.log('LOADING WEBID...');
       const webId = solidClient.webId;
