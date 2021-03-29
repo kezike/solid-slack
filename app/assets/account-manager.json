@@ -7,11 +7,11 @@
   },
   "blocks": [
     {
-      "type": "section",
+      "type": "header",
       "block_id": "account_header_block",
       "text": {
-        "type": "mrkdwn",
-        "text": "*Home*"
+        "type": "plain_text",
+        "text": "Home"
       }
     },
     {

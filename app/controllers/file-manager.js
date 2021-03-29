@@ -96,7 +96,7 @@ class FileManager {
       const webId = solidClient.webId;
       await solidClient.fetcher.load(webId);
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
-      setBlockFieldValue(block, ['text', 'text'], `*${account}*`);
+      setBlockFieldValue(block, ['text', 'text'], account);
       await solidClient.fetcher.load(account);
       console.log('LOADED ACCOUNT!');
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
