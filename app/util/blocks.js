@@ -166,7 +166,7 @@ const makeAccountBlock = (statement, index) => {
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": `*<${obj}|${objRelPath}>*`
+      "text": `<${obj}|${objRelPath}>`
     }
   };
 };
@@ -185,13 +185,12 @@ const convertAccountRdfToBlocks = (statements) => {
 // add account RDF statement blocks
 const addAccountBlocks = (viewConfig, statements) => {
   const accountBlocks = convertAccountRdfToBlocks(statements);
-  /*for (let i = 0; i < accountBlocks.length; i++) {
+  for (let i = 0; i < accountBlocks.length; i++) {
     const accountBlock = accountBlocks[i];
     const dividerBlock = makeDividerBlock();
     viewConfig.blocks.push(accountBlock);
     viewConfig.blocks.push(dividerBlock);
-  }*/
-  viewConfig.blocks = viewConfig.blocks.concat(accountBlocks);
+  }
   console.log('FINAL BLOCKS:', viewConfig.blocks);
 };
 
