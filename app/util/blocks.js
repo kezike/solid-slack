@@ -163,7 +163,8 @@ const makeAccountBlock = (statement, index) => {
     ]
   };*/
   return {
-    "type": "section",
+    // "type": "section",
+    "type": "mrkdwn",
     "text": {
       "type": "mrkdwn",
       "text": `<${obj}|${objRelPath}>`
