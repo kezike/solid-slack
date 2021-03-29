@@ -132,11 +132,11 @@ const addProfileBlocks = (viewConfig, statements) => {
 };
 
 // create divider block
-/*const makeDividerBlock = () => {
+const makeDividerBlock = () => {
   return {
     "type": "divider"
   };
-};*/
+};
 
 // create block from account RDF statement
 const makeAccountBlock = (statement, index) => {
@@ -163,11 +163,10 @@ const makeAccountBlock = (statement, index) => {
     ]
   };*/
   return {
-    // "type": "section",
-    "type": "mrkdwn",
+    "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": `<${obj}|${objRelPath}>`
+      "text": `*<${obj}|${objRelPath}>*`
     }
   };
 };
