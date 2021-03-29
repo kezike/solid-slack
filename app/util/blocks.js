@@ -141,11 +141,11 @@ const makeDividerBlock = () => {
 // create block from account RDF statement
 const makeAccountBlock = (statement, index) => {
   const sub = statement.subject.value;
-  const pred = statement.predicate.value;
+  // const pred = statement.predicate.value;
   const obj = statement.object.value;
-  const coreId = `${sub}_${pred}_${obj}_${index}`;
-  const value = `account_item_value_${coreId}`;
-  const actionId = `account_item_action_id_${coreId}`;
+  // const coreId = `${sub}_${pred}_${obj}_${index}`;
+  // const value = `account_item_value_${coreId}`;
+  // const actionId = `account_item_action_id_${coreId}`;
   const objRelPath = obj.split(sub)[1];
   console.log('RELATIVE PATH:', objRelPath);
   /*return {
