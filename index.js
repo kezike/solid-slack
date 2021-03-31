@@ -29,19 +29,23 @@ app.use(slackVerify);
 app.post('/interactive', async (req, res) => {
   const payload = JSON.parse(req.body.payload);
   const type = payload.type;
-  const callbackId = payload.view.callback_id;
   console.log('INTERACTION TYPE:', type);
-  console.log('INTERACTION CALLBACK ID:', callbackId);
-  switch (callbackId) {
-    case 'login-manager':
-      const loginResponse = await solidLogin(req, res);
-      return loginResponse;
-    /*case 'profile-viewer':
-      return res.status(httpStatus.OK).send();
-    case 'account-manager':
-      return res.status(httpStatus.OK).send();*/
-    default:
-      return res.status(httpStatus.OK).send(`Unrecognized interactive component \`callback_id\`: \`${callbackId}\``);
+  if (type === 'block_actions') {
+    console.log('BLOCK ACTION PAYLOAD:', payload);
+  } else if (type === 'view_submission') {
+    const callbackId = payload.view.callback_id;
+    console.log('INTERACTION CALLBACK ID:', callbackId);
+    switch (callbackId) {
+      case 'login-manager':
+        const loginResponse = await solidLogin(req, res);
+        return loginResponse;
+      /*case 'profile-viewer':
+        return res.status(httpStatus.OK).send();
+      case 'account-manager':
+        return res.status(httpStatus.OK).send();*/
+      default:
+        return res.status(httpStatus.OK).send(`Unrecognized interactive component \`callback_id\`: \`${callbackId}\``);
+    }
   }
 });
 

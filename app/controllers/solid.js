@@ -33,7 +33,6 @@ class SolidSlackClient {
 const solidLogin = async (req, res) => {
   const submission = JSON.parse(req.body.payload);
   const userId = submission.user.id;
-  console.log(`SUBMISSION: ${JSON.stringify(submission, null, 2)}`);
   let solidClient = getSolidClientFromSlackId(userId);
   if (solidClient && solidClient.loggedIn()) {
     return res.status(httpStatus.OK).send('You are already logged into Solid!');
