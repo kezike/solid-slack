@@ -27,8 +27,10 @@ app.use(slackVerify);
 // It may be worth fixing that middleware method
 // to work with this endpoint.
 app.post('/interactive', async (req, res) => {
-  const submission = JSON.parse(req.body.payload);
-  const callbackId = submission.view.callback_id;
+  const payload = JSON.parse(req.body.payload);
+  const type = payload.type;
+  console.log('INTERACTION TYPE:', type);
+  const callbackId = payload.view.callback_id;
   switch (callbackId) {
     case 'login-manager':
       const loginResponse = await solidLogin(req, res);

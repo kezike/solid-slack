@@ -148,7 +148,7 @@ const makeAccountBlock = (statement, index) => {
   // const actionId = `account_item_action_id_${coreId}`;
   const objRelPath = obj.split(sub)[1];
   console.log('RELATIVE PATH:', objRelPath);
-  /*return {
+  return {
     "type": "actions",
     "elements": [
       {
@@ -161,14 +161,14 @@ const makeAccountBlock = (statement, index) => {
         "action_id": actionId
       }
     ]
-  };*/
-  return {
+  };
+  /*return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
       "text": `<${obj}|${objRelPath}>`
     }
-  };
+  };*/
 };
 
 // convert account RDF statements to blocks
