@@ -144,7 +144,7 @@ const makeAccountBlock = (statement, index) => {
   // const coreId = `${sub}_${pred}_${obj}_${index}`;
   // const actionId = `account_item_action_id_${coreId}`;
   const objRelPath = obj.split(sub)[1];
-  return {
+  /*return {
     "type": "actions",
     "elements": [
       {
@@ -157,14 +157,14 @@ const makeAccountBlock = (statement, index) => {
         "action_id": "view-content"
       }
     ]
-  };
-  /*return {
+  };*/
+  return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
       "text": `<${obj}|${objRelPath}>`
     }
-  };*/
+  };
 };
 
 // convert account RDF statements to blocks
