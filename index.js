@@ -42,6 +42,7 @@ app.post('/interactive', async (req, res) => {
       /*case 'profile-viewer':
         return res.status(httpStatus.OK).send();*/
       case 'file-manager':
+        console.log('ACTION PAYLOAD:', payload);
         const url = payload.actions[0].value;
         const contentResponse = FileManager.loadContent(req, res, url);
         return contentResponse;
