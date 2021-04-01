@@ -126,14 +126,14 @@ class FileManager {
       if (resourceContent.length > 0) {
         // resource is a container of files
         addContainerBlocks(fileManagerConfig, resourceContent, true);
-        const view = JSON.stringify(fileManagerConfig, null, 2);
-        const viewPayload = { token, trigger_id, view };
-        await slackClient.axios.post('views.open', viewPayload);
       } else {
         // resource is a file
         resourceContent = resourcePromise['responseText'];
         addFileBlocks(fileManagerConfig, resourceContent);
       }
+      const view = JSON.stringify(fileManagerConfig, null, 2);
+      const viewPayload = { token, trigger_id, view };
+      await slackClient.axios.post('views.push', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
