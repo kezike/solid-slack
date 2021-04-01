@@ -118,12 +118,9 @@ class FileManager {
       const userId = req.body.user_id;
       const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
-      let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
-      // const webId = solidClient.webId;
-      // await solidClient.fetcher.load(webId);
-      // const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
-      setBlockFieldValue(block, ['text', 'text'], url);
       const resourcePromise = await solidClient.fetcher.load(url);
+      let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
+      setBlockFieldValue(block, ['text', 'text'], url);
       if (resourceContent.length > 0) {
         // resource is a container
         console.log(`resource at ${url} is a container`);
