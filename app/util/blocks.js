@@ -1,5 +1,7 @@
 const urlVal = require('valid-url');
 
+/* === BEGIN GENERAL === */
+
 // Extract submitted value from modal input id
 const getInputValueFromSubmission = (submission, id) => {
   const view = submission.view;
@@ -39,6 +41,71 @@ const setBlockFieldValue = (block, path, value) => {
   }
 };
 
+// remove slashes from end of URL (necessary only when running RegExp.exec)
+const removeSlashes = (url) => {
+  let urlTrimmed = url;
+  while (urlTrimmed.endsWith('/')) {
+    urlTrimmed = urlTrimmed.substring(0, urlTrimmed.length - 1);
+  }
+  return urlTrimmed;
+};
+
+// create divider block
+const makeDividerBlock = () => {
+  return {
+    "type": "divider"
+  };
+};
+
+// create text block
+const makeTextBlock = (text) => {
+  return {
+    "type": "section",
+    "text": {
+      "type": "plain_text",
+      "text": text,
+      "emoji": true
+    }
+  };
+};
+
+// create back block
+const makeBackBlock = () => {
+  return {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": ":back:",
+          "emoji": true
+        },
+        "value": "load-previous",
+        "action_id": "load-previous"
+      }
+    ]
+  };
+};
+
+/* === END GENERAL === */
+
+/* === BEGIN FILE === */
+
+// add RDF file blocks
+const addFileBlocks = (viewConfig, content) => {
+  const backBlock = makeBackBlock();
+  const dividerBlock = makeDividerBlock();
+  const textBlock = makeTextBlock(content);
+  viewConfig.blocks.push(backBlock);
+  viewConfig.blocks.push(dividerBlock);
+  viewConfig.blocks.push(textBlock);
+};
+
+/* === END FILE === */
+
+/* === BEGIN PROFILE === */
+
 // Add profile picture to file viewer
 const customizeProfile = (viewConfig, name, picture) => {
   const profileBlock = getBlockById(viewConfig, 'profile_picture');
@@ -48,15 +115,6 @@ const customizeProfile = (viewConfig, name, picture) => {
   if (picture) {
     setBlockFieldValue(profileBlock, ['image_url'], picture.value);
   }
-};
-
-// remove slashes from end of URL (necessary only when running RegExp.exec)
-const removeSlashes = (url) => {
-  let urlTrimmed = url;
-  while (urlTrimmed.endsWith('/')) {
-    urlTrimmed = urlTrimmed.substring(0, urlTrimmed.length - 1);
-  }
-  return urlTrimmed;
 };
 
 // format markdown value
@@ -129,15 +187,12 @@ const addProfileBlocks = (viewConfig, statements) => {
   viewConfig.blocks = viewConfig.blocks.concat(profileBlocks);
 };
 
-// create divider block
-const makeDividerBlock = () => {
-  return {
-    "type": "divider"
-  };
-};
+/* === END PROFILE === */
 
-// create block from account RDF statement
-const makeAccountBlock = (statement, index) => {
+/* === BEGIN CONTAINER === */
+
+// create block from RDF container statement
+const makeContainerBlock = (statement, index) => {
   const sub = statement.subject.value;
   // const pred = statement.predicate.value;
   const obj = statement.object.value;
@@ -154,7 +209,7 @@ const makeAccountBlock = (statement, index) => {
           "text": objRelPath
         },
         "value": obj,
-        "action_id": "view-content"
+        "action_id": "load-content"
       }
     ]
   };
@@ -167,20 +222,24 @@ const makeAccountBlock = (statement, index) => {
   };*/
 };
 
-// convert account RDF statements to blocks
-const convertAccountRdfToBlocks = (statements) => {
+// convert RDF container statements to blocks
+const convertContainerRdfToBlocks = (statements) => {
   const blocks = [];
   for (let i = 0; i < statements.length; i++) {
     const statement = statements[i];
-    const block = makeAccountBlock(statement, i);
+    const block = makeContainerBlock(statement, i);
     blocks.push(block);
   }
   return blocks;
 };
 
-// add account RDF statement blocks
-const addAccountBlocks = (viewConfig, statements) => {
-  const accountBlocks = convertAccountRdfToBlocks(statements);
+// add RDF container statement blocks
+const addContainerBlocks = (viewConfig, statements, back=false) => {
+  if (back) {
+    const backBlock = makeBackBlock();
+    viewConfig.blocks.push(backBlock);
+  }
+  const accountBlocks = convertContainerRdfToBlocks(statements);
   for (let i = 0; i < accountBlocks.length; i++) {
     const accountBlock = accountBlocks[i];
     const dividerBlock = makeDividerBlock();
@@ -189,12 +248,15 @@ const addAccountBlocks = (viewConfig, statements) => {
   }
 };
 
+/* === END CONTAINER === */
+
 module.exports = {
   getInputValueFromSubmission,
   getBlockById,
   getBlockFieldValue,
   setBlockFieldValue,
   customizeProfile,
+  addFileBlocks,
   addProfileBlocks,
-  addAccountBlocks,
+  addContainerBlocks,
 };

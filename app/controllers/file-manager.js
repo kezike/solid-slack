@@ -2,16 +2,17 @@ const {
   getBlockById,
   setBlockFieldValue,
   customizeProfile,
+  addFileBlocks,
   addProfileBlocks,
-  addAccountBlocks,
+  addContainerBlocks,
 } = require('../util/blocks');
 const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../middlewares/slack');
 const { httpStatus } = require('../util/http');
-const fileManager = require('../assets/file-manager-home');
+// const fileManager = require('../assets/file-manager-home');
 const profileViewer = require('../assets/profile-viewer');
-const accountManager = require('../assets/account-manager');
+const fileManager = require('../assets/file-manager');
 const { LDP, FOAF, VCARD, SOLID } = require('../util/namespaces');
 const $rdf = require('rdflib');
 
@@ -85,11 +86,11 @@ class FileManager {
 
   static async loadAccount(req, res) {
     try {
-      const accountManagerConfig = _.cloneDeep(accountManager);
+      const fileManagerConfig = _.cloneDeep(fileManager);
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
-      const block = getBlockById(accountManagerConfig, 'account_header');
+      const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
       await solidClient.fetcher.load(webId);
@@ -97,10 +98,42 @@ class FileManager {
       // setBlockFieldValue(block, ['text', 'text'], account);
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
-      addAccountBlocks(accountManagerConfig, statements);
-      const view = JSON.stringify(accountManagerConfig, null, 2);
+      addContainerBlocks(fileManagerConfig, statements);
+      const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
+      return res.status(httpStatus.OK).send();
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
+    }
+  }
+
+  static async loadContent(req, res, url) {
+    try {
+      const fileManagerConfig = _.cloneDeep(fileManager);
+      const trigger_id = req.body.trigger_id;
+      const token = slackClient.token;
+      const userId = req.body.user_id;
+      const block = getBlockById(fileManagerConfig, 'file_header');
+      const solidClient = getSolidClientFromSlackId(userId);
+      let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
+      // const webId = solidClient.webId;
+      // await solidClient.fetcher.load(webId);
+      // const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
+      setBlockFieldValue(block, ['text', 'text'], url);
+      const resourcePromise = await solidClient.fetcher.load(url);
+      if (resourceContent.length > 0) {
+        // resource is a container of files
+        addContainerBlocks(fileManagerConfig, resourceContent, true);
+        const view = JSON.stringify(fileManagerConfig, null, 2);
+        const viewPayload = { token, trigger_id, view };
+        await slackClient.axios.post('views.open', viewPayload);
+      } else {
+        // resource is a file
+        resourceContent = resourcePromise['responseText'];
+        addFileBlocks(fileManagerConfig, resourceContent);
+      }
       return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));

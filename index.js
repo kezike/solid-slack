@@ -41,8 +41,10 @@ app.post('/interactive', async (req, res) => {
         return loginResponse;
       /*case 'profile-viewer':
         return res.status(httpStatus.OK).send();*/
-      case 'account-manager':
-        return res.status(httpStatus.OK).send();
+      case 'file-manager':
+        const url = payload.actions[0].value;
+        const contentResponse = FileManager.loadContent(req, res, url);
+        return contentResponse;
       default:
         return res.status(httpStatus.OK).send(`Unrecognized interactive component \`callback_id\`: \`${callbackId}\``);
     }

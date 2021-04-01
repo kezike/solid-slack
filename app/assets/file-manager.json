@@ -1,6 +1,6 @@
 {
   "type": "modal",
-  "callback_id": "account-manager",
+  "callback_id": "file-manager",
   "title": {
     "type": "plain_text",
     "text": "Solid Account"
@@ -8,7 +8,7 @@
   "blocks": [
     {
       "type": "header",
-      "block_id": "account_header_block",
+      "block_id": "file_header_block",
       "text": {
         "type": "plain_text",
         "text": "Home"
