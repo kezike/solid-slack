@@ -116,9 +116,15 @@ class FileManager {
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
+      console.log('retrieving block with id file_header...');
       const block = getBlockById(fileManagerConfig, 'file_header');
+      console.log('retrieved block with id file_header!');
+      console.log(`retrieving solid client for user ${userId}...`);
       const solidClient = getSolidClientFromSlackId(userId);
+      console.log(`retrieved solid client for user ${userId}!`);
+      console.log(`fetching resource at ${url}...`);
       const resourcePromise = await solidClient.fetcher.load(url);
+      console.log(`fetched resource at ${url}!`);
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setBlockFieldValue(block, ['text', 'text'], url);
       if (resourceContent.length > 0) {
@@ -133,7 +139,7 @@ class FileManager {
         addFileBlocks(fileManagerConfig, resourceContent);
         console.log('added file blocks');
       }
-      console.log(`FILE MANAGER BLOCKS FOR ${url}:`, JSON.stringify(fileManagerConfig.blocks, null, 2));
+      console.log(`FILE BLOCKS FOR ${url}:`, JSON.stringify(fileManagerConfig.blocks, null, 2));
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.push', viewPayload);
