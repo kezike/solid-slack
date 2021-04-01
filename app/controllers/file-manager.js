@@ -112,10 +112,11 @@ class FileManager {
   static async loadContent(req, res, url) {
     console.log(`LOADING CONTENT FOR ${url}...`);
     try {
+      const payload = JSON.parse(req.body.payload);
       const fileManagerConfig = _.cloneDeep(fileManager);
-      const trigger_id = req.body.trigger_id;
+      const trigger_id = payload.trigger_id;
       const token = slackClient.token;
-      const userId = req.body.user_id;
+      const userId = payload.user.id;
       console.log('retrieving block with id file_header...');
       const block = getBlockById(fileManagerConfig, 'file_header');
       console.log('retrieved block with id file_header!');
