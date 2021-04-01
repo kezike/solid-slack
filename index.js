@@ -31,7 +31,7 @@ app.post('/interactive', async (req, res) => {
   const type = payload.type;
   console.log('INTERACTION TYPE:', type);
   // if (type === 'block_actions') {
-    console.log('INTERACTION PAYLOAD:', payload);
+    // console.log('INTERACTION PAYLOAD:', payload);
   // } else if (type === 'view_submission') {
     const callbackId = payload.view.callback_id;
     console.log('INTERACTION CALLBACK ID:', callbackId);

@@ -110,6 +110,7 @@ class FileManager {
   }
 
   static async loadContent(req, res, url) {
+    console.log(`LOADING CONTENT FOR ${url}...`);
     try {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const trigger_id = req.body.trigger_id;
@@ -131,6 +132,7 @@ class FileManager {
         resourceContent = resourcePromise['responseText'];
         addFileBlocks(fileManagerConfig, resourceContent);
       }
+      console.log(`FILE MANAGER BLOCKS FOR ${url}:`, JSON.stringify(fileManagerConfig.blocks, null, 2));
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.push', viewPayload);
