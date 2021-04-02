@@ -29,7 +29,7 @@ const getBlockFieldValue = (block, path) => {
 };
 
 // Set value of block field at nested path
-const setBlockFieldValue = (block, path, value) => {
+const setFieldValue = (block, path, value) => {
   let scope = block;
   for (let i = 0; i < path.length; i++) {
     const field = path[i];
@@ -39,15 +39,6 @@ const setBlockFieldValue = (block, path, value) => {
       scope = scope[field];
     }
   }
-};
-
-// remove slashes from end of URL (necessary only when running RegExp.exec)
-const removeSlashes = (url) => {
-  let urlTrimmed = url;
-  while (urlTrimmed.endsWith('/')) {
-    urlTrimmed = urlTrimmed.substring(0, urlTrimmed.length - 1);
-  }
-  return urlTrimmed;
 };
 
 // create divider block
@@ -69,7 +60,7 @@ const makeTextBlock = (text) => {
   };
 };
 
-// create back block
+// create image block
 const makeImageBlock = (url, title='') => {
   title = title ? title : url.split('/').pop();
   const altText = `image at ${url}`;
@@ -84,23 +75,13 @@ const makeImageBlock = (url, title='') => {
   };
 };
 
-// create back block
-const makeBackBlock = () => {
-  return {
-    "type": "actions",
-    "elements": [
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": ":back:",
-          "emoji": true
-        },
-        "value": "load-previous",
-        "action_id": "load-previous"
-      }
-    ]
-  };
+// remove slashes from end of URL (necessary only when running RegExp.exec)
+const removeSlashes = (url) => {
+  let urlTrimmed = url;
+  while (urlTrimmed.endsWith('/')) {
+    urlTrimmed = urlTrimmed.substring(0, urlTrimmed.length - 1);
+  }
+  return urlTrimmed;
 };
 
 /* === END GENERAL === */
@@ -109,10 +90,6 @@ const makeBackBlock = () => {
 
 // add RDF file blocks
 const addFileBlocks = (viewConfig, type, content, url) => {
-  const backBlock = makeBackBlock();
-  const dividerBlock = makeDividerBlock();
-  viewConfig.blocks.push(backBlock);
-  viewConfig.blocks.push(dividerBlock);
   const chunkSize = 3000;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const baseType = type.split('/').shift();
@@ -147,10 +124,10 @@ const addFileBlocks = (viewConfig, type, content, url) => {
 const customizeProfile = (viewConfig, name, picture) => {
   const profileBlock = getBlockById(viewConfig, 'profile_picture');
   if (name) {
-    setBlockFieldValue(profileBlock, ['title', 'text'], name.value);
+    setFieldValue(profileBlock, ['title', 'text'], name.value);
   }
   if (picture) {
-    setBlockFieldValue(profileBlock, ['image_url'], picture.value);
+    setFieldValue(profileBlock, ['image_url'], picture.value);
   }
 };
 
@@ -271,11 +248,7 @@ const convertContainerRdfToBlocks = (statements) => {
 };
 
 // add RDF container statement blocks
-const addContainerBlocks = (viewConfig, statements, back=false) => {
-  if (back) {
-    const backBlock = makeBackBlock();
-    viewConfig.blocks.push(backBlock);
-  }
+const addContainerBlocks = (viewConfig, statements) => {
   const accountBlocks = convertContainerRdfToBlocks(statements);
   for (let i = 0; i < accountBlocks.length; i++) {
     const accountBlock = accountBlocks[i];
@@ -291,7 +264,7 @@ module.exports = {
   getInputValueFromSubmission,
   getBlockById,
   getBlockFieldValue,
-  setBlockFieldValue,
+  setFieldValue,
   customizeProfile,
   addFileBlocks,
   addProfileBlocks,

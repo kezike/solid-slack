@@ -1,6 +1,6 @@
 const {
   getBlockById,
-  setBlockFieldValue,
+  setFieldValue,
   customizeProfile,
   addFileBlocks,
   addProfileBlocks,
@@ -39,9 +39,6 @@ class FileManager {
       case 'load-content':
         const contentResponse = await FileManager.loadContent(req, res);
         return contentResponse;
-      case 'load-previous':
-        const previousResponse = await FileManager.loadPrevious(req, res);
-        return previousResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
@@ -79,7 +76,7 @@ class FileManager {
       // const statements = solidClient.fetcher.store.statements;
       const statements = solidClient.fetcher.store.match($rdf.sym(webId), undefined, undefined);
       addProfileBlocks(profileViewerConfig, statements);
-      // setBlockFieldValue(block, ['text', 'text'], profileContent);
+      // setFieldValue(block, ['text', 'text'], profileContent);
       const view = JSON.stringify(profileViewerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
@@ -101,7 +98,7 @@ class FileManager {
       const webId = solidClient.webId;
       await solidClient.fetcher.load(webId);
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
-      // setBlockFieldValue(block, ['text', 'text'], account);
+      // setFieldValue(block, ['text', 'text'], account);
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
       addContainerBlocks(fileManagerConfig, statements);
@@ -127,11 +124,12 @@ class FileManager {
       const solidClient = getSolidClientFromSlackId(userId);
       const resourcePromise = await solidClient.fetcher.load(url);
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
-      setBlockFieldValue(block, ['text', 'text'], url);
+      setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
+      setFieldValue(block, ['text', 'text'], url);
       if (resourceContent.length > 0) {
         // resource is a container
         // NOTE: resourceContent is an array of RDF statements here
-        addContainerBlocks(fileManagerConfig, resourceContent, true);
+        addContainerBlocks(fileManagerConfig, resourceContent);
       } else {
         // resource is a file
         // NOTE: resourceContent is a string here
@@ -147,10 +145,6 @@ class FileManager {
       console.error(JSON.stringify(e, null, 2));
       return res.status(httpStatus.BAD_REQUEST).send();
     }
-  }
-
-  static async loadPrevious(req, res) {
-    return res.status(httpStatus.OK).send();
   }
 
   static async createFile(slackClient, reqBody) {

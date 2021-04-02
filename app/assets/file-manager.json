@@ -5,6 +5,11 @@
     "type": "plain_text",
     "text": "Solid Account"
   },
+  "close": {
+    "type": "plain_text",
+    "text": "Close",
+    "emoji": true
+  },
   "blocks": [
     {
       "type": "header",
