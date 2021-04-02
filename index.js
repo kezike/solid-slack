@@ -43,8 +43,8 @@ app.post('/interactive', async (req, res) => {
         return res.status(httpStatus.OK).send();*/
       case 'file-manager':
         console.log('ACTION PAYLOAD:', payload);
-        const url = payload.actions[0].value;
-        const contentResponse = FileManager.loadContent(req, res, url);
+        const command = payload.actions[0].action_id;
+        const contentResponse = await FileManager.exec(req, res, command);
         return contentResponse;
       default:
         return res.status(httpStatus.OK).send(`Unrecognized interactive component \`callback_id\`: \`${callbackId}\``);

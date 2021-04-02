@@ -36,6 +36,9 @@ class FileManager {
       case 'account':
         const accountResponse = await FileManager.loadAccount(req, res);
         return accountResponse;
+      case 'load-content':
+        const contentResponse = await FileManager.loadContent(req, res);
+        return contentResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
@@ -109,13 +112,14 @@ class FileManager {
     }
   }
 
-  static async loadContent(req, res, url) {
+  static async loadContent(req, res) {
     try {
-      const payload = JSON.parse(req.body.payload);
       const fileManagerConfig = _.cloneDeep(fileManager);
+      const payload = JSON.parse(req.body.payload);
       const trigger_id = payload.trigger_id;
-      const token = slackClient.token;
+      const url = payload.actions[0].value;
       const userId = payload.user.id;
+      const token = slackClient.token;
       const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
       const resourcePromise = await solidClient.fetcher.load(url);
