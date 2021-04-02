@@ -73,13 +73,11 @@ const makeTextBlock = (text) => {
 const makeImageBlock = (url, title='') => {
   title = title ? title : url.split('/').pop();
   return {
-    {
-      "type": "image",
-      "image_url": url,
-      "title": {
-        "type": "plain_text",
-        "text": title
-      }
+    "type": "image",
+    "image_url": url,
+    "title": {
+      "type": "plain_text",
+      "text": title
     }
   };
 };
