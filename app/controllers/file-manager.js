@@ -39,6 +39,9 @@ class FileManager {
       case 'load-content':
         const contentResponse = await FileManager.loadContent(req, res);
         return contentResponse;
+      case 'load-previous':
+        const previousResponse = await FileManager.loadPrevious(req, res);
+        return previousResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
@@ -144,6 +147,10 @@ class FileManager {
       console.error(JSON.stringify(e, null, 2));
       return res.status(httpStatus.BAD_REQUEST).send();
     }
+  }
+
+  static async loadPrevious(req, res) {
+    return res.status(httpStatus.OK).send();
   }
 
   static async createFile(slackClient, reqBody) {
