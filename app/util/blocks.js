@@ -96,10 +96,20 @@ const makeBackBlock = () => {
 const addFileBlocks = (viewConfig, content) => {
   const backBlock = makeBackBlock();
   const dividerBlock = makeDividerBlock();
-  const textBlock = makeTextBlock(content);
   viewConfig.blocks.push(backBlock);
   viewConfig.blocks.push(dividerBlock);
-  viewConfig.blocks.push(textBlock);
+  const chunkSize = 3000;
+  const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
+  if (content.length > chunkSize) {
+    const chunks = content.match(chunkPattern);
+    const chunkBlocks = chunks.map((chunk) => {
+      return makeTextBlock(chunk);
+    });
+    viewConfig.blocks = viewConfig.blocks.concat(chunkBlocks);
+  } else {
+    const textBlock = makeTextBlock(content);
+    viewConfig.blocks.push(textBlock);
+  }
 };
 
 /* === END FILE === */
