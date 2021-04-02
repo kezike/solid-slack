@@ -123,7 +123,10 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       return;
     case 'text':
     default:
-      if (content.length > chunkSize) {
+      if (content.length === 0) {
+        const textBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:');
+        viewConfig.blocks.push(textBlock);
+      } else if (content.length > chunkSize) {
         const chunks = content.match(chunkPattern);
         const chunkBlocks = chunks.map((chunk) => {
           return makeTextBlock(chunk);
