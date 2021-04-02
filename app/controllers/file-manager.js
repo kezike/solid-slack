@@ -130,17 +130,13 @@ class FileManager {
       setBlockFieldValue(block, ['text', 'text'], url);
       if (resourceContent.length > 0) {
         // resource is a container
-        console.log(`resource at ${url} is a container`);
         addContainerBlocks(fileManagerConfig, resourceContent, true);
-        console.log('added container blocks');
       } else {
         // resource is a file
-        console.log(`resource at ${url} is a file`);
         resourceContent = resourcePromise['responseText'];
-        addFileBlocks(fileManagerConfig, resourceContent);
-        console.log('added file blocks');
+        const contentType = resourcePromise['headers'].get('Content-Type');
+        addFileBlocks(fileManagerConfig, resourceContent, contentType, url);
       }
-      console.log(`FILE BLOCKS FOR ${url}:`, JSON.stringify(fileManagerConfig.blocks, null, 2));
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.push', viewPayload);

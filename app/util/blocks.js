@@ -70,6 +70,21 @@ const makeTextBlock = (text) => {
 };
 
 // create back block
+const makeImageBlock = (url, title='') => {
+  title = title ? title : url.split('/').pop();
+  return {
+    {
+      "type": "image",
+      "image_url": url,
+      "title": {
+        "type": "plain_text",
+        "text": title
+      }
+    }
+  };
+};
+
+// create back block
 const makeBackBlock = () => {
   return {
     "type": "actions",
@@ -93,22 +108,31 @@ const makeBackBlock = () => {
 /* === BEGIN FILE === */
 
 // add RDF file blocks
-const addFileBlocks = (viewConfig, content) => {
+const addFileBlocks = (viewConfig, content, type, url) => {
   const backBlock = makeBackBlock();
   const dividerBlock = makeDividerBlock();
   viewConfig.blocks.push(backBlock);
   viewConfig.blocks.push(dividerBlock);
   const chunkSize = 3000;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
-  if (content.length > chunkSize) {
-    const chunks = content.match(chunkPattern);
-    const chunkBlocks = chunks.map((chunk) => {
-      return makeTextBlock(chunk);
-    });
-    viewConfig.blocks = viewConfig.blocks.concat(chunkBlocks);
-  } else {
-    const textBlock = makeTextBlock(content);
-    viewConfig.blocks.push(textBlock);
+  const baseType = type.split('/').shift();
+  switch (baseType) {
+    case 'image':
+      const imageBlock = makeImageBlock(url);
+      viewConfig.blocks.push(imageBlock);
+      return;
+    case 'text':
+    default:
+      if (content.length > chunkSize) {
+        const chunks = content.match(chunkPattern);
+        const chunkBlocks = chunks.map((chunk) => {
+          return makeTextBlock(chunk);
+        });
+        viewConfig.blocks = viewConfig.blocks.concat(chunkBlocks);
+      } else {
+        const textBlock = makeTextBlock(content);
+        viewConfig.blocks.push(textBlock);
+      }
   }
 };
 
