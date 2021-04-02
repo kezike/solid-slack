@@ -72,6 +72,7 @@ const makeTextBlock = (text) => {
 // create back block
 const makeImageBlock = (url, title='') => {
   title = title ? title : url.split('/').pop();
+  console.log('image title:', title);
   return {
     "type": "image",
     "image_url": url,
@@ -106,7 +107,7 @@ const makeBackBlock = () => {
 /* === BEGIN FILE === */
 
 // add RDF file blocks
-const addFileBlocks = (viewConfig, content, type, url) => {
+const addFileBlocks = (viewConfig, type, content, url) => {
   const backBlock = makeBackBlock();
   const dividerBlock = makeDividerBlock();
   viewConfig.blocks.push(backBlock);
@@ -116,7 +117,9 @@ const addFileBlocks = (viewConfig, content, type, url) => {
   const baseType = type.split('/').shift();
   switch (baseType) {
     case 'image':
+      console.log(`making image block for ${url}...`);
       const imageBlock = makeImageBlock(url);
+      console.log(`made image block for ${url}:`, imageBlock);
       viewConfig.blocks.push(imageBlock);
       return;
     case 'text':

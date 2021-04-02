@@ -130,12 +130,15 @@ class FileManager {
       setBlockFieldValue(block, ['text', 'text'], url);
       if (resourceContent.length > 0) {
         // resource is a container
+        // NOTE: resourceContent is an array of RDF statements here
         addContainerBlocks(fileManagerConfig, resourceContent, true);
       } else {
         // resource is a file
+        // NOTE: resourceContent is a string here
         resourceContent = resourcePromise['responseText'];
         const contentType = resourcePromise['headers'].get('Content-Type');
-        addFileBlocks(fileManagerConfig, resourceContent, contentType, url);
+        console.log(`content type for ${url}: ${contentType}`);
+        addFileBlocks(fileManagerConfig, contentType, resourceContent, url);
       }
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
