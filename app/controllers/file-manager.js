@@ -110,22 +110,15 @@ class FileManager {
   }
 
   static async loadContent(req, res, url) {
-    console.log(`LOADING CONTENT FOR ${url}...`);
     try {
       const payload = JSON.parse(req.body.payload);
       const fileManagerConfig = _.cloneDeep(fileManager);
       const trigger_id = payload.trigger_id;
       const token = slackClient.token;
       const userId = payload.user.id;
-      console.log('retrieving block with id file_header...');
       const block = getBlockById(fileManagerConfig, 'file_header');
-      console.log('retrieved block with id file_header!');
-      console.log(`retrieving solid client for user ${userId}...`);
       const solidClient = getSolidClientFromSlackId(userId);
-      console.log(`retrieved solid client for user ${userId}!`);
-      console.log(`fetching resource at ${url}...`);
       const resourcePromise = await solidClient.fetcher.load(url);
-      console.log(`fetched resource at ${url}!`);
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setBlockFieldValue(block, ['text', 'text'], url);
       if (resourceContent.length > 0) {
@@ -137,7 +130,6 @@ class FileManager {
         // NOTE: resourceContent is a string here
         resourceContent = resourcePromise['responseText'];
         const contentType = resourcePromise['headers'].get('Content-Type');
-        console.log(`content type for ${url}: ${contentType}`);
         addFileBlocks(fileManagerConfig, contentType, resourceContent, url);
       }
       const view = JSON.stringify(fileManagerConfig, null, 2);
