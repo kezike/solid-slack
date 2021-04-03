@@ -1,4 +1,4 @@
-# SolidSlack
+# solid-slack
 This package contains a [Slack Integration](https://api.slack.com/internal-integrations) for managing personal data stored in [Solid](https://inrupt.com/solid).
 
 ## Demo
