@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "glob": "^7.1.2",
     "http-status-codes": "^1.4.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "moment": "^2.24.0",
     "n3": "^1.0.0-beta.1",
     "qs": "^6.9.3",
