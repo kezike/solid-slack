@@ -27,6 +27,7 @@
     "minimist": "^1.2.0",
     "moment": "^2.24.0",
     "n3": "^1.0.0-beta.1",
+    "node-forge": "^0.10.0",
     "qs": "^6.9.3",
     "rdflib": "^0.19.1",
     "solid-node-client": "^1.2.4",
