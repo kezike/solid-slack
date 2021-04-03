@@ -3,7 +3,7 @@
   "description": "Slack integration for managing personal data stored in Solid",
   "version": "1.0.0",
   "engines": {
-    "node": "12.16.x"
+    "node": "14.x"
   },
   "scripts": {
     "start": "node index.js"
@@ -17,17 +17,12 @@
   },
   "dependencies": {
     "@slack/client": "^5.0.1",
-    "crypto": "^1.0.1",
     "express": "^4.17.1",
-    "file-saver": "^2.0.0",
     "glob": "^7.1.2",
     "http-status-codes": "^1.4.0",
-    "jsonld": "^1.5.0",
-    "jsonld-signatures": "^3.3.0",
     "minimist": "^1.2.0",
     "moment": "^2.24.0",
     "n3": "^1.0.0-beta.1",
-    "node-forge": "^0.10.0",
     "qs": "^6.9.3",
     "rdflib": "^0.19.1",
     "solid-node-client": "^1.2.4",

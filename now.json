@@ -1,14 +1,36 @@
 {
-  "version": 2,
-  "name": "solid-slack",
-  "env": {
-    "SLACK_CLIENT_ID": "@slack-client-id",
-    "SLACK_ACCESS_TOKEN": "@slack-access-token",
-    "SLACK_CLIENT_SECRET": "@slack-client-secret",
-    "SLACK_SIGNING_SECRET": "@slack-signing-secret",
-    "SLACK_VERIFICATION_TOKEN": "@slack-verification-token"
-  },
   "builds": [
-    { "src": "app/**/index.js", "use": "@now/node-server" }
+    {
+      "src": "index.js",
+      "use": "@now/node"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/entry",
+      "headers" : [
+        {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        },
+        {
+          "key" : "Access-Control-Allow-Methods",
+          "value" : "POST"
+        }
+      ]
+    },
+    {
+      "source": "/action",
+      "headers" : [
+        {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        },
+        {
+          "key" : "Access-Control-Allow-Methods",
+          "value" : "POST"
+        }
+      ]
+    }
   ]
 }

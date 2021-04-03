@@ -5,6 +5,7 @@ const { httpStatus } = require('../util/http');
 const { WebClient } = require('@slack/client');
 const slackToken = process.env.SLACK_ACCESS_TOKEN;
 const slackClient = new WebClient(slackToken);
+const slackClientSecret = process.env.SLACK_CLIENT_SECRET;
 
 const slackVerify = (req, res, next) => {
   // Define important variables
@@ -12,7 +13,6 @@ const slackVerify = (req, res, next) => {
   const bodyStr = qs.stringify(req.body, {format: 'RFC1738'});
   const ts = req.headers['x-slack-request-timestamp'];
   const sigSlack = req.headers['x-slack-signature'];
-  const sigSecret = process.env.SLACK_SIGNING_SECRET;
 
   // Check if this is a valid Slack request
   if (!sigSlack || !ts) {
@@ -26,12 +26,12 @@ const slackVerify = (req, res, next) => {
   }
 
   // Check that server owns Slack signing secret
-  if (!sigSecret) {
+  if (!slackClientSecret) {
     return res.status(httpStatus.BAD_REQUEST).send('Slack signing secret empty');
   }
 
   const sigBaseStr = `v0:${ts}:${bodyStr}`;
-  const sigMine = `v0=${crypto.createHmac('sha256', sigSecret)
+  const sigMine = `v0=${crypto.createHmac('sha256', slackClientSecret)
                             .update(sigBaseStr, 'utf8')
                             .digest('hex')}`;
 
