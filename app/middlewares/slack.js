@@ -2,9 +2,6 @@ const qs = require('qs');
 const crypto = require('crypto');
 const timingSafeCompare = require('tsscmp');
 const { httpStatus } = require('../util/http');
-const { WebClient } = require('@slack/client');
-const slackToken = process.env.SLACK_ACCESS_TOKEN;
-const slackClient = new WebClient(slackToken);
 const slackClientSecret = process.env.SLACK_CLIENT_SECRET;
 
 const slackVerify = (req, res, next) => {
@@ -46,4 +43,4 @@ const slackVerify = (req, res, next) => {
   }
 };
 
-module.exports = { slackClient, slackVerify };
+module.exports = { slackVerify };

@@ -5,7 +5,7 @@ const { FileManager } = require('./app/controllers/file-manager');
 const { solidLogin } = require('./app/controllers/solid');
 const { httpStatus } = require('./app/util/http');
 const { commandVerify } = require('./app/middlewares/commands');
-const { slackClient, slackVerify } = require('./app/middlewares/slack');
+const { slackVerify } = require('./app/middlewares/slack');
 const { solidVerify } = require('./app/middlewares/solid');
 
 // Main app

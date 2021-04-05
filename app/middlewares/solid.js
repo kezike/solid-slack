@@ -2,7 +2,6 @@ const { AccountManager } = require('../controllers/account-manager');
 const { SolidNodeClient } = require('solid-node-client');
 const { httpStatus } = require('../util/http');
 const { getSolidClientFromSlackId } = require('../util/solid');
-const { slackClient } = require('./slack');
 
 const solidVerify = async (req, res, next) => {
   const userId = req.slack.user_id;

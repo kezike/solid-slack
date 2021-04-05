@@ -8,7 +8,7 @@ const {
 } = require('../util/blocks');
 const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
-const { slackClient } = require('../middlewares/slack');
+const { slackClient } = require('../util/slack');
 const { httpStatus } = require('../util/http');
 // const fileManager = require('../assets/file-manager-home');
 const profileViewer = require('../assets/profile-viewer');

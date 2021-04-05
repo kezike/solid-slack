@@ -1,6 +1,5 @@
 const { httpStatus } = require('../util/http');
 const { AccountManager } = require('../controllers/account-manager');
-const { slackClient } = require('./slack');
 
 // Verify an incoming command
 // Note: this is a workaround for unrestricted commands,

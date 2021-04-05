@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { httpStatus } = require('../util/http');
-const { slackClient } = require('../middlewares/slack');
+const { slackClient } = require('../util/slack');
 const loginManager = require('../assets/login-manager');
 
 /**

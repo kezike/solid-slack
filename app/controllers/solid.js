@@ -1,5 +1,5 @@
 const { SolidNodeClient } = require('solid-node-client');
-const { slackClient } = require('../middlewares/slack');
+const { slackClient } = require('../util/slack');
 const { getSolidClientFromSlackId, setSolidClientForSlackId } = require('../util/solid');
 const { getInputValueFromSubmission } = require('../util/blocks');
 const { httpStatus } = require('../util/http');
