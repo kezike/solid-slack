@@ -90,7 +90,7 @@ const removeSlashes = (url) => {
 
 // add RDF file blocks
 const addFileBlocks = (viewConfig, type, content, url) => {
-  const chunkSize = 1000;
+  const chunkSize = 3000;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const baseType = type.split('/').shift();
   switch (baseType) {
