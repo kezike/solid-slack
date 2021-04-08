@@ -159,6 +159,7 @@ class FileManager {
       console.log('added edit blocks:', fileManagerConfig.blocks);
       console.log('url:', url);
       console.log('view_id:', view_id);
+      console.log('payload:', payload);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, view, view_id };
       await slackClient.axios.post('views.update', viewPayload);
