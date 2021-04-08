@@ -156,6 +156,9 @@ class FileManager {
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
       setFieldValue(block, ['text', 'text'], url);
       addEditBlocks(fileManagerConfig, resourceContent);
+      console.log('added edit blocks:', fileManagerConfig.blocks);
+      console.log('url:', url);
+      console.log('view_id:', view_id);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, view, view_id };
       await slackClient.axios.post('views.update', viewPayload);
