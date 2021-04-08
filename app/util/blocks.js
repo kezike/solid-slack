@@ -75,6 +75,57 @@ const makeImageBlock = (url, title='') => {
   };
 };
 
+// create button block
+const makeButtonBlock = (options={}) => {
+  const text = options.text ? options.text : 'Click';
+  const value = options.value ? options.value : 'button-value';
+  const style = options.style;
+  const actionId = options.actionId;
+  const buttonBlock = {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": text,
+          "emoji": true
+        },
+        "value": value,
+      }
+    ]
+  };
+  return Object.assign(
+    buttonBlock,
+    style && { "style": style },
+    actionId && { "action_id": actionId }
+  );
+};
+
+// create input block
+const makeInputBlock = (options={}) => {
+  const text = options.text ? options.text : 'Placeholder';
+  const multiline = options.multiline ? options.multiline : false;
+  const label = options.label ? options.label : 'Label';
+  return {
+    "type": "input",
+    "element": {
+      "type": "plain_text_input",
+      "multiline": multiline,
+      "action_id": "plain_text_input-action",
+      "placeholder": {
+        "type": "plain_text",
+        "text": text
+      }
+    },
+    "label": {
+      "type": "plain_text",
+      "text": label,
+      "emoji": true
+    }
+  };
+};
+
 // remove slashes from end of URL (necessary only when running RegExp.exec)
 const removeSlashes = (url) => {
   let urlTrimmed = url;
@@ -88,7 +139,7 @@ const removeSlashes = (url) => {
 
 /* === BEGIN FILE === */
 
-// add RDF file blocks
+// add file blocks
 const addFileBlocks = (viewConfig, type, content, url) => {
   const chunkSize = 3000;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
@@ -103,7 +154,16 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       if (content.length === 0) {
         const textBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:');
         viewConfig.blocks.push(textBlock);
-      } else if (content.length > chunkSize) {
+        return;
+      }
+      const editButtonBlock = makeButtonBlock({
+        "text": ":lower_left_fountain_pen:   Edit",
+        "value": url,
+        "style": "danger",
+        "action_id": "edit-content"
+      });
+      viewConfig.blocks.push(editButtonBlock);
+      if (content.length > chunkSize) {
         const chunks = content.match(chunkPattern);
         const chunkBlocks = chunks.map((chunk) => {
           return makeTextBlock(chunk);
@@ -114,6 +174,29 @@ const addFileBlocks = (viewConfig, type, content, url) => {
         viewConfig.blocks.push(textBlock);
       }
   }
+};
+
+// add edit file blocks
+const addEditBlocks = (viewConfig, content) => {
+  const chunkSize = 3000;
+  const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
+  const saveButtonBlock = makeButtonBlock({
+    "text": ":floppy_disk:   Save",
+    "style": "primary",
+    "action_id": "save-content"
+  });
+  viewConfig.blocks.push(saveButtonBlock);
+  /*if (content.length > chunkSize) {
+    const textBlock = makeTextBlock(':no_entry_sign: This file is too large to edit in Slack. Please edit this file in a traditional web browser. :no_entry_sign:');
+    viewConfig.blocks.push(textBlock);
+  } else {*/
+  const editInputBlock = makeInputBlock({
+    "text": content,
+    "label": "Edit",
+    "multiline": true
+  });
+  viewConfig.blocks.push(editInputBlock);
+  // }
 };
 
 /* === END FILE === */
@@ -220,7 +303,8 @@ const makeContainerBlock = (statement, index) => {
         "type": "button",
         "text": {
           "type": "plain_text",
-          "text": objRelPath
+          "text": objRelPath,
+          "emoji": true
         },
         "value": obj,
         "action_id": "load-content"
@@ -267,6 +351,7 @@ module.exports = {
   setFieldValue,
   customizeProfile,
   addFileBlocks,
+  addEditBlocks,
   addProfileBlocks,
   addContainerBlocks,
 };

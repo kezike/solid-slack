@@ -3,6 +3,7 @@ const {
   setFieldValue,
   customizeProfile,
   addFileBlocks,
+  addEditBlocks,
   addProfileBlocks,
   addContainerBlocks,
 } = require('../util/blocks');
@@ -35,17 +36,17 @@ class FileManager {
         const accountResponse = await FileManager.loadAccount(req, res);
         return accountResponse;
       case 'load-content':
-        const contentResponse = await FileManager.loadContent(req, res);
-        return contentResponse;
+        const loadResponse = await FileManager.loadContent(req, res);
+        return loadResponse;
+      case 'edit-content':
+        const editResponse = await FileManager.editContent(slackClient, reqBody);
+        return editResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
         return createCommandStatus;
       case 'review':
         const reviewCommandStatus = await FileManager.reviewFile(slackClient, reqBody);
         return reviewCommandStatus;
-      case 'edit':
-        const editCommandStatus = await FileManager.editFile(slackClient, reqBody);
-        return editCommandStatus;
       case 'delete':
         const deleteCommandStatus = await FileManager.deleteFile(slackClient, reqBody);
         return deleteCommandStatus;
@@ -140,16 +141,37 @@ class FileManager {
     }
   }
 
+  static async editContent(req, res) {
+    try {
+      const fileManagerConfig = _.cloneDeep(fileManager);
+      const payload = JSON.parse(req.body.payload);
+      const view_id = payload.view.id;
+      const url = payload.actions[0].value;
+      const userId = payload.user.id;
+      const token = slackClient.token;
+      const block = getBlockById(fileManagerConfig, 'file_header');
+      const solidClient = getSolidClientFromSlackId(userId);
+      const resourcePromise = await solidClient.fetcher.load(url);
+      const resourceContent = resourcePromise['responseText'];
+      setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
+      setFieldValue(block, ['text', 'text'], url);
+      addEditBlocks(fileManagerConfig, resourceContent);
+      const view = JSON.stringify(fileManagerConfig, null, 2);
+      const viewPayload = { token, view, view_id };
+      await slackClient.axios.post('views.update', viewPayload);
+      return res.status(httpStatus.OK).send();
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
+    }
+  }
+
   static async createFile(slackClient, reqBody) {
     console.log("Creating file...");
   }
 
   static async reviewFile(slackClient, reqBody) {
     console.log("Reviewing file...");
-  }
-
-  static async editFile(slackClient, reqBody) {
-    console.log("Editing file...");
   }
 
   static async deleteFile(slackClient, reqBody) {
