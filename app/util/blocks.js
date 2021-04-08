@@ -112,7 +112,7 @@ const makeInputBlock = (options={}) => {
     "element": {
       "type": "plain_text_input",
       "multiline": multiline,
-      "action_id": "plain_text_input-action",
+      "action_id": "plain_text_input_action",
       "placeholder": {
         "type": "plain_text",
         "text": text
@@ -154,7 +154,7 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       const editButtonBlock = makeButtonBlock({
         "text": ":lower_left_fountain_pen:   Edit",
         "value": url,
-        "style": "danger",
+        // "style": "danger",
         "actionId": "edit-content"
       });
       viewConfig.blocks.push(editButtonBlock);
@@ -182,7 +182,7 @@ const addEditBlocks = (viewConfig, content) => {
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const saveButtonBlock = makeButtonBlock({
     "text": ":floppy_disk:   Save",
-    "style": "primary",
+    // "style": "primary",
     "actionId": "save-content"
   });
   viewConfig.blocks.push(saveButtonBlock);
