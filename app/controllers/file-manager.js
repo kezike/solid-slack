@@ -146,6 +146,7 @@ class FileManager {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
       const view_id = payload.view.id;
+      const hash = payload.view.hash;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
       const token = slackClient.token;
@@ -161,7 +162,7 @@ class FileManager {
       console.log('view_id:', view_id);
       console.log('payload:', payload);
       const view = JSON.stringify(fileManagerConfig, null, 2);
-      const viewPayload = { token, view, view_id };
+      const viewPayload = { token, view, view_id, hash };
       await slackClient.axios.post('views.update', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {

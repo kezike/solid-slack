@@ -105,7 +105,7 @@ const makeButtonBlock = (options={}) => {
 
 // create input block
 const makeInputBlock = (options={}) => {
-  const text = options.text ? options.text : 'Placeholder';
+  const placeholder = options.placeholder ? options.placeholder : 'Placeholder';
   const multiline = options.multiline ? options.multiline : false;
   const label = options.label ? options.label : 'Label';
   return {
@@ -116,7 +116,7 @@ const makeInputBlock = (options={}) => {
       "action_id": "plain_text_input_action",
       "placeholder": {
         "type": "plain_text",
-        "text": text
+        "text": placeholder
       }
     },
     "label": {
@@ -192,7 +192,7 @@ const addEditBlocks = (viewConfig, content) => {
     viewConfig.blocks.push(textBlock);
   } else {*/
   const editInputBlock = makeInputBlock({
-    "text": content,
+    "placeholder": content,
     "label": "Edit",
     "multiline": true
   });
