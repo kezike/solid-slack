@@ -81,25 +81,26 @@ const makeButtonBlock = (options={}) => {
   const value = options.value ? options.value : 'button-value';
   const style = options.style;
   const actionId = options.actionId;
-  const buttonBlock = {
-    "type": "actions",
-    "elements": [
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": text,
-          "emoji": true
-        },
-        "value": value,
-      }
-    ]
+  let buttonBlockElement = {
+    "type": "button",
+    "text": {
+      "type": "plain_text",
+      "text": text,
+      "emoji": true
+    },
+    "value": value,
   };
-  return Object.assign(
-    buttonBlock,
+  buttonBlockElement = Object.assign(
+    buttonBlockElement,
     style && { "style": style },
     actionId && { "action_id": actionId }
   );
+  return {
+    "type": "actions",
+    "elements": [
+      buttonBlockElement
+    ]
+  };
 };
 
 // create input block
@@ -154,7 +155,7 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       const editButtonBlock = makeButtonBlock({
         "text": ":lower_left_fountain_pen:   Edit",
         "value": url,
-        // "style": "danger",
+        "style": "danger",
         "actionId": "edit-content"
       });
       viewConfig.blocks.push(editButtonBlock);
@@ -182,7 +183,7 @@ const addEditBlocks = (viewConfig, content) => {
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const saveButtonBlock = makeButtonBlock({
     "text": ":floppy_disk:   Save",
-    // "style": "primary",
+    "style": "primary",
     "actionId": "save-content"
   });
   viewConfig.blocks.push(saveButtonBlock);
