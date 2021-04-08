@@ -151,18 +151,18 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       return;
     case 'text':
     default:
+      const editButtonBlock = makeButtonBlock({
+        "text": ":lower_left_fountain_pen:   Edit",
+        "value": url,
+        "style": "danger",
+        "actionId": "edit-content"
+      });
+      viewConfig.blocks.push(editButtonBlock);
       if (content.length === 0) {
         const textBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:');
         viewConfig.blocks.push(textBlock);
         return;
       }
-      const editButtonBlock = makeButtonBlock({
-        "text": ":lower_left_fountain_pen:   Edit",
-        "value": url,
-        "style": "danger",
-        "action_id": "edit-content"
-      });
-      viewConfig.blocks.push(editButtonBlock);
       if (content.length > chunkSize) {
         const chunks = content.match(chunkPattern);
         const chunkBlocks = chunks.map((chunk) => {
@@ -183,7 +183,7 @@ const addEditBlocks = (viewConfig, content) => {
   const saveButtonBlock = makeButtonBlock({
     "text": ":floppy_disk:   Save",
     "style": "primary",
-    "action_id": "save-content"
+    "actionId": "save-content"
   });
   viewConfig.blocks.push(saveButtonBlock);
   /*if (content.length > chunkSize) {
