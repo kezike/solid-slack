@@ -39,19 +39,19 @@ class FileManager {
         const loadResponse = await FileManager.loadContent(req, res);
         return loadResponse;
       case 'edit-content':
-        const editResponse = await FileManager.editContent(slackClient, reqBody);
+        const editResponse = await FileManager.editContent(req, res);
         return editResponse;
       case 'create':
-        const createCommandStatus = await FileManager.createFile(slackClient, reqBody);
+        const createCommandStatus = await FileManager.createFile(req, res);
         return createCommandStatus;
       case 'review':
-        const reviewCommandStatus = await FileManager.reviewFile(slackClient, reqBody);
+        const reviewCommandStatus = await FileManager.reviewFile(req, res);
         return reviewCommandStatus;
       case 'delete':
-        const deleteCommandStatus = await FileManager.deleteFile(slackClient, reqBody);
+        const deleteCommandStatus = await FileManager.deleteFile(req, res);
         return deleteCommandStatus;
       case 'share':
-        const shareCommandStatus = await FileManager.shareFile(slackClient, reqBody);
+        const shareCommandStatus = await FileManager.shareFile(req, res);
         return shareCommandStatus;
       default:
         return httpStatus.BAD_REQUEST;
@@ -166,19 +166,19 @@ class FileManager {
     }
   }
 
-  static async createFile(slackClient, reqBody) {
+  static async createFile(req, res) {
     console.log("Creating file...");
   }
 
-  static async reviewFile(slackClient, reqBody) {
+  static async reviewFile(req, res) {
     console.log("Reviewing file...");
   }
 
-  static async deleteFile(slackClient, reqBody) {
+  static async deleteFile(req, res) {
     console.log("Deleting file...");
   }
 
-  static async shareFile(slackClient, reqBody) {
+  static async shareFile(req, res) {
     console.log("Sharing file...");
   }
 }
