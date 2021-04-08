@@ -10,7 +10,6 @@ const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
 const { slackClient } = require('../util/slack');
 const { httpStatus } = require('../util/http');
-// const fileManager = require('../assets/file-manager-home');
 const profileViewer = require('../assets/profile-viewer');
 const fileManager = require('../assets/file-manager');
 const { LDP, FOAF, VCARD, SOLID } = require('../util/namespaces');
@@ -27,7 +26,6 @@ class FileManager {
    * @param {*} command
    * @memberof FileManager
    */
-  // static async exec(slackClient, reqBody, command) {
   static async exec(req, res, command) {
     switch (command) {
       case 'profile':
@@ -65,7 +63,6 @@ class FileManager {
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
-      // const block = getBlockById(profileViewerConfig, 'file_viewer');
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
       const profilePromise = await solidClient.fetcher.load(webId);
@@ -73,10 +70,8 @@ class FileManager {
       const profileName = solidClient.fetcher.store.any($rdf.sym(webId), FOAF('name'), undefined);
       const profilePicture = solidClient.fetcher.store.any($rdf.sym(webId), VCARD('hasPhoto'), undefined);
       customizeProfile(profileViewerConfig, profileName, profilePicture);
-      // const statements = solidClient.fetcher.store.statements;
       const statements = solidClient.fetcher.store.match($rdf.sym(webId), undefined, undefined);
       addProfileBlocks(profileViewerConfig, statements);
-      // setFieldValue(block, ['text', 'text'], profileContent);
       const view = JSON.stringify(profileViewerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.open', viewPayload);
@@ -93,12 +88,10 @@ class FileManager {
       const trigger_id = req.body.trigger_id;
       const token = slackClient.token;
       const userId = req.body.user_id;
-      const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
       const webId = solidClient.webId;
       await solidClient.fetcher.load(webId);
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
-      // setFieldValue(block, ['text', 'text'], account);
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
       addContainerBlocks(fileManagerConfig, statements);

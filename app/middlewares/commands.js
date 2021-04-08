@@ -11,11 +11,9 @@ const commandVerify = async (req, res, next) => {
   const helpMessage = `
     Hello, I am Solid Bot :wave::skin-tone-4: How can I help you today? (P.S.: I only speak Solid, so please address me as \`/solid COMMAND\`):
     - \`login\`: login to your Solid pod
-    - \`logout\`: logout of your Solid pod
+    - \`logout\`: [TODO] logout of your Solid pod
     - \`profile\`: load your Solid profile
     - \`account\`: fetch your Solid account
-    - \`file\`: TODO
-    - \`dir\`: TODO
     - \`help\`: TODO
   `;
   if (commandText === '') {
