@@ -34,7 +34,7 @@ const main = async () => {
         console.log(`Your Profile - ${webId}:\n${profileContent}`);
         console.log(`Your Account - ${account}:\n${JSON.stringify(accountContent, null, 2)}`);
         console.log('Your Picture:', photo);
-        solidNodeClient.logout();
+        await solidNodeClient.logout();
     }
 }
 

@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const { AccountManager } = require('./app/controllers/account-manager');
 const { FileManager } = require('./app/controllers/file-manager');
-const { solidLogin } = require('./app/controllers/solid');
+const { solidLogin, solidLogout } = require('./app/controllers/solid');
 const { httpStatus } = require('./app/util/http');
 const { commandVerify } = require('./app/middlewares/commands');
 const { slackVerify } = require('./app/middlewares/slack');
@@ -26,6 +26,9 @@ const entryHandler = async (req, res) => {
     case 'file':
       const fileResponse = await FileManager.exec(req, res, command);
       return fileResponse;
+    case 'logout':
+      const logoutResponse = await solidLogout(req, res);
+      return logoutResponse;
     default:
       return res.send(`Unrecognized command: \`${command}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
   }

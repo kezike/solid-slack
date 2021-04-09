@@ -25,6 +25,10 @@ class SolidSlackClient {
     return session;
   }
 
+  async logout() {
+    await this.auth.logout();
+  }
+
   loggedIn() {
     return this.session.loggedIn;
   }
@@ -68,4 +72,21 @@ const solidLogin = async (req, res) => {
   }
 };
 
-module.exports = { solidLogin };
+const solidLogout = async (req, res) => {
+  const submission = JSON.parse(req.body.payload);
+  const userId = submission.user.id;
+  const solidClient = getSolidClientFromSlackId(userId);
+  if (!solidClient) {
+    return res.status(httpStatus.OK).send('You are not logged into Solid!');
+  }
+  try {
+    const session = await solidClient.logout();
+    return res.status(httpStatus.OK).send();
+  } catch (e) {
+    const errorMessage = `We encountered the following error while logging out of Solid: ${e.message}`;
+    console.error(JSON.stringify(e, null, 2));
+    return res.status(httpStatus.BAD_REQUEST).send(errorMessage);
+  }
+};
+
+module.exports = { solidLogin, solidLogout };
