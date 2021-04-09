@@ -157,12 +157,14 @@ class FileManager {
       const resourceContent = resourcePromise['responseText'];
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
       setFieldValue(block, ['text', 'text'], url);
+      console.log("edit resource content:", resourceContent);
       addEditBlocks(fileManagerConfig, resourceContent);
       /*console.log('added edit blocks:', fileManagerConfig.blocks);
       console.log('url:', url);
       console.log('view_id:', view_id);
       console.log('payload:', payload);*/
       const view = JSON.stringify(fileManagerConfig, null, 2);
+      console.log("edit view:", view);
       const viewPayload = { token, trigger_id, view/*, view_id, hash*/ };
       // await slackClient.axios.post('views.update', viewPayload);
       await slackClient.axios.post('views.push', viewPayload);
