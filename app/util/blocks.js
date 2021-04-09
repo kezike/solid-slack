@@ -105,7 +105,7 @@ const makeButtonBlock = (options={}) => {
 
 // create input block
 const makeInputBlock = (options={}) => {
-  const placeholder = options.placeholder ? options.placeholder : 'Placeholder';
+  const initialValue = options.initialValue ? options.initialValue : '';
   const multiline = options.multiline ? options.multiline : false;
   const label = options.label ? options.label : 'Label';
   return {
@@ -114,10 +114,7 @@ const makeInputBlock = (options={}) => {
       "type": "plain_text_input",
       "multiline": multiline,
       "action_id": "plain_text_input_action",
-      "placeholder": {
-        "type": "plain_text",
-        "text": placeholder
-      }
+      "initial_value": initialValue
     },
     "label": {
       "type": "plain_text",
@@ -153,10 +150,10 @@ const addFileBlocks = (viewConfig, type, content, url) => {
     case 'text':
     default:
       const editButtonBlock = makeButtonBlock({
-        "text": ":lower_left_fountain_pen:   Edit",
-        "value": url,
-        "style": "danger",
-        "actionId": "edit-content"
+        text: ':lower_left_fountain_pen:   Edit',
+        value: url,
+        style: 'danger',
+        actionId: 'edit-content'
       });
       viewConfig.blocks.push(editButtonBlock);
       if (content.length === 0) {
@@ -182,9 +179,9 @@ const addEditBlocks = (viewConfig, content) => {
   const chunkSize = 3000;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const saveButtonBlock = makeButtonBlock({
-    "text": ":floppy_disk:   Save",
-    "style": "primary",
-    "actionId": "save-content"
+    text: ':floppy_disk:   Save',
+    style: 'primary',
+    actionId: 'save-content'
   });
   viewConfig.blocks.push(saveButtonBlock);
   /*if (content.length > chunkSize) {
@@ -192,9 +189,9 @@ const addEditBlocks = (viewConfig, content) => {
     viewConfig.blocks.push(textBlock);
   } else {*/
   const editInputBlock = makeInputBlock({
-    "placeholder": content,
-    "label": "Edit",
-    "multiline": true
+    initialValue: content,
+    label: 'Edit',
+    multiline: true
   });
   viewConfig.blocks.push(editInputBlock);
   // }
