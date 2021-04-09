@@ -110,6 +110,7 @@ class FileManager {
     try {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
+      console.log('load view id:', payload.view.id);
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
@@ -145,6 +146,7 @@ class FileManager {
     try {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
+      console.log('edit view id:', payload.view.id);
       const view_id = payload.view.id;
       const hash = payload.view.hash;
       const url = payload.actions[0].value;
@@ -157,10 +159,10 @@ class FileManager {
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
       setFieldValue(block, ['text', 'text'], url);
       addEditBlocks(fileManagerConfig, resourceContent);
-      console.log('added edit blocks:', fileManagerConfig.blocks);
+      /*console.log('added edit blocks:', fileManagerConfig.blocks);
       console.log('url:', url);
       console.log('view_id:', view_id);
-      console.log('payload:', payload);
+      console.log('payload:', payload);*/
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, view, view_id, hash };
       await slackClient.axios.post('views.update', viewPayload);
