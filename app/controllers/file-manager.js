@@ -147,7 +147,7 @@ class FileManager {
       const payload = JSON.parse(req.body.payload);
       const trigger_id = payload.trigger_id;
       // const view_id = payload.view.previous_view_id;
-      const hash = payload.view.hash;
+      // const hash = payload.view.hash;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
       const token = slackClient.token;
@@ -164,7 +164,8 @@ class FileManager {
       console.log('payload:', payload);*/
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view/*, view_id, hash*/ };
-      await slackClient.axios.post('views.update', viewPayload);
+      // await slackClient.axios.post('views.update', viewPayload);
+      await slackClient.axios.post('views.push', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
