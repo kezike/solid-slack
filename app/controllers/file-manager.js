@@ -147,7 +147,7 @@ class FileManager {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
       console.log('edit view id:', payload.view.id);
-      const view_id = payload.view.id;
+      const view_id = payload.view.previous_view_id;
       const hash = payload.view.hash;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
