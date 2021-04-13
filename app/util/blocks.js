@@ -149,6 +149,15 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       return;
     case 'text':
     default:
+      if (/well-known/.test(url)) {
+        const testInputBlock = makeInputBlock({
+          initialValue: content,
+          label: 'WK',
+          multiline: true
+        });
+        viewConfig.blocks.push(testInputBlock);
+        return;
+      }
       const editButtonBlock = makeButtonBlock({
         text: ':lower_left_fountain_pen:   Edit',
         value: url,
