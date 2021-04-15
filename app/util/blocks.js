@@ -338,7 +338,7 @@ const addContainerBlocks = (viewConfig, statements) => {
     viewConfig.blocks.push(accountBlock);
     viewConfig.blocks.push(dividerBlock);
   }
-  const testInputBlock = makeInputBlock({
+  /*const testInputBlock = makeInputBlock({
     initialValue: `
     @prefix : <#>.
     @prefix pro: <./>.
@@ -394,7 +394,7 @@ const addContainerBlocks = (viewConfig, statements) => {
     label: 'Profile'
   });
   viewConnfig.blocks.push(testInputBlock);
-  viewConnfig.blocks.push(makeDividerBlock());
+  viewConnfig.blocks.push(makeDividerBlock());*/
 };
 
 /* === END CONTAINER === */
