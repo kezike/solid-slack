@@ -338,6 +338,63 @@ const addContainerBlocks = (viewConfig, statements) => {
     viewConfig.blocks.push(accountBlock);
     viewConfig.blocks.push(dividerBlock);
   }
+  const testInputBlock = makeInputBlock({
+    initialValue: `
+    @prefix : <#>.
+    @prefix pro: <./>.
+    @prefix n0: <http://xmlns.com/foaf/0.1/>.
+    @prefix schem: <http://schema.org/>.
+    @prefix n1: <http://www.w3.org/ns/auth/acl#>.
+    @prefix ldp: <http://www.w3.org/ns/ldp#>.
+    @prefix inbox: </inbox/>.
+    @prefix sp: <http://www.w3.org/ns/pim/space#>.
+    @prefix kez: </>.
+    @prefix r: <https://example.com/random#>.
+    @prefix sec: <https://w3id.org/security#>.
+    @prefix n2: <https://>.
+    @prefix vcard: <http://www.w3.org/2006/vcard/ns#>.
+    @prefix terms: <http://www.w3.org/ns/solid/terms#>.
+
+    pro:card a n0:PersonalProfileDocument; n0:maker :me; n0:primaryTopic :me.
+
+    :me
+        a schem:Person, n0:Person;
+        vcard:hasPhoto <bitmoji-smile.png>;
+        n1:trustedApp
+                [
+                    n1:mode n1:Append, n1:Control, n1:Read, n1:Write;
+                    n1:origin <http://example.org>
+                ],
+                [
+                    n1:mode n1:Append, n1:Read, n1:Write;
+                    n1:origin <http://localhost:8080>
+                ],
+                [
+                    n1:mode n1:Append, n1:Read, n1:Write;
+                    n1:origin <http://localhost:8081>
+                ],
+                [
+                    n1:mode n1:Append, n1:Read, n1:Write;
+                    n1:origin <http://localhost:8082>
+                ],
+                [
+                    n1:mode n1:Append, n1:Read, n1:Write;
+                    n1:origin n2:solid-node-client
+                ];
+        ldp:inbox inbox:;
+        sp:preferencesFile </settings/prefs.ttl>;
+        sp:storage kez:;
+        terms:account kez:;
+        terms:privateTypeIndex </settings/privateTypeIndex.ttl>;
+        terms:publicTypeIndex </settings/publicTypeIndex.ttl>;
+        n0:name "Kayode Ezike";
+        r:meep "MEEP";
+        sec:publicKey </public/svc/keys/pub.txt>.
+    `,
+    label: 'Profile'
+  });
+  viewConnfig.blocks.push(testInputBlock);
+  viewConnfig.blocks.push(makeDividerBlock());
 };
 
 /* === END CONTAINER === */
