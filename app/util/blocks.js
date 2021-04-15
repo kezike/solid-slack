@@ -106,21 +106,23 @@ const makeButtonBlock = (options={}) => {
 // create input block
 const makeInputBlock = (options={}) => {
   const initialValue = options.initialValue ? options.initialValue : '';
-  const multiline = options.multiline ? options.multiline : false;
+  const multiline = options.multiline ? options.multiline : true;
+  const optional = options.optional ? options.optional : true;
   const label = options.label ? options.label : 'Label';
   return {
     "type": "input",
+    "label": {
+      "type": "plain_text",
+      "text": label,
+      "emoji": true
+    },
     "element": {
       "type": "plain_text_input",
       "multiline": multiline,
       "action_id": "plain_text_input_action",
       "initial_value": initialValue
     },
-    "label": {
-      "type": "plain_text",
-      "text": label,
-      "emoji": true
-    }
+    "optional": optional
   };
 };
 
@@ -149,15 +151,6 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       return;
     case 'text':
     default:
-      if (/well-known/.test(url)) {
-        const testInputBlock = makeInputBlock({
-          initialValue: content,
-          label: 'WK',
-          multiline: true
-        });
-        viewConfig.blocks.push(testInputBlock);
-        return;
-      }
       const editButtonBlock = makeButtonBlock({
         text: ':lower_left_fountain_pen:   Edit',
         value: url,
@@ -185,22 +178,20 @@ const addFileBlocks = (viewConfig, type, content, url) => {
 
 // add edit file blocks
 const addEditBlocks = (viewConfig, content) => {
-  const chunkSize = 3000;
-  const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
-  const saveButtonBlock = makeButtonBlock({
-    text: ':floppy_disk:   Save',
-    style: 'primary',
-    actionId: 'save-content'
-  });
-  viewConfig.blocks.push(saveButtonBlock);
+  /*const chunkSize = 3000;
+  const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');*/
+  viewConfig.submit = {
+    "type": "plain_text",
+    "text": ":floppy_disk:   Save",
+    "emoji": true
+  };
   /*if (content.length > chunkSize) {
     const textBlock = makeTextBlock(':no_entry_sign: This file is too large to edit in Slack. Please edit this file in a traditional web browser. :no_entry_sign:');
     viewConfig.blocks.push(textBlock);
   } else {*/
   const editInputBlock = makeInputBlock({
     initialValue: content,
-    label: 'Edit',
-    multiline: true
+    label: 'Edit'
   });
   viewConfig.blocks.push(editInputBlock);
   // }

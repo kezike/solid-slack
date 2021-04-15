@@ -5,11 +5,6 @@
     "type": "plain_text",
     "text": "Solid Account"
   },
-  "submit": {
-    "type": "plain_text",
-    "text": "Submit",
-    "emoji": true
-  },
   "close": {
     "type": "plain_text",
     "text": "Close",
@@ -26,20 +21,6 @@
     },
     {
       "type": "divider"
-    },
-    {
-      "type": "input",
-      "element": {
-        "type": "plain_text_input",
-        "multiline": true,
-        "action_id": "plain_text_input_action",
-        "initial_value": "Hey there\nI'm Ayo\nGood to meet you!"
-      },
-      "label": {
-        "type": "plain_text",
-        "text": "Greeting",
-        "emoji": true
-      }
     }
   ]
 }
