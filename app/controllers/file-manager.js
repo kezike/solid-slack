@@ -98,6 +98,7 @@ class FileManager {
       addContainerBlocks(fileManagerConfig, statements);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
+      console.log("file manager view config blocks:", fileManagerConfig.blocks);
       await slackClient.axios.post('views.open', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
