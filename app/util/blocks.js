@@ -338,7 +338,7 @@ const addContainerBlocks = (viewConfig, statements) => {
     viewConfig.blocks.push(accountBlock);
     viewConfig.blocks.push(dividerBlock);
   }
-  /*const testInputBlock = makeInputBlock({
+  const testInputBlock = makeInputBlock({
     initialValue: `
     @prefix : <#>.
     @prefix pro: <./>.
@@ -360,7 +360,7 @@ const addContainerBlocks = (viewConfig, statements) => {
     :me
         a schem:Person, n0:Person;
         vcard:hasPhoto <bitmoji-smile.png>;
-        n1:trustedApp
+        n1:trustedApp`,/*
                 [
                     n1:mode n1:Append, n1:Control, n1:Read, n1:Write;
                     n1:origin <http://example.org>
@@ -390,11 +390,11 @@ const addContainerBlocks = (viewConfig, statements) => {
         n0:name "Kayode Ezike";
         r:meep "MEEP";
         sec:publicKey </public/svc/keys/pub.txt>.
-    `,
+    `*/
     label: 'Profile'
   });
   viewConnfig.blocks.push(testInputBlock);
-  viewConnfig.blocks.push(makeDividerBlock());*/
+  viewConnfig.blocks.push(makeDividerBlock());
 };
 
 /* === END CONTAINER === */
