@@ -339,7 +339,8 @@ const addContainerBlocks = (viewConfig, statements) => {
     viewConfig.blocks.push(dividerBlock);
   }
   const testInputBlock = makeInputBlock({
-    initialValue: `@prefix : <#>.`,/*
+    initialValue: `
+    @prefix : <#>.
     @prefix pro: <./>.
     @prefix n0: <http://xmlns.com/foaf/0.1/>.
     @prefix schem: <http://schema.org/>.
@@ -389,11 +390,11 @@ const addContainerBlocks = (viewConfig, statements) => {
         n0:name "Kayode Ezike";
         r:meep "MEEP";
         sec:publicKey </public/svc/keys/pub.txt>.
-    `*/
+    `,
     label: 'Profile'
   });
-  viewConnfig.blocks.push(testInputBlock);
-  viewConnfig.blocks.push(makeDividerBlock());
+  viewConfig.blocks.push(testInputBlock);
+  viewConfig.blocks.push(makeDividerBlock());
 };
 
 /* === END CONTAINER === */
