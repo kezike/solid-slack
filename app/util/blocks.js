@@ -340,11 +340,11 @@ const addContainerBlocks = (viewConfig, statements) => {
   }
   const testInputBlock = makeInputBlock({
     initialValue: `
-    @prefix : <#>.
+    @prefix : <#>.`,/*
     @prefix pro: <./>.
     @prefix n0: <http://xmlns.com/foaf/0.1/>.
     @prefix schem: <http://schema.org/>.
-    @prefix n1: <http://www.w3.org/ns/auth/acl#>.`,/*
+    @prefix n1: <http://www.w3.org/ns/auth/acl#>.
     @prefix ldp: <http://www.w3.org/ns/ldp#>.
     @prefix inbox: </inbox/>.
     @prefix sp: <http://www.w3.org/ns/pim/space#>.
