@@ -347,13 +347,13 @@ const addContainerBlocks = (viewConfig, statements) => {
     @prefix n1: <http://www.w3.org/ns/auth/acl#>.
     @prefix ldp: <http://www.w3.org/ns/ldp#>.
     @prefix inbox: </inbox/>.
-    @prefix sp: <http://www.w3.org/ns/pim/space#>.
+    @prefix sp: <http://www.w3.org/ns/pim/space#>.`,/*
     @prefix kez: </>.
     @prefix r: <https://example.com/random#>.
     @prefix sec: <https://w3id.org/security#>.
     @prefix n2: <https://>.
     @prefix vcard: <http://www.w3.org/2006/vcard/ns#>.
-    @prefix terms: <http://www.w3.org/ns/solid/terms#>.`,/*
+    @prefix terms: <http://www.w3.org/ns/solid/terms#>.
 
     pro:card a n0:PersonalProfileDocument; n0:maker :me; n0:primaryTopic :me.
 
