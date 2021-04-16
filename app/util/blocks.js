@@ -339,8 +339,7 @@ const addContainerBlocks = (viewConfig, statements) => {
     viewConfig.blocks.push(dividerBlock);
   }
   const testInputBlock = makeInputBlock({
-    initialValue: `
-    @prefix : <#>.`,/*
+    initialValue: `@prefix : <#>.`,/*
     @prefix pro: <./>.
     @prefix n0: <http://xmlns.com/foaf/0.1/>.
     @prefix schem: <http://schema.org/>.
