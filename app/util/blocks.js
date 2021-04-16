@@ -353,14 +353,14 @@ const addContainerBlocks = (viewConfig, statements) => {
     @prefix sec: <https://w3id.org/security#>.
     @prefix n2: <https://>.
     @prefix vcard: <http://www.w3.org/2006/vcard/ns#>.
-    @prefix terms: <http://www.w3.org/ns/solid/terms#>.
+    @prefix terms: <http://www.w3.org/ns/solid/terms#>.`,/*
 
     pro:card a n0:PersonalProfileDocument; n0:maker :me; n0:primaryTopic :me.
 
     :me
         a schem:Person, n0:Person;
         vcard:hasPhoto <bitmoji-smile.png>;
-        n1:trustedApp`,/*
+        n1:trustedApp
                 [
                     n1:mode n1:Append, n1:Control, n1:Read, n1:Write;
                     n1:origin <http://example.org>
