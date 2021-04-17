@@ -49,11 +49,12 @@ const makeDividerBlock = () => {
 };
 
 // create text block
-const makeTextBlock = (text) => {
+const makeTextBlock = (text, options={}) => {
+  const type = options.type ? options.type : 'plain_text';
   return {
     "type": "section",
     "text": {
-      "type": "plain_text",
+      "type": type,
       "text": text,
       "emoji": true
     }
@@ -330,7 +331,14 @@ const convertContainerRdfToBlocks = (statements) => {
 };
 
 // add RDF container statement blocks
-const addContainerBlocks = (viewConfig, statements) => {
+const addContainerBlocks = (viewConfig, statements, level) => {
+  if (level === 3) {
+    const warningBlock = makeTextBlock(':warning: NOTE: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');
+    const dividerBlock = makeDividerBlock();
+    viewConfig.blocks.push(warningBlock);
+    viewConfig.blocks.push(dividerBlock);
+    return;
+  }
   const accountBlocks = convertContainerRdfToBlocks(statements);
   for (let i = 0; i < accountBlocks.length; i++) {
     const accountBlock = accountBlocks[i];

@@ -95,7 +95,8 @@ class FileManager {
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
-      addContainerBlocks(fileManagerConfig, statements);
+      addContainerBlocks(fileManagerConfig, statements, 1);
+      view.private_metadata = '{"level":1}';
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       // console.log("file manager view config blocks:", fileManagerConfig.blocks);
@@ -115,6 +116,9 @@ class FileManager {
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
+      const parentId = payload.view.previous_view_id;
+      const metadata = payload.view.private_metadata ? JSON.parse(payload.view.private_metadata) : {};
+      const level = parentId ? metadata.level + 1 : 1;
       const token = slackClient.token;
       const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
@@ -125,7 +129,7 @@ class FileManager {
       if (resourceContent.length > 0) {
         // resource is a container
         // NOTE: resourceContent is an array of RDF statements here
-        addContainerBlocks(fileManagerConfig, resourceContent);
+        addContainerBlocks(fileManagerConfig, resourceContent, level);
       } else {
         // resource is a file
         // NOTE: resourceContent is a string here
@@ -133,6 +137,7 @@ class FileManager {
         const contentType = resourcePromise['headers'].get('Content-Type');
         addFileBlocks(fileManagerConfig, contentType, resourceContent, url);
       }
+      view.private_metadata = `{"level":${level}}`;
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.push', viewPayload);
