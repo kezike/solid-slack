@@ -98,7 +98,7 @@ class FileManager {
       addContainerBlocks(fileManagerConfig, statements);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
-      console.log("file manager view config blocks:", fileManagerConfig.blocks);
+      // console.log("file manager view config blocks:", fileManagerConfig.blocks);
       await slackClient.axios.post('views.open', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
@@ -111,6 +111,7 @@ class FileManager {
     try {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
+      console.log('PAYLOAD:', payload);
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
@@ -158,14 +159,14 @@ class FileManager {
       const resourceContent = resourcePromise['responseText'];
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
       setFieldValue(block, ['text', 'text'], url);
-      console.log("edit resource content:", resourceContent);
+      // console.log("edit resource content:", resourceContent);
       addEditBlocks(fileManagerConfig, resourceContent);
       /*console.log('added edit blocks:', fileManagerConfig.blocks);
       console.log('url:', url);
       console.log('view_id:', view_id);
       console.log('payload:', payload);*/
       const view = JSON.stringify(fileManagerConfig, null, 2);
-      console.log("edit view:", view);
+      // console.log("edit view:", view);
       const viewPayload = { token, trigger_id, view/*, view_id, hash*/ };
       // await slackClient.axios.post('views.update', viewPayload);
       await slackClient.axios.post('views.push', viewPayload);
