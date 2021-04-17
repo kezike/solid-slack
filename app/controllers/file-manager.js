@@ -95,8 +95,8 @@ class FileManager {
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
+      fileManagerConfig.private_metadata = `{"level":${level}}`;
       addContainerBlocks(fileManagerConfig, statements, 1);
-      view.private_metadata = '{"level":1}';
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       // console.log("file manager view config blocks:", fileManagerConfig.blocks);
@@ -126,10 +126,11 @@ class FileManager {
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
       setFieldValue(block, ['text', 'text'], url);
+      fileManagerConfig.private_metadata = `{"level":${level}}`;
       if (resourceContent.length > 0) {
         // resource is a container
         // NOTE: resourceContent is an array of RDF statements here
-        addContainerBlocks(fileManagerConfig, resourceContent, level);
+        addContainerBlocks(fileManagerConfig, resourceContent);
       } else {
         // resource is a file
         // NOTE: resourceContent is a string here
@@ -137,7 +138,6 @@ class FileManager {
         const contentType = resourcePromise['headers'].get('Content-Type');
         addFileBlocks(fileManagerConfig, contentType, resourceContent, url);
       }
-      view.private_metadata = `{"level":${level}}`;
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.push', viewPayload);
