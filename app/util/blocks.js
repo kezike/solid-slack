@@ -332,7 +332,7 @@ const convertContainerRdfToBlocks = (statements) => {
 
 // add RDF container statement blocks
 const addContainerBlocks = (viewConfig, statements) => {
-  const metadata = JSON.parse(fileManagerConfig.private_metadata);
+  const metadata = JSON.parse(viewConfig.private_metadata);
   const level = metadata.level;
   if (level === 3) {
     const warningBlock = makeTextBlock(':warning: NOTE: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');

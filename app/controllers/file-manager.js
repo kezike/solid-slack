@@ -96,7 +96,7 @@ class FileManager {
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
       fileManagerConfig.private_metadata = `{"level":1}`;
-      addContainerBlocks(fileManagerConfig, statements, 1);
+      addContainerBlocks(fileManagerConfig, statements);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       // console.log("file manager view config blocks:", fileManagerConfig.blocks);
