@@ -116,9 +116,9 @@ class FileManager {
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
-      const parentId = payload.view.previous_view_id;
-      const metadata = payload.view.private_metadata ? JSON.parse(payload.view.private_metadata) : {};
-      const level = parentId ? metadata.level + 1 : 1;
+      // const parentId = payload.view.previous_view_id;
+      const metadata = payload.view.private_metadata ? JSON.parse(payload.view.private_metadata) : { level: 1 };
+      const level = metadata.level + 1;
       const token = slackClient.token;
       const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
@@ -126,7 +126,7 @@ class FileManager {
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
       setFieldValue(block, ['text', 'text'], url);
-      console.log('PARENT ID:', parentId);
+      // console.log('PARENT ID:', parentId);
       console.log('METADATA:', metadata);
       console.log('LEVEL:', level);
       fileManagerConfig.private_metadata = `{"level":${level}}`;
