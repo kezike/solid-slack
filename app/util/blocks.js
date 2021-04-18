@@ -1,5 +1,5 @@
 const urlVal = require('valid-url');
-const { FILE_SIZE_LIMIT, VIEW_STACK_LIMIT } = require('slack');
+const { FILE_SIZE_LIMIT, VIEW_STACK_LIMIT } = require('./slack');
 
 /* === BEGIN GENERAL === */
 
