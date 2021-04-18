@@ -99,7 +99,7 @@ class FileManager {
       const account = solidClient.fetcher.store.any($rdf.sym(webId), SOLID('account'), undefined).value;
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
-      fileManagerConfig.private_metadata = `{"level":1}`;
+      fileManagerConfig.private_metadata = '{"level":1}';
       addContainerBlocks(fileManagerConfig, statements, account);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
@@ -118,9 +118,9 @@ class FileManager {
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
+      const token = slackClient.token;
       const metadata = payload.view.private_metadata ? JSON.parse(payload.view.private_metadata) : { level: 1 };
       const level = metadata.level + 1;
-      const token = slackClient.token;
       const block = getBlockById(fileManagerConfig, 'file_header');
       const solidClient = getSolidClientFromSlackId(userId);
       const resourcePromise = await solidClient.fetcher.load(url);
@@ -166,6 +166,7 @@ class FileManager {
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
       setFieldValue(fileManagerConfig, ['callback_id'], 'save-content');
       setFieldValue(block, ['text', 'text'], url);
+      fileManagerConfig.private_metadata = `{"url":${url}}`;
       addEditBlocks(fileManagerConfig, resourceContent, url);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view/*, view_id, hash*/ };
@@ -184,9 +185,10 @@ class FileManager {
       const trigger_id = payload.trigger_id;
       const view_id = payload.view.previous_view_id;
       const hash = payload.view.hash;
-      const url = payload.actions[0].value;
       const userId = payload.user.id;
       const token = slackClient.token;
+      const metadata = JSON.parse(payload.view.private_metadata);
+      const url = metadata.url;
       const solidClient = getSolidClientFromSlackId(userId);
       const resourcePromise = await solidClient.fetcher.load(url);
       const contentType = resourcePromise['headers'].get('Content-Type');
