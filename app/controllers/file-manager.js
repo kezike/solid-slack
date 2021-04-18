@@ -126,6 +126,7 @@ class FileManager {
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
       setFieldValue(block, ['text', 'text'], url);
+      console.log('LEVEL:', level);
       fileManagerConfig.private_metadata = `{"level":${level}}`;
       if (resourceContent.length > 0) {
         // resource is a container
