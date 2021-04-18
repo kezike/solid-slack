@@ -50,7 +50,7 @@ const actionHandler = async (req, res) => {
       return contentResponse;
     case 'save-content':
       console.log('save payload:', payload);
-      command = payload.actions[0].action_id;
+      command = callbackId;
       console.log('save command:', command);
       const saveResponse = await FileManager.exec(req, res, command);
       return saveResponse;
