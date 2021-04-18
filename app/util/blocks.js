@@ -158,6 +158,14 @@ const addFileBlocks = (viewConfig, type, content, url) => {
         style: 'danger',
         actionId: 'edit-content'
       });
+      const metadata = JSON.parse(viewConfig.private_metadata);
+      const level = metadata.level;
+      if (level === 3) {
+        const warningBlock = makeTextBlock(':warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');
+        const dividerBlock = makeDividerBlock();
+        viewConfig.blocks.push(warningBlock);
+        viewConfig.blocks.push(dividerBlock);
+      }
       viewConfig.blocks.push(editButtonBlock);
       if (content.length === 0) {
         const emptyBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:');
