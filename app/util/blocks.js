@@ -1,4 +1,5 @@
 const urlVal = require('valid-url');
+const { FILE_SIZE_LIMIT, VIEW_STACK_LIMIT } = require('slack');
 
 /* === BEGIN GENERAL === */
 
@@ -159,7 +160,7 @@ const removeSlashes = (url) => {
 
 // add file blocks
 const addFileBlocks = (viewConfig, type, content, url) => {
-  const chunkSize = 3000;
+  const chunkSize = FILE_SIZE_LIMIT;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const baseType = type.split('/').shift();
   switch (baseType) {
@@ -177,8 +178,8 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       });
       const metadata = JSON.parse(viewConfig.private_metadata);
       const level = metadata.level;
-      if (level === 3) {
-        const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :no_entry: Please continue this action at ${url} :warning:`);
+      if (level === VIEW_STACK_LIMIT) {
+        const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond ${VIEW_STACK_LIMIT} views, so we have sadly reached the end of the road :no_entry: Please continue this action at ${url} :warning:`);
         const dividerBlock = makeDividerBlock();
         viewConfig.blocks.push(warningBlock);
         viewConfig.blocks.push(dividerBlock);
@@ -204,7 +205,7 @@ const addFileBlocks = (viewConfig, type, content, url) => {
 
 // add edit file blocks
 const addEditBlocks = (viewConfig, content, url) => {
-  /*const chunkSize = 3000;
+  /*const chunkSize = FILE_SIZE_LIMIT;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');*/
   viewConfig.submit = {
     "type": "plain_text",
@@ -361,8 +362,8 @@ const convertContainerRdfToBlocks = (statements) => {
 const addContainerBlocks = (viewConfig, statements, url) => {
   const metadata = JSON.parse(viewConfig.private_metadata);
   const level = metadata.level;
-  if (level === 3) {
-    const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :no_entry: Please continue this action at ${url} :warning:`);
+  if (level === VIEW_STACK_LIMIT) {
+    const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond ${VIEW_STACK_LIMIT} views, so we have sadly reached the end of the road :no_entry: Please continue this action at ${url} :warning:`);
     const dividerBlock = makeDividerBlock();
     viewConfig.blocks.push(warningBlock);
     viewConfig.blocks.push(dividerBlock);
