@@ -335,11 +335,10 @@ const addContainerBlocks = (viewConfig, statements) => {
   const metadata = JSON.parse(viewConfig.private_metadata);
   const level = metadata.level;
   if (level === 3) {
-    const warningBlock = makeTextBlock(':warning: NOTE: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');
+    const warningBlock = makeTextBlock(':warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');
     const dividerBlock = makeDividerBlock();
     viewConfig.blocks.push(warningBlock);
     viewConfig.blocks.push(dividerBlock);
-    return;
   }
   const accountBlocks = convertContainerRdfToBlocks(statements);
   for (let i = 0; i < accountBlocks.length; i++) {
