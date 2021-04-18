@@ -6,6 +6,7 @@ const {
   addEditBlocks,
   addProfileBlocks,
   addContainerBlocks,
+  getInputValueFromSubmission,
 } = require('../util/blocks');
 const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
@@ -41,6 +42,9 @@ class FileManager {
       case 'edit-content':
         const editResponse = await FileManager.editContent(req, res);
         return editResponse;
+      case 'save-content':
+        const saveResponse = await FileManager.saveContent(req, res);
+        return saveResponse;
       case 'create':
         const createCommandStatus = await FileManager.createFile(req, res);
         return createCommandStatus;
@@ -99,7 +103,6 @@ class FileManager {
       addContainerBlocks(fileManagerConfig, statements, account);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
-      // console.log("file manager view config blocks:", fileManagerConfig.blocks);
       await slackClient.axios.post('views.open', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
@@ -112,11 +115,9 @@ class FileManager {
     try {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
-      // console.log('PAYLOAD:', payload);
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
-      // const parentId = payload.view.previous_view_id;
       const metadata = payload.view.private_metadata ? JSON.parse(payload.view.private_metadata) : { level: 1 };
       const level = metadata.level + 1;
       const token = slackClient.token;
@@ -126,7 +127,6 @@ class FileManager {
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
       setFieldValue(block, ['text', 'text'], url);
-      // console.log('PARENT ID:', parentId);
       console.log('METADATA:', metadata);
       console.log('LEVEL:', level);
       fileManagerConfig.private_metadata = `{"level":${level}}`;
@@ -156,8 +156,6 @@ class FileManager {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
       const trigger_id = payload.trigger_id;
-      // const view_id = payload.view.previous_view_id;
-      // const hash = payload.view.hash;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
       const token = slackClient.token;
@@ -166,18 +164,39 @@ class FileManager {
       const resourcePromise = await solidClient.fetcher.load(url);
       const resourceContent = resourcePromise['responseText'];
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
+      setFieldValue(fileManagerConfig, ['callback_id'], 'save-content');
       setFieldValue(block, ['text', 'text'], url);
-      // console.log("edit resource content:", resourceContent);
-      addEditBlocks(fileManagerConfig, resourceContent);
-      /*console.log('added edit blocks:', fileManagerConfig.blocks);
-      console.log('url:', url);
-      console.log('view_id:', view_id);
-      console.log('payload:', payload);*/
+      addEditBlocks(fileManagerConfig, resourceContent, url);
       const view = JSON.stringify(fileManagerConfig, null, 2);
-      // console.log("edit view:", view);
       const viewPayload = { token, trigger_id, view/*, view_id, hash*/ };
-      // await slackClient.axios.post('views.update', viewPayload);
       await slackClient.axios.post('views.push', viewPayload);
+      return res.status(httpStatus.OK).send();
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
+    }
+  }
+
+  static async saveContent(req, res) {
+    try {
+      const fileManagerConfig = _.cloneDeep(fileManager);
+      const payload = JSON.parse(req.body.payload);
+      const trigger_id = payload.trigger_id;
+      const view_id = payload.view.previous_view_id;
+      const hash = payload.view.hash;
+      const url = payload.actions[0].value;
+      const userId = payload.user.id;
+      const token = slackClient.token;
+      const solidClient = getSolidClientFromSlackId(userId);
+      const resourcePromise = await solidClient.fetcher.load(url);
+      const contentType = resourcePromise['headers'].get('Content-Type');
+      const block = getBlockById(fileManagerConfig, `load_${url}`);
+      const data = getInputValueFromSubmission(payload, `save_${url}`);
+      setFieldValue(block, ['text', 'text'], data);
+      await solidClient.fetcher.webOperation('PUT', url, { contentType, data });
+      const view = JSON.stringify(fileManagerConfig, null, 2);
+      const viewPayload = { token, trigger_id, view, view_id, hash };
+      await slackClient.axios.post('views.update', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));

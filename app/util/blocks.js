@@ -19,7 +19,7 @@ const getBlockById = (viewConfig, id) => {
 };
 
 // Get value of block field at nested path
-const getBlockFieldValue = (block, path) => {
+const getFieldValue = (block, path) => {
   let scope = block;
   for (let i = 0; i < path.length; i++) {
     const field = path[i];
@@ -51,7 +51,8 @@ const makeDividerBlock = () => {
 // create text block
 const makeTextBlock = (text, options={}) => {
   const type = options.type ? options.type : 'plain_text';
-  return {
+  const blockId = options.blockId;
+  let textBlock = {
     "type": "section",
     "text": {
       "type": type,
@@ -59,6 +60,11 @@ const makeTextBlock = (text, options={}) => {
       "emoji": true
     }
   };
+  textBlock = Object.assign(
+    textBlock,
+    blockId && { "block_id": blockId }
+  );
+  return textBlock;
 };
 
 // create image block
@@ -106,25 +112,36 @@ const makeButtonBlock = (options={}) => {
 
 // create input block
 const makeInputBlock = (options={}) => {
+  const blockId = options.blockId;
+  const actionId = options.actionId;
   const initialValue = options.initialValue ? options.initialValue : '';
   const multiline = options.multiline ? options.multiline : true;
   const optional = options.optional ? options.optional : true;
   const label = options.label ? options.label : 'Label';
-  return {
+  let inputElement = {
+    "type": "plain_text_input",
+    "multiline": multiline,
+    "initial_value": initialValue
+  };
+  let inputBlock = {
     "type": "input",
     "label": {
       "type": "plain_text",
       "text": label,
       "emoji": true
     },
-    "element": {
-      "type": "plain_text_input",
-      "multiline": multiline,
-      "action_id": "plain_text_input_action",
-      "initial_value": initialValue
-    },
     "optional": optional
   };
+  inputElement = Object.assign(
+    inputElement,
+    actionId && { "action_id": actionId }
+  );
+  inputBlock = Object.assign(
+    inputBlock,
+    blockId && { "block_id": blockId },
+    inputElement && { "element": inputElement }
+  );
+  return inputBlock;
 };
 
 // remove slashes from end of URL (necessary only when running RegExp.exec)
@@ -161,14 +178,14 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       const metadata = JSON.parse(viewConfig.private_metadata);
       const level = metadata.level;
       if (level === 3) {
-        const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob: Please continue this action at ${url} :warning:`);
+        const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :no_entry: Please continue this action at ${url} :warning:`);
         const dividerBlock = makeDividerBlock();
         viewConfig.blocks.push(warningBlock);
         viewConfig.blocks.push(dividerBlock);
       }
       viewConfig.blocks.push(editButtonBlock);
       if (content.length === 0) {
-        const emptyBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:');
+        const emptyBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:', { blockId: `load_${url}` });
         viewConfig.blocks.push(emptyBlock);
         return;
       }
@@ -179,14 +196,14 @@ const addFileBlocks = (viewConfig, type, content, url) => {
         });
         viewConfig.blocks = viewConfig.blocks.concat(chunkBlocks);
       } else {
-        const textBlock = makeTextBlock(content);
+        const textBlock = makeTextBlock(content, { blockId: `load_${url}_block` });
         viewConfig.blocks.push(textBlock);
       }
   }
 };
 
 // add edit file blocks
-const addEditBlocks = (viewConfig, content) => {
+const addEditBlocks = (viewConfig, content, url) => {
   /*const chunkSize = 3000;
   const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');*/
   viewConfig.submit = {
@@ -199,6 +216,8 @@ const addEditBlocks = (viewConfig, content) => {
     viewConfig.blocks.push(textBlock);
   } else {*/
   const editInputBlock = makeInputBlock({
+    blockId: `save_${url}_block`,
+    actionId: `save_${url}_input`,
     initialValue: content,
     label: 'Edit'
   });
@@ -343,7 +362,7 @@ const addContainerBlocks = (viewConfig, statements, url) => {
   const metadata = JSON.parse(viewConfig.private_metadata);
   const level = metadata.level;
   if (level === 3) {
-    const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob: Please continue this action at ${url} :warning:`);
+    const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :no_entry: Please continue this action at ${url} :warning:`);
     const dividerBlock = makeDividerBlock();
     viewConfig.blocks.push(warningBlock);
     viewConfig.blocks.push(dividerBlock);
@@ -362,7 +381,6 @@ const addContainerBlocks = (viewConfig, statements, url) => {
 module.exports = {
   getInputValueFromSubmission,
   getBlockById,
-  getBlockFieldValue,
   setFieldValue,
   customizeProfile,
   addFileBlocks,
