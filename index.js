@@ -47,6 +47,11 @@ const actionHandler = async (req, res) => {
       const command = payload.actions[0].action_id;
       const contentResponse = await FileManager.exec(req, res, command);
       return contentResponse;
+    case 'save-content':
+      const command = payload.actions[0].action_id;
+      console.log('save command:', command);
+      const saveResponse = await FileManager.exec(req, res, command);
+      return saveResponse;
     default:
       return res.status(httpStatus.OK).send(`Unrecognized interactive component \`callback_id\`: \`${callbackId}\``);
   }
