@@ -96,7 +96,7 @@ class FileManager {
       await solidClient.fetcher.load(account);
       const statements = solidClient.fetcher.store.match($rdf.sym(account), LDP('contains'), undefined);
       fileManagerConfig.private_metadata = `{"level":1}`;
-      addContainerBlocks(fileManagerConfig, statements);
+      addContainerBlocks(fileManagerConfig, statements, account);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
       // console.log("file manager view config blocks:", fileManagerConfig.blocks);
@@ -133,7 +133,7 @@ class FileManager {
       if (resourceContent.length > 0) {
         // resource is a container
         // NOTE: resourceContent is an array of RDF statements here
-        addContainerBlocks(fileManagerConfig, resourceContent);
+        addContainerBlocks(fileManagerConfig, resourceContent, url);
       } else {
         // resource is a file
         // NOTE: resourceContent is a string here

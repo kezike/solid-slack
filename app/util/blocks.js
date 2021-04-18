@@ -161,7 +161,7 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       const metadata = JSON.parse(viewConfig.private_metadata);
       const level = metadata.level;
       if (level === 3) {
-        const warningBlock = makeTextBlock(':warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');
+        const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob: Please continue this action at ${url} :warning:`);
         const dividerBlock = makeDividerBlock();
         viewConfig.blocks.push(warningBlock);
         viewConfig.blocks.push(dividerBlock);
@@ -339,11 +339,11 @@ const convertContainerRdfToBlocks = (statements) => {
 };
 
 // add RDF container statement blocks
-const addContainerBlocks = (viewConfig, statements) => {
+const addContainerBlocks = (viewConfig, statements, url) => {
   const metadata = JSON.parse(viewConfig.private_metadata);
   const level = metadata.level;
   if (level === 3) {
-    const warningBlock = makeTextBlock(':warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob:');
+    const warningBlock = makeTextBlock(`:warning: Note: Currently, Slack prevents navigation beyond 3 views, so we have sadly reached the end of the road :sob: Please continue this action at ${url} :warning:`);
     const dividerBlock = makeDividerBlock();
     viewConfig.blocks.push(warningBlock);
     viewConfig.blocks.push(dividerBlock);
