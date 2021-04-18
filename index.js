@@ -49,6 +49,7 @@ const actionHandler = async (req, res) => {
       const contentResponse = await FileManager.exec(req, res, command);
       return contentResponse;
     case 'save-content':
+      console.log('save payload:', payload);
       command = payload.actions[0].action_id;
       console.log('save command:', command);
       const saveResponse = await FileManager.exec(req, res, command);
