@@ -39,15 +39,17 @@ const actionHandler = async (req, res) => {
   const payload = JSON.parse(req.body.payload);
   const type = payload.type;
   const callbackId = payload.view.callback_id;
+  let command;
   switch (callbackId) {
     case 'login-manager':
       const loginResponse = await solidLogin(req, res);
       return loginResponse;
     case 'file-manager':
-      const command = payload.actions[0].action_id;
+      command = payload.actions[0].action_id;
       const contentResponse = await FileManager.exec(req, res, command);
       return contentResponse;
     case 'save-content':
+      command = payload.actions[0].action_id;
       console.log('save command:', command);
       const saveResponse = await FileManager.exec(req, res, command);
       return saveResponse;
