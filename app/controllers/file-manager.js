@@ -112,7 +112,7 @@ class FileManager {
     try {
       const fileManagerConfig = _.cloneDeep(fileManager);
       const payload = JSON.parse(req.body.payload);
-      console.log('PAYLOAD:', payload);
+      // console.log('PAYLOAD:', payload);
       const trigger_id = payload.trigger_id;
       const url = payload.actions[0].value;
       const userId = payload.user.id;
@@ -126,6 +126,8 @@ class FileManager {
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
       setFieldValue(block, ['text', 'text'], url);
+      console.log('PARENT ID:', parentId);
+      console.log('METADATA:', metadata);
       console.log('LEVEL:', level);
       fileManagerConfig.private_metadata = `{"level":${level}}`;
       if (resourceContent.length > 0) {
