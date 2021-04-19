@@ -188,7 +188,7 @@ class FileManager {
       const trigger_id = payload.trigger_id;
       console.log('retrieving previous_view_id...');
       const view_id = payload.view.previous_view_id;
-      console.log('retrieved previous_view_id:', previous_view_id);
+      console.log('retrieved previous_view_id:', view_id);
       console.log('retrieving hash...');
       const hash = payload.view.hash;
       console.log('retrieved hash:', hash);
