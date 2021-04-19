@@ -166,7 +166,7 @@ class FileManager {
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Cancel');
       setFieldValue(fileManagerConfig, ['callback_id'], 'save-content');
       setFieldValue(block, ['text', 'text'], url);
-      fileManagerConfig.private_metadata = `{"url":${url}}`;
+      fileManagerConfig.private_metadata = `{"url":"${url}"}`;
       addEditBlocks(fileManagerConfig, resourceContent, url);
       const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view };
