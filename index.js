@@ -49,6 +49,7 @@ const actionHandler = async (req, res) => {
       const contentResponse = await FileManager.exec(req, res, command);
       return contentResponse;
     case 'save-content':
+      res.status(httpStatus.OK).send();
       console.log('save payload:', payload);
       command = callbackId;
       console.log('save command:', command);
