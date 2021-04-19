@@ -169,7 +169,7 @@ class FileManager {
       fileManagerConfig.private_metadata = `{"url":${url}}`;
       addEditBlocks(fileManagerConfig, resourceContent, url);
       const view = JSON.stringify(fileManagerConfig, null, 2);
-      const viewPayload = { token, trigger_id, view/*, view_id, hash*/ };
+      const viewPayload = { token, trigger_id, view };
       await slackClient.axios.post('views.push', viewPayload);
       return res.status(httpStatus.OK).send();
     } catch (e) {
@@ -195,10 +195,11 @@ class FileManager {
       const block = getBlockById(fileManagerConfig, `load_${url}`);
       const data = getInputValueFromSubmission(payload, `save_${url}`);
       setFieldValue(block, ['text', 'text'], data);
+      console.log('saving data to', url);
       await solidClient.fetcher.webOperation('PUT', url, { contentType, data });
-      const view = JSON.stringify(fileManagerConfig, null, 2);
+      /*const view = JSON.stringify(fileManagerConfig, null, 2);
       const viewPayload = { token, trigger_id, view, view_id, hash };
-      await slackClient.axios.post('views.update', viewPayload);
+      await slackClient.axios.post('views.update', viewPayload);*/
       return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
