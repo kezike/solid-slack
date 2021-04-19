@@ -180,14 +180,21 @@ class FileManager {
 
   static async saveContent(req, res) {
     try {
-      console.log('saving content..');
+      console.log('saving content...');
       const fileManagerConfig = _.cloneDeep(fileManager);
+      console.log('parsing payload...');
       const payload = JSON.parse(req.body.payload);
+      console.log('parsed payload:', payload);
       const trigger_id = payload.trigger_id;
+      console.log('retrieving previous_view_id...');
       const view_id = payload.view.previous_view_id;
+      console.log('retrieved previous_view_id:', previous_view_id);
+      console.log('retrieving hash...');
       const hash = payload.view.hash;
+      console.log('retrieved hash:', hash);
       const userId = payload.user.id;
       const token = slackClient.token;
+      console.log('retrieving metadata...');
       const metadata = JSON.parse(payload.view.private_metadata);
       console.log('retrieved metadata:', metadata);
       const url = metadata.url;
