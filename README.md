@@ -13,3 +13,7 @@ View your Solid profile page with `/solid profile`
 ### Explore Account Data
 Navigate through the data in your Solid account with `/solid account`
 <img src="https://github.com/kezike/public-data/blob/main/solid-slack/account.gif?raw=true" alt="explore account" width=600>
+
+### Edit Account Data
+Edit the data in your Solid account while in account view
+<img src="https://github.com/kezike/public-data/blob/main/solid-slack/edit.gif?raw=true" alt="explore account" width=600>
