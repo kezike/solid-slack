@@ -75,6 +75,7 @@ const solidLogin = async (req, res) => {
 };
 
 const solidLogout = async (req, res) => {
+  console.log('logout body:', req.body);
   const submission = JSON.parse(req.body.payload);
   const userId = submission.user.id;
   const token = slackClient.token;

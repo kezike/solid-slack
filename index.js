@@ -30,7 +30,7 @@ const entryHandler = async (req, res) => {
       const logoutResponse = await solidLogout(req, res);
       return logoutResponse;
     default:
-      return res.send(`Unrecognized command: \`${command}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
+      return res.send(`Sorry, I don't recognize your command: \`${command}\`. For the complete set of available commands, please type the following command: \`/solid help\``);
   }
 };
 
