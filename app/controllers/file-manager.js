@@ -233,7 +233,7 @@ class FileManager {
       const payload = JSON.parse(req.body.payload);
       console.log('parsed payload:', payload);
       const trigger_id = payload.trigger_id;
-      const viewConfig = payload.view;
+      let viewConfig = payload.view;
       const view_id = viewConfig.id;
       console.log('retrieved view_id:', view_id);
       const hash = viewConfig.hash;
@@ -252,7 +252,17 @@ class FileManager {
       console.log('block for', `load_${url}:`, block);
       console.log('blocks for', `load_${url}:`, viewConfig.blocks);
       setFieldValue(block, ['text', 'text'], resourceContent);
-      const view = JSON.stringify({blocks: viewConfig.blocks}, null, 2);
+      viewConfig = {
+        type: viewConfig.type,
+        title: viewConfig.title,
+        close: viewConfig.close,
+        blocks: viewConfig.blocks,
+        callback_id: viewConfig.callback_id,
+        root_view_id: viewConfig.root_view_id,
+        previous_view_id: viewConfig.previous_view_id,
+        private_metadata: viewConfig.private_metadata,
+      };
+      const view = JSON.stringify(viewConfig, null, 2);
       const viewPayload = { token, trigger_id, view, view_id, hash };
       await slackClient.axios.post('views.update', viewPayload);
       return res.status(httpStatus.OK).send();
