@@ -252,7 +252,7 @@ class FileManager {
       console.log('block for', `load_${url}:`, block);
       console.log('blocks for', `load_${url}:`, viewConfig.blocks);
       setFieldValue(block, ['text', 'text'], resourceContent);
-      const view = JSON.stringify(viewConfig, null, 2);
+      const view = JSON.stringify({blocks: viewConfig.blocks}, null, 2);
       const viewPayload = { token, trigger_id, view, view_id, hash };
       await slackClient.axios.post('views.update', viewPayload);
       return res.status(httpStatus.OK).send();
