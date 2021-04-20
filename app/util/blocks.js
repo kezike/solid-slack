@@ -160,8 +160,6 @@ const removeSlashes = (url) => {
 
 // add file blocks
 const addFileBlocks = (viewConfig, type, content, url) => {
-  const chunkSize = FILE_SIZE_LIMIT;
-  const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');
   const baseType = type.split('/').shift();
   switch (baseType) {
     case 'image':
@@ -191,37 +189,28 @@ const addFileBlocks = (viewConfig, type, content, url) => {
       }
       viewConfig.blocks.push(editButtonBlock);
       viewConfig.blocks.push(refreshButtonBlock);
+      if (content.length > FILE_SIZE_LIMIT) {
+        const restrictionBlock = makeTextBlock(`:no_entry_sign: This file is too large to view in Slack. Please view it in a web browser at ${url} :no_entry_sign:`);
+        viewConfig.blocks.push(restrictionBlock);
+        return;
+      }
       if (content.length === 0) {
         const emptyBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:', { blockId: `load_${url}` });
         viewConfig.blocks.push(emptyBlock);
         return;
       }
-      if (content.length > chunkSize) {
-        const chunks = content.match(chunkPattern);
-        const chunkBlocks = chunks.map((chunk) => {
-          return makeTextBlock(chunk);
-        });
-        viewConfig.blocks = viewConfig.blocks.concat(chunkBlocks);
-      } else {
-        const textBlock = makeTextBlock(content, { blockId: `load_${url}_block` });
-        viewConfig.blocks.push(textBlock);
-      }
+      const textBlock = makeTextBlock(content, { blockId: `load_${url}_block` });
+      viewConfig.blocks.push(textBlock);
   }
 };
 
 // add edit file blocks
 const addEditBlocks = (viewConfig, content, url) => {
-  /*const chunkSize = FILE_SIZE_LIMIT;
-  const chunkPattern = new RegExp(`.{1,${chunkSize}}`,'g');*/
   viewConfig.submit = {
     "type": "plain_text",
     "text": ":floppy_disk:   Save",
     "emoji": true
   };
-  /*if (content.length > chunkSize) {
-    const textBlock = makeTextBlock(':no_entry_sign: This file is too large to edit in Slack. Please edit this file in a traditional web browser. :no_entry_sign:');
-    viewConfig.blocks.push(textBlock);
-  } else {*/
   const editInputBlock = makeInputBlock({
     blockId: `save_${url}_block`,
     actionId: `save_${url}_input`,
@@ -229,7 +218,6 @@ const addEditBlocks = (viewConfig, content, url) => {
     label: 'Edit'
   });
   viewConfig.blocks.push(editInputBlock);
-  // }
 };
 
 /* === END FILE === */
@@ -324,10 +312,7 @@ const addProfileBlocks = (viewConfig, statements) => {
 // create block from RDF container statement
 const makeContainerBlock = (statement, index) => {
   const sub = statement.subject.value;
-  // const pred = statement.predicate.value;
   const obj = statement.object.value;
-  // const coreId = `${sub}_${pred}_${obj}_${index}`;
-  // const actionId = `account_item_action_id_${coreId}`;
   const objRelPath = obj.split(sub)[1];
   return {
     "type": "actions",
@@ -344,13 +329,6 @@ const makeContainerBlock = (statement, index) => {
       }
     ]
   };
-  /*return {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": `<${obj}|${objRelPath}>`
-    }
-  };*/
 };
 
 // convert RDF container statements to blocks

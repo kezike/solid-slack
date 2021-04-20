@@ -48,17 +48,14 @@ class FileManager {
       case 'refresh-content':
         const refreshResponse = await FileManager.refreshContent(req, res);
         return refreshResponse;
-      case 'create':
-        const createCommandStatus = await FileManager.createFile(req, res);
+      case 'create-content':
+        const createCommandStatus = await FileManager.createContent(req, res);
         return createCommandStatus;
-      case 'review':
-        const reviewCommandStatus = await FileManager.reviewFile(req, res);
-        return reviewCommandStatus;
-      case 'delete':
-        const deleteCommandStatus = await FileManager.deleteFile(req, res);
+      case 'delete-content':
+        const deleteCommandStatus = await FileManager.deleteContent(req, res);
         return deleteCommandStatus;
-      case 'share':
-        const shareCommandStatus = await FileManager.shareFile(req, res);
+      case 'share-content':
+        const shareCommandStatus = await FileManager.shareContent(req, res);
         return shareCommandStatus;
       default:
         return httpStatus.BAD_REQUEST;
@@ -130,8 +127,6 @@ class FileManager {
       let resourceContent = solidClient.fetcher.store.match($rdf.sym(url), LDP('contains'), undefined);
       setFieldValue(fileManagerConfig, ['close', 'text'], 'Back');
       setFieldValue(block, ['text', 'text'], url);
-      console.log('METADATA:', metadata);
-      console.log('LEVEL:', level);
       fileManagerConfig.private_metadata = `{"url":"${url}","level":${level}}`;
       if (resourceContent.length > 0) {
         // resource is a container
@@ -185,41 +180,15 @@ class FileManager {
 
   static async saveContent(req, res) {
     try {
-      console.log('saving content...');
-      // const fileManagerConfig = _.cloneDeep(fileManager);
-      console.log('parsing payload...');
       const payload = JSON.parse(req.body.payload);
-      console.log('parsed payload:', payload);
-      // const trigger_id = payload.trigger_id;
-      // console.log('retrieving previous_view_id...');
-      // const view_id = payload.view.previous_view_id;
-      // console.log('retrieved previous_view_id:', view_id);
-      // console.log('retrieving hash...');
-      // const hash = payload.view.hash;
-      // console.log('retrieved hash:', hash);
       const userId = payload.user.id;
-      // const token = slackClient.token;
-      console.log('retrieving metadata...');
       const metadata = JSON.parse(payload.view.private_metadata);
-      console.log('retrieved metadata:', metadata);
       const url = metadata.url;
-      console.log('retrieved url:', url);
       const solidClient = getSolidClientFromSlackId(userId);
       const resourcePromise = await solidClient.fetcher.load(url);
       const contentType = resourcePromise['headers'].get('Content-Type');
-      console.log('getting block by id:', `load_${url}`);
-      // const block = getBlockById(fileManagerConfig, `load_${url}`);
-      // console.log('block for', `load_${url}:`, block);
-      console.log('getting input data for id:', `save_${url}`);
       const data = getInputValueFromSubmission(payload, `save_${url}`);
-      console.log('data for', `save_${url}:`, data);
-      // setFieldValue(block, ['text', 'text'], data);
-      console.log('saving', data, 'to', url);
       await solidClient.fetcher.webOperation('PUT', url, { contentType, data });
-      console.log('saved', data, 'to', url);
-      /*const view = JSON.stringify(fileManagerConfig, null, 2);
-      const viewPayload = { token, trigger_id, view, view_id, hash };
-      await slackClient.axios.post('views.update', viewPayload);*/
       return res.status(httpStatus.OK).send();
     } catch (e) {
       console.error(JSON.stringify(e, null, 2));
@@ -229,39 +198,27 @@ class FileManager {
 
   static async refreshContent(req, res) {
     try {
-      console.log('refreshing content...');
       const payload = JSON.parse(req.body.payload);
-      console.log('parsed payload:', payload);
       const trigger_id = payload.trigger_id;
       let viewConfig = payload.view;
       const view_id = viewConfig.id;
-      console.log('retrieved view_id:', view_id);
       const hash = viewConfig.hash;
-      console.log('retrieved hash:', hash);
       const userId = payload.user.id;
       const token = slackClient.token;
       const metadata = JSON.parse(viewConfig.private_metadata);
-      console.log('retrieved metadata:', metadata);
       const url = metadata.url;
-      console.log('retrieved url:', url);
       const solidClient = getSolidClientFromSlackId(userId);
       await solidClient.fetcher.refresh(url);
       const resourcePromise = await solidClient.fetcher.load(url);
       const resourceContent = resourcePromise['responseText'];
       const block = getBlockById(viewConfig, `load_${url}`);
-      console.log('refreshing with the following data:', resourceContent);
       setFieldValue(block, ['text', 'text'], resourceContent);
-      console.log('block for', `load_${url}:`, block);
-      console.log('blocks for', `load_${url}:`, viewConfig.blocks);
       viewConfig = {
         type: viewConfig.type,
         title: viewConfig.title,
         close: viewConfig.close,
         blocks: viewConfig.blocks,
         callback_id: viewConfig.callback_id,
-        /*root_view_id: viewConfig.root_view_id,
-        previous_view_id: viewConfig.previous_view_id,
-        private_metadata: viewConfig.private_metadata,*/
       };
       const view = JSON.stringify(viewConfig, null, 2);
       const viewPayload = { token, trigger_id, view, view_id, hash };
@@ -273,20 +230,31 @@ class FileManager {
     }
   }
 
-  static async createFile(req, res) {
-    console.log("Creating file...");
+  static async createContent(req, res) {
+    try {
+      console.log("creating content...");
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
+    }
   }
 
-  static async reviewFile(req, res) {
-    console.log("Reviewing file...");
+  static async deleteContent(req, res) {
+    try {
+      console.log("deleting content...");
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
+    }
   }
 
-  static async deleteFile(req, res) {
-    console.log("Deleting file...");
-  }
-
-  static async shareFile(req, res) {
-    console.log("Sharing file...");
+  static async shareContent(req, res) {
+    try {
+      console.log("sharing content...");
+    } catch (e) {
+      console.error(JSON.stringify(e, null, 2));
+      return res.status(httpStatus.BAD_REQUEST).send();
+    }
   }
 }
 

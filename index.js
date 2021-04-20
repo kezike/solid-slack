@@ -36,6 +36,9 @@ const entryHandler = async (req, res) => {
 
 // Handle interactive components, like modal buttons
 const actionHandler = async (req, res) => {
+  // this is a necessary acknowledgment response
+  // for most interactions in Slack apps
+  res.status(httpStatus.OK).send();
   const payload = JSON.parse(req.body.payload);
   const type = payload.type;
   const callbackId = payload.view.callback_id;
@@ -49,10 +52,7 @@ const actionHandler = async (req, res) => {
       const contentResponse = await FileManager.exec(req, res, command);
       return contentResponse;
     case 'save-content':
-      res.status(httpStatus.OK).send();
-      console.log('save payload:', payload);
       command = callbackId;
-      console.log('save command:', command);
       const saveResponse = await FileManager.exec(req, res, command);
       return saveResponse;
     default:
