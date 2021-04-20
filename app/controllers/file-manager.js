@@ -250,6 +250,7 @@ class FileManager {
       const resourceContent = resourcePromise['responseText'];
       const block = getBlockById(viewConfig, `load_${url}`);
       console.log('block for', `load_${url}:`, block);
+      console.log('blocks for', `load_${url}:`, viewConfig.blocks);
       setFieldValue(block, ['text', 'text'], resourceContent);
       const view = JSON.stringify(viewConfig, null, 2);
       const viewPayload = { token, trigger_id, view, view_id, hash };
