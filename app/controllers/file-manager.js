@@ -249,6 +249,7 @@ class FileManager {
       const resourcePromise = await solidClient.fetcher.load(url);
       const resourceContent = resourcePromise['responseText'];
       const block = getBlockById(viewConfig, `load_${url}`);
+      console.log('refreshing with the following data:', resourceContent);
       console.log('block for', `load_${url}:`, block);
       console.log('blocks for', `load_${url}:`, viewConfig.blocks);
       setFieldValue(block, ['text', 'text'], resourceContent);
