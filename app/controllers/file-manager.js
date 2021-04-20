@@ -6,7 +6,7 @@ const {
   addEditBlocks,
   addProfileBlocks,
   addContainerBlocks,
-  getInputValueFromSubmission,
+  getInputValueFromPayload,
 } = require('../util/blocks');
 const _ = require('lodash');
 const { getSolidClientFromSlackId } = require('../util/solid');
@@ -187,7 +187,7 @@ class FileManager {
       const solidClient = getSolidClientFromSlackId(userId);
       const resourcePromise = await solidClient.fetcher.load(url);
       const contentType = resourcePromise['headers'].get('Content-Type');
-      const data = getInputValueFromSubmission(payload, `save_${url}`);
+      const data = getInputValueFromPayload(payload, `save_${url}`);
       await solidClient.fetcher.webOperation('PUT', url, { contentType, data });
       return res.status(httpStatus.OK).send();
     } catch (e) {

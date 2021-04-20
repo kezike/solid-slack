@@ -4,8 +4,8 @@ const { FILE_SIZE_LIMIT, VIEW_STACK_LIMIT } = require('./slack');
 /* === BEGIN GENERAL === */
 
 // Extract submitted value from modal input id
-const getInputValueFromSubmission = (submission, id) => {
-  const view = submission.view;
+const getInputValueFromPayload = (payload, id) => {
+  const view = payload.view;
   const values = view.state.values;
   const blockId = `${id}_block`;
   const inputId = `${id}_input`;
@@ -364,7 +364,7 @@ const addContainerBlocks = (viewConfig, statements, url) => {
 /* === END CONTAINER === */
 
 module.exports = {
-  getInputValueFromSubmission,
+  getInputValueFromPayload,
   getBlockById,
   setFieldValue,
   customizeProfile,

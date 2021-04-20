@@ -1,7 +1,7 @@
 const { SolidNodeClient } = require('solid-node-client');
 const { slackClient } = require('../util/slack');
 const { getSolidClientFromSlackId, setSolidClientForSlackId } = require('../util/solid');
-const { getInputValueFromSubmission } = require('../util/blocks');
+const { getInputValueFromPayload } = require('../util/blocks');
 const { httpStatus } = require('../util/http');
 const $rdf = require('rdflib');
 
@@ -35,16 +35,16 @@ class SolidSlackClient {
 }
 
 const solidLogin = async (req, res) => {
-  const submission = JSON.parse(req.body.payload);
-  const userId = submission.user.id;
+  const loginPayload = JSON.parse(req.body.payload);
+  const userId = loginPayload.user.id;
   const token = slackClient.token;
   let solidClient = getSolidClientFromSlackId(userId);
   if (solidClient && solidClient.loggedIn()) {
     return res.status(httpStatus.OK).send('You are already logged into Solid!');
   }
-  const solid_account = getInputValueFromSubmission(submission, 'solid_account');
-  const solid_uname = getInputValueFromSubmission(submission, 'solid_uname');
-  const solid_pass = getInputValueFromSubmission(submission, 'solid_pass');
+  const solid_account = getInputValueFromPayload(loginPayload, 'solid_account');
+  const solid_uname = getInputValueFromPayload(loginPayload, 'solid_uname');
+  const solid_pass = getInputValueFromPayload(loginPayload, 'solid_pass');
   const loginOptions = {
     idp: solid_account,
     username: solid_uname,
@@ -75,9 +75,7 @@ const solidLogin = async (req, res) => {
 };
 
 const solidLogout = async (req, res) => {
-  console.log('logout body:', req.body);
-  const submission = JSON.parse(req.body.payload);
-  const userId = submission.user.id;
+  const userId = req.body.user_id;
   const token = slackClient.token;
   const solidClient = getSolidClientFromSlackId(userId);
   if (!solidClient) {
