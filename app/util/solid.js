@@ -8,4 +8,8 @@ const setSolidClientForSlackId = (slackId, solidClient) => {
   slackIdToSolidClient[slackId] = solidClient;
 };
 
-module.exports = { getSolidClientFromSlackId, setSolidClientForSlackId };
+const forgetSolidClientForSlackId = (slackId) => {
+  delete slackIdToSolidClient[slackId];
+};
+
+module.exports = { getSolidClientFromSlackId, setSolidClientForSlackId, forgetSolidClientForSlackId };

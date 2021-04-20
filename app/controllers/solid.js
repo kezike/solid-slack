@@ -1,6 +1,6 @@
 const { SolidNodeClient } = require('solid-node-client');
 const { slackClient } = require('../util/slack');
-const { getSolidClientFromSlackId, setSolidClientForSlackId } = require('../util/solid');
+const { getSolidClientFromSlackId, setSolidClientForSlackId, forgetSolidClientForSlackId } = require('../util/solid');
 const { getInputValueFromPayload } = require('../util/blocks');
 const { httpStatus } = require('../util/http');
 const $rdf = require('rdflib');
@@ -88,6 +88,7 @@ const solidLogout = async (req, res) => {
   };
   try {
     await solidClient.logout();
+    forgetSolidClientForSlackId(userId);
     responsePayload.text = 'Goodbye, you have successfully logged out of Solid!';
     await slackClient.axios.post('chat.postMessage', responsePayload);
     return res.status(httpStatus.OK).send();
