@@ -250,9 +250,9 @@ class FileManager {
       const resourceContent = resourcePromise['responseText'];
       const block = getBlockById(viewConfig, `load_${url}`);
       console.log('refreshing with the following data:', resourceContent);
+      setFieldValue(block, ['text', 'text'], resourceContent);
       console.log('block for', `load_${url}:`, block);
       console.log('blocks for', `load_${url}:`, viewConfig.blocks);
-      setFieldValue(block, ['text', 'text'], resourceContent);
       viewConfig = {
         type: viewConfig.type,
         title: viewConfig.title,
