@@ -259,9 +259,9 @@ class FileManager {
         close: viewConfig.close,
         blocks: viewConfig.blocks,
         callback_id: viewConfig.callback_id,
-        root_view_id: viewConfig.root_view_id,
+        /*root_view_id: viewConfig.root_view_id,
         previous_view_id: viewConfig.previous_view_id,
-        private_metadata: viewConfig.private_metadata,
+        private_metadata: viewConfig.private_metadata,*/
       };
       const view = JSON.stringify(viewConfig, null, 2);
       const viewPayload = { token, trigger_id, view, view_id, hash };
