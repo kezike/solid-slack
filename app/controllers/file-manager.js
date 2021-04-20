@@ -230,10 +230,10 @@ class FileManager {
   static async refreshContent(req, res) {
     try {
       console.log('refreshing content...');
-      const viewConfig = payload.view;
       const payload = JSON.parse(req.body.payload);
       console.log('parsed payload:', payload);
       const trigger_id = payload.trigger_id;
+      const viewConfig = payload.view;
       const view_id = viewConfig.id;
       console.log('retrieved view_id:', view_id);
       const hash = viewConfig.hash;
