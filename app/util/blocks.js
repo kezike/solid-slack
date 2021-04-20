@@ -176,6 +176,11 @@ const addFileBlocks = (viewConfig, type, content, url) => {
         style: 'danger',
         actionId: 'edit-content'
       });
+      const refreshButtonBlock = makeButtonBlock({
+        text: ':arrows_counterclockwise:   Refresh',
+        value: url,
+        actionId: 'refresh-content'
+      });
       const metadata = JSON.parse(viewConfig.private_metadata);
       const level = metadata.level;
       if (level === VIEW_STACK_LIMIT) {
@@ -185,6 +190,7 @@ const addFileBlocks = (viewConfig, type, content, url) => {
         viewConfig.blocks.push(dividerBlock);
       }
       viewConfig.blocks.push(editButtonBlock);
+      viewConfig.blocks.push(refreshButtonBlock);
       if (content.length === 0) {
         const emptyBlock = makeTextBlock(':no_entry_sign: This file is empty :no_entry_sign:', { blockId: `load_${url}` });
         viewConfig.blocks.push(emptyBlock);
