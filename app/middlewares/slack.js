@@ -2,7 +2,7 @@ const qs = require('qs');
 const crypto = require('crypto');
 const timingSafeCompare = require('tsscmp');
 const { httpStatus } = require('../util/http');
-const slackClientSecret = process.env.SLACK_CLIENT_SECRET;
+const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
 
 const slackVerify = (req, res, next) => {
   // Define important variables
@@ -23,12 +23,12 @@ const slackVerify = (req, res, next) => {
   }
 
   // Check that server owns Slack signing secret
-  if (!slackClientSecret) {
+  if (!slackSigningSecret) {
     return res.status(httpStatus.BAD_REQUEST).send('Slack signing secret empty');
   }
 
   const sigBaseStr = `v0:${ts}:${bodyStr}`;
-  const sigMine = `v0=${crypto.createHmac('sha256', slackClientSecret)
+  const sigMine = `v0=${crypto.createHmac('sha256', slackSigningSecret)
                             .update(sigBaseStr, 'utf8')
                             .digest('hex')}`;
 
