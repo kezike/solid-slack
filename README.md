@@ -1,5 +1,6 @@
 # solid-slack
 This package contains a [Slack Integration](https://api.slack.com/internal-integrations) for accessing and managing data stored in [Solid](https://inrupt.com/solid), a Web-based personal data management platform.
+
 <img src="https://github.com/kezike/public-data/blob/main/solid-slack/profile.gif?raw=true" alt="view profile" width=600>
 
 ## Requirements
@@ -15,7 +16,7 @@ OK, let's `slack` for a bit :sunglasses: Here is some important Slack bookkeepin
 1. Create a Slack account [here](https://slack.com/signin#/signin) if you don't have one already.
 2. Create a Slack app [here](https://api.slack.com/apps?new_app=1).
 3. In the app view, follow some of the instructions under the `Add features and functionality` section within the `Building Apps for Slack` block:
-  - Create a slash command under `Slash Commands`: Fill out the form for generating a slash command and add it to your app. Be sure to use the URL that was generated in the `Hosting solid-slack` section above with the `entry` endpoint as the `Request URL` (e.g., https://my-solid-slack.herokuapp.com/entry).
+  - Create a slash command under `Slash Commands`: Fill out the form for generating a slash command and add it to your app. Be sure to use `/solid` as the `Command` and the URL that was generated in the `Hosting solid-slack` section above with the `entry` endpoint as the `Request URL` (e.g., https://my-solid-slack.herokuapp.com/entry). Optionally, you may also add a description (e.g., `This app enables users to access data in their Solid pod`) and usage hints (e.g., `[login | logout | profile | account | help]`).
   - Enable useful actions in your app under `Interactivity & Shortcuts`: Be sure to use the URL that was generated in the `Hosting solid-slack` section above with the `action` endpoint as the `Request URL` (e.g., https://my-solid-slack.herokuapp.com/action).
   - Enable appropriate application scopes under `OAuth & Permissions`: Be sure to select the following `Bot Token Scopes`:
     - `commands`
